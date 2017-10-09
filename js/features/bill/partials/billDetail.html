@@ -1,0 +1,139 @@
+<div class="modal" role="dialog">
+    <div class="modal-dialog modal-center modal-reate leas-bill">
+        <div class="modal-content group-add">
+            <div class="modal-body clearfix">
+            	<div class="reate_clues" ng-if="operateFlag === 'detail'">
+			    	<div class="reate_header clearfix">
+			    		<p class="clearfix">
+			    			<span><span>合同租赁</span>&gt;<span>租赁账单</span>&gt;<span>{{selectedBill.serial_number}}</span></span>
+			    			<span ng-click="$hide()"></span>
+			    			<span class="ic_print" ng-click="showPrint()" ng-if="operateFlag === 'detail'"></span>
+			    			<span class="ic_email" ng-click="showPrint()" ng-if="operateFlag === 'detail'"></span>
+			    		</p>
+			    		<!-- <span>状态<span class="q_mark">i</span></span> -->
+			    		<span class="s-des" ng-if="statusLogs.length > 0" trigger='hover' data-placement="bottom-left" data-content-template="js/features/bill/partials/options.html" data-animation="am-fade" data-auto-close="1" bs-popover>{{statusDesc[selectedBill.status]}}</span>
+			    		<span class="s-des" ng-if="statusLogs.length === 0">{{statusDesc[selectedBill.status]}}</span>
+				    </div>
+				    <div class="reate_nav">
+				    	<div class="bill-detial">
+				    		<p>
+					    		<strong>租赁人：</strong><span>{{customerOption.name}}</span><i></i>
+					    		<strong>手机：</strong><span>{{customerOption.phone}}</span>
+					    		<strong>邮箱：</strong><span>{{customerOption.email}}</span>
+					    		<strong>会员卡号：</strong><span>{{customerOption.card_no}}</span>
+					    	</p>
+					    	<div class="re-bill">
+					    		<div class="space-b-box">
+			                        <div class="line-width r-b-top">
+			                            <div class="line-item per36 t-left">
+			                                合同号 : {{selectedBill.lease.serial_number}}
+			                            </div>
+			                            <div class="line-item per28">
+			                                账单
+			                            </div>
+			                            <div class="line-item per14">
+			                                账单时间段
+			                            </div>
+			                            <div class="line-item per14">
+			                                账单金额
+			                            </div>
+			                        </div>
+			                        <div class="line-width r-b-bottom">
+			                            <div class="line-item per36 t-left">
+			                                <div class="item-con">
+			                                    <div class="p-w-t">
+			                                        <div class="p-p">
+			                                        	<img ng-src="{{selectedBill.lease.product.room.attachment}}">
+			                                        </div>
+			                                        <div class="p-t">
+			                                            <div class="p-t-top hover">
+			                                                {{selectedBill.lease.product.room.city}}, {{selectedBill.lease.product.room.building.name}}, {{selectedBill.lease.product.room.number}}, {{selectedBill.lease.product.room.name}}
+			                                            </div>
+			                                            <div class="p-t-bot">
+			                                                <span class="detail-tag ora">长</span>
+			                                                <span>{{roomTypeDesc[selectedBill.lease.product.room.type].description}}</span>
+			                                            </div>
+			                                        </div>
+			                                    </div>
+			                                </div>
+			                            </div>
+			                            <div class="line-item per28">
+			                                <div class="item-con">
+			                                    <div class="icon-one">{{selectedBill.name}}</div>
+			                                    <div>{{selectedBill.description}}</div>
+			                                </div>
+			                            </div>
+			                            <div class="line-item per14">
+			                                <div class="item-con">
+			                                    <span>{{selectedBill.start_date | date: 'yyyy-MM-dd'}}<br/>-<br>{{selectedBill.end_date | date: 'yyyy-MM-dd'}}</span>
+			                                </div>
+			                            </div>
+			                            <div class="line-item per14">
+			                                <div class="item-con">
+			                                	<span class="icon-price">{{selectedBill.amount}}元</span><br><a href="#">更改价格</a>
+			                                </div>
+			                            </div>
+			                        </div>
+			                    </div>
+					    	</div>
+				    	</div>
+				    	<p class="react-price">
+				    		<span class="r-p-detail">
+				    			<strong>推送时间</strong><span>{{selectedBill.send_date | date: 'yyyy-MM-dd HH:mm'}}由<em>{{billSender.name}}</em>推送</span><br>
+				    			<strong>付款渠道</strong><span ng-if="selectedBill.customization.pay_channel">{{selectedBill.customization.pay_channel}}</span><br>
+				    			<strong>付款时间</strong><span ng-if="selectedBill.payment_date ">{{selectedBill.payment_date | date: 'yyyy-MM-dd HH:mm'}}</span>
+				    		</span>
+				    		<span class="font-set">应付款</span>
+				    		<span class="font-set">{{selectedBill.revised_amount}}元</span>
+				    	</p>
+				    	<div class="reate_note">
+                            <p class="clearfix">
+                                <span>备注（{{billRemarks.length}}条）</span>
+                                <span ng-click="toggleRemark()">展开备注<i class="down_arr"></i></span>
+                            </p>
+                            <div class="clearfix" ng-if="remarkListFlag">
+                                <div ng-repeat="remark in  billRemarks track by $index">
+                                    <span ng-class="{'r_note': remark.is_auto}"></span>
+                                    <div class="r_n_detail" ng-if="remark.is_auto" ng-class="{last: $index == clueRemarks.length}">
+                                        <span>由{{remark.username}} {{remark.remarks}}</span>
+                                        <span>{{remark.creation_date | date: 'yyyy-MM-dd HH:mm'}}</span>
+                                        <p></p>
+                                    </div>
+                                    <div class="r_n_detail" ng-if="!remark.is_auto" ng-class="{last: $index == clueRemarks.length - 1}">
+                                        <span>{{remark.username}} 新增了备注</span>
+                                        <span>{{remark.creation_date | date: 'yyyy-MM-dd HH:mm'}}</span>
+                                        <p>{{remark.remarks}}</p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+				    </div>
+			    	<div class="reate_btn clearfix">
+			    		<span class="r-save-btn fl" ng-if="selectedBill.status === 'pending' && currentAdmin.permissionMap[PERMISSION_KEY] === 2" ng-click="pushSingleBill()">推送账单</span>
+			    		<span class="r-save-btn fl" ng-if="selectedBill.status === 'verify' && currentAdmin.permissionMap[PERMISSION_KEY] === 2">确认收款</span>
+			    		<span class="r-btn fr" ng-click="showRemark()" ng-if="currentAdmin.permissionMap[PERMISSION_KEY] === 2">备注</span>
+			    	</div>
+			    	<div class="add-remarks" ng-if="remarkFlag">
+                        <div class="m-content">
+                            <input type="text" ng-model="bill.remark"><span ng-click="addRemark()" ng-if="currentAdmin.permissionMap[PERMISSION_KEY] === 2">提交</span>
+                        </div>
+                    </div>
+				</div>
+
+				<div class="reate_clues" ng-if="operateFlag === 'pdf'">
+                    <div class="reate_header clearfix r-send">
+                        <p class="clearfix">
+                            <span>邮件分享</span>
+                            <span ng-click="$hide()"></span>
+                        </p>
+                    </div>
+                    <div class="reate-print">
+                        <img src="../img/u2034.png">
+                        <p>已将您的报价 {{selectedBill.serial_number}} 转为PDF，您可以以附件的形式分享该合同<br>点击下方按钮下载PDF</p>
+                        <button class="red" ng-click="exportPDF($hide)">点击下载PDF</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

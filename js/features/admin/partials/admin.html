@@ -1,0 +1,175 @@
+<div class="group_detail">
+	<div class="group" ng-if="page === 'admin'">
+		<div class="group-left">
+			<div class="job-container">
+				<div class="input-box">
+					<input type="text" placeholder="搜索所有管理员" ng-model="filterOption.search" ng-keyup="$event.keyCode === 13 && searchAdmin()">
+					<span class="cross" ng-if="filterOption.search != ''" ng-click="clearSearch()">x</span>
+				</div>
+				<div class="job-cat">
+					<div class="panel-group">
+						<div class="panel panel-default" ng-repeat="menu in adminMenu track by $index" ng-if="$index == 0" ng-click="selectMenu(menu)">
+						    <div class="panel-heading" ng-class="{on: menu.selected}">
+								<h4 class="panel-title">
+									<a class="no-icon"><span class="p-name">{{menu.name}}</span><font class="grey-num">（{{menu.count}}人）</font></a>
+								</h4>
+						    </div>
+						</div>
+						<span class="dividingline"></span>
+						
+						<div class="panel panel-default" ng-repeat="menu in adminMenu track by $index" ng-if="$index == 1" ng-click="selectMenu(menu)">
+						    <div class="panel-heading" ng-class="{on: menu.selected}">
+								<h4 class="panel-title">
+									<a class="no-icon"><span class="p-name">{{menu.name}}</span><font class="grey-num">（{{menu.count}}人）</font></a>
+								</h4>
+						    </div>
+						</div>
+						<div class="panel panel-default" ng-repeat="menu in adminMenu track by $index" ng-if="$index > 1">
+						    <div class="panel-heading" ng-class="{on: menu.selected}" ng-click="selectMenu(menu)">
+								<h4 class="panel-title">
+									<a>
+										<i class="arr grey-arr" ng-class="{'arr-down': menu.collapse}"></i><span class="p-name">{{menu.name}}</span><font class="grey-num">（{{menu.count}}人）</font>
+									</a>
+								</h4>
+						    </div>
+						    <div class="panel-collapse" ng-if="menu.collapse">
+								<div class="panel-body">
+									<p ng-repeat="item in menu.positionMenu" ng-class="{on: item.selected}" ng-if="!item.is_super_admin" ng-click="selectPosition(item, menu)"><img class="g-img" ng-src="{{item.icon}}">{{item.name}}<font class="grey-num">（{{item.count}}人）</font></p>
+								</div>
+						    </div>
+						</div>
+					</div>
+				</div>
+			</div>
+			<div class="m-job" ng-click="togglePage('job')">
+				<img class="g-img" src="../img/job.png">
+				<span>职位管理</span>
+				<span class="j-num">（{{positions.length}}个职位）</span>
+			</div>
+
+		</div>
+		<div class="group-right">
+			<div class="right-head clearfix">
+				<div class="r-h-left">
+					<div class="r-title"><span class="r-name">{{selectedPositionName}}</span><span class="grey-num">（{{adminNumOfPosition}}人）</span></div>
+				</div>
+				<div class="r-h-right">
+					<span class="b-span" ng-click="operateOneAdmin('add')" ng-if="currentAdmin.permissionMap[PERMISSION_KEY] === 2">添加管理员</span><span class="grey-num">|</span>
+					<span class="b-span" ng-click="addItem('admin')" ng-if="selectedMenu.key != 'all' && currentAdmin.permissionMap[PERMISSION_KEY] === 2">批量添加</span>
+					<span class="b-span" ng-if="selectedMenu.key == 'all' && currentAdmin.permissionMap[PERMISSION_KEY] === 2" ng-click="seeOptions('building')" data-placement="left-bottom" data-content-template="js/features/admin/partials/options.html" data-animation="am-fade" data-auto-close="1" bs-popover>批量添加</span>
+				</div>
+				<div class="filter">
+					<span class="b-span" class="b-span" ng-if="!selectedPosition && selectedMenu.key != 'super'" ng-click="seeOptions('filter')" data-placement="bottom" data-content-template="js/features/admin/partials/options.html" data-animation="am-fade" data-auto-close="1" bs-popover><font ng-if="!selectedFilterPosition || selectedFilterPosition.length ===0 ">全部职位</font><font ng-if="selectedFilterPosition.length > 0">已选择{{selectedFilterPosition.length}}个职位</font><i class="arr arr-down"></i></span>
+				</div>
+			</div>
+			<div class="right-content">
+				<div class="right-item clearfix" ng-repeat="item in adminList | checkPosition: selectedFilterPosition">
+					<div class="item-info">
+						<image-with-fallback url="{{item.avatar}}" default-url="../img/head.png"></image-with-fallback>
+						<p ng-bind="item.user.name"></p>
+						<span ng-bind="item.user.phone"></span>
+					</div>
+					<div class="s-box">
+						<div>
+							<p class="s-des" ng-click="seePopover('admin', item)" data-placement="bottom-left" data-content-template="js/features/admin/partials/showjob.html" data-animation="am-fade" data-auto-close="1" bs-popover>{{::item.position_desc}}</p>
+						</div>
+					</div>
+					<div class="s-box" ng-if="selectedMenu.key != 'all'">
+						<p class="s-des" ng-if="selectedMenu.key != 'building'" ng-click="seePopover('building_position', item)" ng-class="{'dis': item.building.length <= 0}" data-placement="bottom-right" data-content-template="js/features/admin/partials/showjob.html" data-animation="am-fade" data-auto-close="1" bs-popover>其他社区职位（{{item.building.length}}）</p>
+						<p class="s-des" ng-if="selectedMenu.key == 'building'" ng-click="seePopover('building_position', item)" ng-class="{'dis': (item.building.length-1) <= 0}" data-placement="bottom-right" data-content-template="js/features/admin/partials/showjob.html" data-animation="am-fade" data-auto-close="1" bs-popover>其他社区职位（{{item.building.length-1 < 0 ? 0 : item.building.length-1}}）</p>
+					</div>
+					<div class="item-op">
+						<p  class="s-des"
+							ng-if="currentAdmin.permissionMap[PERMISSION_KEY] === 2"
+							ng-click="seeOptions('edit-admin', item)"
+							data-placement="bottom-right"
+							data-content-template="js/features/admin/partials/options.html"
+							data-animation="am-fade"
+							data-auto-close="1"
+							bs-popover
+							>操作<i class="arr arr-down"></i></p>
+					</div>
+				</div>
+				<div class="nodata" ng-if="adminList.length <= 0 && !loading">无管理员信息</div>
+			</div>
+		</div>
+	</div>
+
+	<!-- <div class="group" ng-if="page === 'job'">
+		<div class="group-left no-padding">
+			<div class="left-head" ng-click="togglePage('')"><i class="back"></i>返回管理员</div>
+			<div class="left-wrapper">
+				<div class="job-cat">
+					<div class="panel-group"  role="tablist" aria-multiselectable="true" bs-collapse>
+						<div class="panel panel-default">
+							<div class="panel-heading" role="tab" ng-click="filterPosition('all')" ng-class="{'on' : positionFilter.type == ''}">
+								<h4 class="panel-title">
+									<a>
+										所有职位<font class="grey-num">（{{positionCounts.all_positions}}个职位）</font>
+									</a>
+								</h4>
+							</div>
+							<div class="panel-collapse" role="tabpanel" bs-collapse-target>
+								<div class="panel-body">
+									<p ng-click="filterPosition('global')" ng-class="{'on' : positionFilter.type == 'global'}"><img class="g-img" src="../img/job.png">平台职位<font class="grey-num">（{{positionCounts.global_positions+1}}个）</font></p>
+									<p ng-click="filterPosition('specify')" ng-class="{'on' : positionFilter.type == 'specify'}"><img class="g-img" src="../img/job.png">社区职位<font class="grey-num">（{{positionCounts.specify_positions}}个）</font></p>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+		<div class="group-right">
+			<div class="right-head clearfix">
+				<div class="r-h-left">
+					<span ng-if="positionFilter.type == ''">所有职位<font class="grey-num">（{{positions.length}}个职位）</font></span>
+					<span ng-if="positionFilter.type == 'global'">平台职位<font class="grey-num">（{{positions.length}}个职位）</font></span>
+					<span ng-if="positionFilter.type == 'specify'">社区职位<font class="grey-num">（{{positions.length}}个职位）</font></span>
+				</div>
+				<div class="r-h-right">
+					<span class="b-span" ng-click="addItem('job')" ng-if="currentAdmin.permissionMap[PERMISSION_KEY] === 2">添加职位</span>
+				</div>
+			</div>
+			<div class="right-content">
+				<div class="right-item clearfix" ng-repeat="item in positions">
+					<div class="job-name">
+						<img class="g-img" ng-src="{{item.icon.url}}">
+						<span ng-bind="item.name"></span>
+					</div>
+					<div class="job-s">
+						<p ng-if="item.permission_mappings[0].permission.level == 'global'">平台</p>
+						<p ng-if="item.permission_mappings[0].permission.level == 'specify'">社区</p>
+					</div>
+					<div class="job-t">
+						<div class="p-wrapper" ng-if="item.permission_mappings.length > 0 && !item.is_super_admin">
+							<div class="p-box" ng-repeat="permission in item.power_mappings">
+								<p>{{permission.permission.name}}</p>
+								<p class="p-p">{{permission.op_des}}</p>
+							</div>
+							<div class="p-more" ng-if="item.permission_mappings.length > 3">
+								<p>... <span>（{{item.permission_mappings.length}}个权限)）</span></p>
+							</div>
+						</div>
+						<div ng-if="item.is_super_admin">
+							<div class="p-box c"><p>默认拥有所有权限</p></div>
+						</div>
+					</div>
+					<div class="job-f" ng-class="{died: item.is_super_admin}">
+						<p  ng-click="seeOptions('edit-job', item)"
+							ng-if="currentAdmin.permissionMap[PERMISSION_KEY] === 2"
+							data-placement="bottom-right"
+							data-content-template="js/features/admin/partials/options.html"
+							data-animation="am-fade"
+							data-auto-close="1"
+							bs-popover
+							>操作<i class="arr arr-down"></i></p>
+					</div>
+
+				</div>
+			</div>
+		</div>
+	</div> -->
+	<ng-include src="'/js/features/admin/partials/position.html'" ng-if="page === 'job'"></ng-include>
+	<ng-include src="'/js/features/admin/partials/edit-position.html'" ng-if="page === 'edit-job'"></ng-include>
+</div>

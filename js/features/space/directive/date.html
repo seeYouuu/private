@@ -1,0 +1,58 @@
+<div class="calendar_head">
+    <div class="direction">
+        <a class="prev" ng-click="prev()"><i class="icon ic_prev"></i></a>
+        <a class="next" ng-click="next()"><i class="icon ic_next"></i></a>
+    </div>
+    <a class="today" ng-click="today()">今天</a>
+    <a class="now">
+        {{date | date: 'MMM dd, yyyy'}}
+    </a>
+</div> 
+<table cellpadding="0" cellspacing="0" width="100%" border="0" class="time">
+    <tr ng-repeat="item in hours">
+        <th ng-if="item.show">{{item.hour}}:{{item.mindesc}}</th>
+        <th ng-if="!item.show"></th>
+        <td rowspan="{{item.count}}" ng-if="!item.hide">
+            <div class="detail_prog begin end" style="background:#f2b862;" ng-if="item.selected">
+                <!-- <img class="ava-use" ng-src="{{item.user.avatar}}" alt="">{{item.user.name}} -->
+                <image-with-fallback class="ava-use" url="{{item.user.avatar}}" default-url="../img/head.png"></image-with-fallback>{{item.user.name}}
+                <span style="padding-right:10px;float:right;">{{item.bookTime.startHour}}:{{item.bookTime.startMinDesc}} - {{item.bookTime.endHour}}:{{item.bookTime.endMinDesc}}</span>
+                <div class="stDown hour">
+                    <div class="stContent">
+                        <div class="u_title"><span class="tit">租用人</span><span class="float_r">{{item.bookTime.startHour}}:{{item.bookTime.startMinDesc}} - {{item.bookTime.endHour}}:{{item.bookTime.endMinDesc}}</span></div>
+                        <div class="u-box mg10">
+                            <!-- <img class="u-ava" ng-src="{{item.user.avatar}}"> -->
+                            <image-with-fallback class="u-ava" url="{{item.user.avatar}}" default-url="../img/head.png"></image-with-fallback>
+                            <div class="u-nick">{{item.user.name}}</div>
+                            <div class="u-info" style="height:38px;">
+                                <span>{{item.user.phone}}</span>
+                                <span>{{item.user.email}}</span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="stContent">
+                        <div class="u_title t" ng-if="item.bookTime.invited_people.length > 0"><span class="tit t">受邀人</span></div>
+                        <div class="u_title t" ng-if="item.bookTime.appointed_user"><span class="tit t">指定人</span></div>
+                        <div class="u-box mg10" ng-repeat="user in item.bookTime.invited_people" ng-if="item.bookTime.invited_people.length > 0">
+                            <!-- <img class="u-ava" ng-src="{{user.avatar}}"> -->
+                            <image-with-fallback class="u-ava" url="{{user.avatar}}" default-url="../img/head.png"></image-with-fallback>
+                            <div class="u-nick">{{user.name}}</div>
+                            <div class="u-info" style="height:38px;">
+                                <span>{{user.phone}}</span>
+                                <span>{{user.email}}</span>
+                            </div>
+                        </div>
+                        <div class="u-box mg10" ng-if="item.bookTime.appointed_user">
+                            <img class="u-ava" ng-src="{{item.bookTime.appointed_user.avatar}}">
+                            <div class="u-nick">{{item.bookTime.appointed_user.name}}</div>
+                            <div class="u-info style="height:38px;"">
+                                <span>{{item.bookTime.appointed_user.phone}}</span>
+                                <span>{{item.bookTime.appointed_user.email}}</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </td>
+    </tr>
+</table> 

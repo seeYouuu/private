@@ -1,0 +1,110 @@
+<div class="modal" role="dialog">
+    <div class="modal-dialog modal-center modal-reate">
+        <div class="modal-content group-add">
+            <div class="modal-body clearfix">
+            	<div class="reate_clues">
+			    	<div class="reate_header clearfix">
+			    		<p class="clearfix">
+			    			<span><span>客户关系</span>&gt;<span>客户</span>&gt;<span>创建客户</span></span>
+			    			<span ng-click="$hide()"></span>
+			    		</p>
+				    </div>
+				    <div class="reate_nav">
+				    	<div class="space_mes">
+				    		<p class="s_m_title2">账户信息</p>
+			    			<div class="creat-cusmes">
+			    				<font class="muted">*</font>
+				    			<span>手机</span>
+			                    <div class="area-box">
+			                        <sb-dropdown select="cusMessage.phone_code" options="codeList" placeholder="placeholder.code" no-empty></sb-dropdown>
+			                    </div>
+			                    <input type="text" placeholder="请输入手机号码" ng-model="cusMessage.phone" maxlength="15" ng-blur="searchCusTel()">
+			                    <span ng-if="telWrong" class="tel-red"><span class="tel-wrong"></span>手机号格式不对</span>
+			                    <span ng-if="telRepeat" class="tel-red"><span class="tel-wrong"></span>该账号已是客户，不能重复创建</span>
+			                    <span ng-if="telright" class="tel-green"><span class="tel-right"></span>检测到该手机号为创合用户，将会为您关联创合账号</span>
+			                    <span ng-if="telNew" class="tel-green"><span class="tel-right"></span>该手机号为新的账号，将为您创建新的客户</span>
+			    			</div>
+				    		<div class="creat-cusmes">
+				    			<font class="muted">*</font>
+				    			<span>姓名</span>
+				    			<input type="text" ng-model='cusMessage.name'>
+				    			<div ng-if="telright" class="user-mes">
+				    				<sb-image-with-fallback default-url="/img/default.png" error-url="/img/default.png" class="sm-pic" url="{{searchOutUser.avatar}}"></sb-image-with-fallback>
+				    				<span>{{searchOutUser.name}}</span>
+				    				<span>{{searchOutUser.phone}}</span>
+				    				<span></span>
+				    			</div>
+				    		</div>
+				    	</div>
+				    	<div class="space_mes">
+				    		<p class="s_m_title2">客户资料</p>
+				        	<div class="cus-picture">
+			                    <sb-image-with-fallback ng-if="!images.download_link" default-url="/img/default.png" error-url="/img/default.png" class="sm-pic" url="{{searchOutUser.avatar}}"></sb-image-with-fallback>
+			                    <img class="evt-c-img" ng-src="{{images.download_link}}" ng-if="images.download_link">
+				                <p>
+				                	<span></span><span>上传客户照片</span>
+				                	<input type="file" nv-file-select uploader="customerImageUploader">
+				                </p>
+				    		</div>
+				    		<div class="creat-two">
+				    			<div class="creat-cusmes cus-mes">
+					    			<span>邮箱</span>
+					    			<input type="text" ng-model='cusMessage.email'>
+					    		</div>
+					    		<div class="creat-cusmes cus-mes">
+					    			<span>性别</span>
+									<span class="select-radio">
+	                                    <span ng-click="switchLeaseeType('男')"  ng-class="{on: filterOption.lessee_type === '男'}"></span>&nbsp;男&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+	                                    <span ng-click="switchLeaseeType('女')" ng-class="{on: filterOption.lessee_type === '女'}"></span>&nbsp;女
+	                                </span>
+					    		</div>
+				    		</div>
+				    		<div class="creat-two">
+				    			<div class="creat-cusmes cus-mes">
+					    			<span>国籍</span>
+					    			<input type="text" ng-model='cusMessage.nationality'>
+					    		</div>
+					    		<div class="creat-cusmes cus-mes">
+					    			<span>证件</span>
+					    			<div class="id-select">
+				                        <sb-dropdown select="filterOption.type" options="idType" placeholder="placeholder.idtype" no-empty></sb-dropdown>
+				                    </div>
+					    			<input ng-if="filterOption.type" type="text" ng-model='cusMessage.id_number' placeholder="请输入证件号">
+					    		</div>
+				    		</div>
+				    		<div class="creat-two">
+				    			<div class="creat-cusmes cus-mes">
+					    			<span>语言</span>
+					    			<input type="text" ng-model='cusMessage.language'>
+					    		</div>
+					    		<div class="creat-cusmes cus-mes">
+					    			<span>生日</span>
+		                            <input type="text" ng-model="cusMessage.birthday" data-date-format="yyyy-MM-dd" data-autoclose="1" bs-datepicker>
+		                            <span><i class="fa fa-calendar"></i></span>
+					    		</div>
+				    		</div>
+				    		<div class="creat-two">
+				    			<div class="creat-cusmes cus-mes">
+					    			<span>公司</span>
+					    			<input type="text" ng-model='cusMessage.company_name'>
+					    		</div>
+					    		<div class="creat-cusmes cus-mes">
+					    			<span>职位</span>
+					    			<input type="text" ng-model='cusMessage.position'>
+					    		</div>
+				    		</div>
+				    		<div class="creat-cusmes cus-mask">
+				    			<span>备注</span>
+				    			<input type="text" ng-model='cusMessage.comment'>
+				    		</div>
+				    	</div>
+				    </div>
+			    	<div class="reate_btn clearfix">
+			    		 <span class="r-save-btn fl" ng-click="creatcusMessage($hide)">创建</span>
+			    		 <span class="r-btn fl" ng-click="$hide()">取消</span>
+			    	</div>
+				</div>
+            </div>
+        </div>
+    </div>
+</div>

@@ -1,0 +1,24 @@
+
+<div class="space-calender">
+    <div class="c-header">
+        <span class="c-arr left" ng-click="prev()"><i></i></span>
+        <span class="c-title">{{date|date:'yyyy MM'}}月</span>
+        <span class="c-arr" ng-click="next()"><i></i></span>
+    </div>
+    <div class="c-box" ng-class="{'disabled': !edit}">
+        <div class="c-week">
+            <span ng-repeat="item in weekdays" ng-bind="item"></span>
+        </div>
+        <div class="c-date" ng-repeat="week in copyWeeks">
+            <span class="date-item" ng-repeat="item in week" ng-class="{'isWeekend': item.isWeekend, 'disabled': item.disabled}" ng-click="selectDate(item)">
+                <span class="d-slt" ng-class="{'selected': item.selected}">{{item.date.getDate()}}</span>
+            </span>
+        </div>
+    </div>
+</div>
+<div class="slt-b" ng-if="edit">
+    <p><span class="slt-btn" ng-click="selectDates('satdayFlag')">选择全年每周六</span></p>
+    <p><span class="slt-btn" ng-click="selectDates('sundayFlag')">选择全年每周日</span></p>
+    <!-- <p><span class="slt-btn" ng-click="selectDates('holidayFlag')">选择全年国定假</span></p> -->
+    <a class="t-link" ng-click="clearAll()">清除全部</a>
+</div>

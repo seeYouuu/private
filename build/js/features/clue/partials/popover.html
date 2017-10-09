@@ -1,0 +1,16 @@
+<div  class="cus-dropdown">
+    <p>设置列表字段</p>
+    <div dnd-list="dragModels.tableItems" class="drag-container">
+        <div class="item" ng-repeat="item in dragModels.tableItems"
+            dnd-draggable="item"
+            dnd-moved="dragModels.tableItems.splice($index, 1)"
+            dnd-effect-allowed="move"
+            dnd-selected="dragModels.selected = item"
+            ng-class="{'selected': dragModels.selected === item}"
+            >
+            <u ng-class="{'select-must':item.required, 'select': !item.checked, 'select-already': item.checked}" ng-click="checkItem(item)"></u>
+            {{item.name}}
+        </div>
+    </div>
+    <div><span class="r-save-btn" ng-click="updateTableColumn($hide)">保存</span><span ng-click="resetSelect()" class="r-btn">重置</span></div>
+</div>

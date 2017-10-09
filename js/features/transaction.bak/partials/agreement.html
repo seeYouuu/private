@@ -1,0 +1,359 @@
+<div class="sandBox_content">
+    <div class="tra-content page-height">
+        <div class="detail-page page-height pt69">
+            <div class="detail-head fixed" ng-if="agreementData.status === 'drafting'">
+                <span class="detail-tag ora">草稿</span>
+                <span ng-if="agreementData.product_appointment">预约号：{{appointmentData.product_appointment.appointment_number}}</span>
+                <span ng-if="!agreementData.product_appointment">后台生成长租合同</span>
+            </div>
+            <div class="detail-head fixed" ng-if="pageType === 'createAgreement'">
+                <span class="detail-tag green">生成</span>
+                <span ng-if="!appointmentLeaseFlag">后台生成长租合同</span>
+                <span ng-if="appointmentLeaseFlag">预约号：{{appointmentData.appointment_number}}</span>
+            </div>
+            <div class="detail-head fixed" ng-if="pageType === 'updateAgreement'">
+                <span class="detail-tag green">编辑</span>
+                <span>合同号：{{agreementData.serial_number}}</span>
+            </div>
+            <div class="detail-scroller">
+                <div class="detail-mid pb20">
+                    <div class="space-b-box">
+                        <div class="b-title tit-top">
+                            <div class="line-width info-tit">
+                                <div class="line-item per55 t-left">
+                                    空间
+                                </div>
+                                <div class="line-item per19">
+                                    租金
+                                </div>
+                            </div>
+                        </div>
+                        <div class="line-width">
+                            <div class="line-item per55 t-left">
+                                <div class="item-con">
+                                    <div class="p-w-t">
+                                        <div class="p-p">
+                                            <img ng-src="{{appointmentData.product.room.attachment[0].attachment_id.content || appointmentData.product.room.attachment}}">
+                                        </div>
+                                        <div class="p-t">
+                                            <div class="p-t-top">
+                                                {{appointmentData.product.room.city.name || appointmentData.product.room.city}}, {{appointmentData.product.room.building.name}}, {{appointmentData.product.room.number}}, {{appointmentData.product.room.name}}
+                                            </div>
+                                            <div class="p-t-bot">
+                                                <span class="detail-tag ora" ng-if="appointmentData.product.room.type === 'longterm'">长</span>
+                                                <span ng-bind="roomTypeDesc[appointmentData.product.room.type].description"></span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="line-item per19">
+                                <div class="item-con">
+                                    <div>{{appointmentData.product.base_price | number:2 }}元/{{unitDesc[appointmentData.product.unit_price]}}起</div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="space-bot">
+                    <div class="space-b-con contract-b-con">
+                        <div class="long-wrapper">
+                            <div class="contract-tit">
+                                <span>长租合同内容</span>
+                            </div>
+                            <div class="contract-block edit-type">
+                                <div class="block-top">
+                                    <div class="f-left top-left">
+                                        <span class="r-star">*</span> 出租方信息
+                                    </div>
+                                </div>
+                                <div class="block-bot">
+                                    <div class="block-line">
+                                        <div class="f-left line-left">出租方名称 :</div>
+                                        <div class="f-left line-right">
+                                            <input type="text" class="right-input" ng-model="agreementOption.lessor_name">
+                                        </div>
+                                    </div>
+                                    <div class="block-line">
+                                        <div class="f-left line-left">出租方地址 :</div>
+                                        <div class="f-left line-right">
+                                            <input type="text" class="right-input" ng-model="agreementOption.lessor_address">
+                                        </div>
+                                    </div>
+                                    <div class="block-line">
+                                        <div class="f-left line-left">出租方联系人 :</div>
+                                        <div class="f-left line-right">
+                                            <input type="text" class="right-input" ng-model="agreementOption.lessor_contact">
+                                        </div>
+                                    </div>
+                                    <div class="block-line">
+                                        <div class="f-left line-left">出租方电话 :</div>
+                                        <div class="f-left line-right">
+                                            <input type="text" class="right-input" ng-model="agreementOption.lessor_phone">
+                                        </div>
+                                    </div>
+                                    <div class="block-line">
+                                        <div class="f-left line-left">出租方邮箱 :</div>
+                                        <div class="f-left line-right">
+                                            <input type="text" class="right-input" ng-model="agreementOption.lessor_email">
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="contract-block edit-type">
+                                <div class="block-top">
+                                    <div class="f-left top-left">
+                                        <span class="r-star">*</span> 承租方信息
+                                    </div>
+                                </div>
+                                <div class="block-bot">
+                                    <div class="block-line">
+                                        <div class="f-left line-left">承租方名称 :</div>
+                                        <div class="f-left line-right">
+                                            <input type="text" class="right-input" ng-model="agreementOption.lessee_name">
+                                        </div>
+                                    </div>
+                                    <div class="block-line">
+                                        <div class="f-left line-left">承租方地址 :</div>
+                                        <div class="f-left line-right">
+                                            <input type="text" class="right-input" ng-model="agreementOption.lessee_address">
+                                        </div>
+                                    </div>
+                                    <div class="block-line">
+                                        <div class="f-left line-left">承租方联系人 :</div>
+                                        <div class="f-left line-right">
+                                            <input type="text" class="right-input" ng-model="agreementOption.lessee_contact">
+                                        </div>
+                                    </div>
+                                    <div class="block-line">
+                                        <div class="f-left line-left">承租方电话 :</div>
+                                        <div class="f-left line-right">
+                                            <input type="text" class="right-input" ng-model="agreementOption.lessee_phone">
+                                        </div>
+                                    </div>
+                                    <div class="block-line">
+                                        <div class="f-left line-left">承租方邮箱 :</div>
+                                        <div class="f-left line-right">
+                                            <input type="text" class="right-input" ng-model="agreementOption.lessee_email">
+                                        </div>
+                                    </div>
+                                    <div class="block-line">
+                                        <div class="f-left line-left">合同负责人:</div>
+                                        <div class="f-left line-right">
+                                            <div class="dia-add-user">
+                                                <input type="text" class="add-u-input" placeholder="请输入已注册创合用户的手机号" ng-model="supervisor">
+                                                <div class="add-u-btn" ng-click="searchUserByPhone(supervisor, 'supervisorOption')">搜索用户</div>
+                                            </div>
+                                            <div class="ad-box">
+                                                <sb-image-with-fallback class="u-avtar" url="{{searchResult.supervisorOption.avatar}}" default-url="../img/head.png"></sb-image-with-fallback>
+                                                <div class="u-acc" ng-if="searchResult.supervisorOption.name">
+                                                    <p>{{searchResult.supervisorOption.name}}</p>
+                                                    <p>{{searchResult.supervisorOption.phone || searchResult.supervisorOption.email}}</p>
+                                                </div>
+                                                <div class="u-acc" ng-if="!searchResult.supervisorOption.name">
+                                                    <span>未添加</span>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="contract-block">
+                                <div class="block-top">
+                                    <div class="f-left top-left">
+                                        <span class="r-star">*</span> 租赁标的
+                                    </div>
+                                </div>
+                                <div class="block-bot">
+                                    <div class="block-line">
+                                        <div class="f-left line-left">项目名称 :</div>
+                                        <div class="f-left line-right" ng-bind="appointmentData.product.room.building.name"></div>
+                                    </div>
+                                    <div class="block-line">
+                                        <div class="f-left line-left">项目地址 :</div>
+                                        <div class="f-left line-right" ng-bind="appointmentData.product.room.building.address"></div>
+                                    </div>
+                                    <div class="block-line">
+                                        <div class="f-left line-left">房屋名称 :</div>
+                                        <div class="f-left line-right" ng-bind="appointmentData.product.room.name"></div>
+                                    </div>
+                                    <div class="block-line">
+                                        <div class="f-left line-left">房屋面积 :</div>
+                                        <div class="f-left line-right">{{appointmentData.product.room.area}}m<sup>2</sup></div>
+                                    </div>
+                                    <div class="block-line">
+                                        <div class="f-left line-left">房屋最大容纳人数 :</div>
+                                        <div class="f-left line-right">{{appointmentData.product.room.allowed_people}}人</div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="contract-block edit-type">
+                                <div class="block-top">
+                                    <div class="f-left top-left">
+                                        <span class="r-star">*</span> 商务条款
+                                    </div>
+                                </div>
+                                <div class="block-bot">
+                                    <div class="block-line">
+                                        <div class="f-left line-left">租赁起始日期 :</div>
+                                        <div class="f-left line-right">
+                                            <div class="date_input">
+                                                <input type="text" ng-model="agreementOption.start_date" data-date-format="yyyy-MM-dd" data-autoclose="1" bs-datepicker>
+                                                <span><i class="fa fa-calendar"></i></span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="block-line">
+                                        <div class="f-left line-left">租赁结束日期 :</div>
+                                        <div class="f-left line-right">
+                                            <div class="date_input">
+                                                <input type="text" ng-model="agreementOption.end_date" data-min-date="{{agreementOption.start_date}}" data-date-format="yyyy-MM-dd" data-autoclose="1" bs-datepicker>
+                                                <span><i class="fa fa-calendar"></i></span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="block-line">
+                                        <div class="f-left line-left">月租金 :</div>
+                                        <div class="f-left line-right">
+                                            <input type="number" class="right-input small" ng-model="agreementOption.monthly_rent"> 元</div>
+                                    </div>
+                                    <div class="block-line">
+                                        <div class="f-left line-left">
+                                            合同总租金
+                                            <div class="q-mark">
+                                                ?
+                                                <div class="b-tip">
+                                                    请填写包含全部月租金及其它额外租金的总额
+                                                </div>
+                                            </div>
+                                            :
+                                        </div>
+                                        <div class="f-left line-right">
+                                            <input type="number" class="right-input small" ng-model="agreementOption.total_rent"> 元</div>
+                                    </div>
+                                    <div class="block-line">
+                                        <div class="f-left line-left">租赁押金 :</div>
+                                        <div class="f-left line-right">
+                                            <input type="number" class="right-input small" ng-model="agreementOption.deposit"> 元</div>
+                                    </div>
+                                    <div class="block-line">
+                                        <div class="f-left line-left">租金包含 :</div>
+                                        <div class="f-left line-right">
+                                            <div class="rent-cat">
+                                                <div class="rent-item" ng-repeat="item in supplementaryList" ng-class="{on: item.selected}">
+                                                    <div class="check" ng-click="item.selected = !item.selected;"></div>
+                                                    <span ng-bind="item.name"></span>
+                                                    <span class="grey-f" ng-if="item.name_en == 'Other'">(请在补充条款中备注)</span>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="contract-block">
+                                <div class="block-top">
+                                    <div class="f-left top-left">
+                                        <span class="r-star">*</span> 房屋使用用途
+                                        <div class="grey-des">请具体描述在该合同下房屋的使用用途</div>
+                                    </div>
+                                    <div class="f-left line-right">
+                                        <textarea cols="30" rows="10" class="right-text" ng-model="agreementOption.purpose"></textarea>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="contract-block">
+                                <div class="block-top">
+                                    <div class="f-left top-left">
+                                        其它费用说明
+                                        <div class="grey-des">请具体描述除合同固定费用以外可能发生的费用说明</div>
+                                    </div>
+                                    <div class="f-left line-right">
+                                        <textarea cols="30" rows="10" class="right-text" ng-model="agreementOption.other_expenses"></textarea>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="contract-block">
+                                <div class="block-top">
+                                    <div class="f-left top-left">
+                                        补充条款
+                                        <div class="grey-des">请描述除合同外其他的条款</div>
+                                    </div>
+                                    <div class="f-left line-right">
+                                        <textarea cols="30" rows="10" class="right-text" ng-model="agreementOption.supplementary_terms"></textarea>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="contract-block edit-type">
+                                <div class="block-top">
+                                    <div class="f-left top-left">
+                                        <!-- <span class="r-star">*</span> -->合同账单
+                                        <div class="q-mark">
+                                            ?
+                                            <div class="b-tip">
+                                                * 合同账单: 您可以按月设置账单，或者按照季度设置账单，并按时推送账单给承租方。承租方将会清晰看到租赁期内将会有多少合同账单需要支付。（其中不包含水，电，维修费等后付费账单）
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="block-top tip">
+                                    <div class="f-left">
+                                        <div class="t-line"><div class="check" ng-click="agreementOption.is_auto = !agreementOption.is_auto" ng-class="{'checked': agreementOption.is_auto}"></div><span>自动推送账单</span><span class="grey-num">( 开启后，您仍然可以手动推送账单)</span></div>
+                                        <div class="t-line"><span class="tip-item" ng-class="{'disabled': !agreementOption.is_auto}">每条账单 将在"账单起始日" 前 <input type="number" class="ip-tx" ng-model="agreementOption.plan_day"> 天 自动推送。</span></div>     
+                                    </div>
+                                </div>
+                                <div class="bill-list">
+                                    <div class="bill-line title">
+                                        <div class="bill-item per22">账单名称</div>
+                                        <div class="bill-item per12">账单起始日</div>
+                                        <div class="bill-item per12">账单结束日</div>
+                                        <div class="bill-item per33">账单描述</div>
+                                        <div class="bill-item per12">租金</div>
+                                        <div class="bill-item per9"></div>
+                                    </div>
+                                    <div class="bill-line" ng-repeat="bill in agreementBills track by $index">
+                                        <div class="bill-item per22">
+                                            <input type="text" ng-model="bill.name" ng-if="bill.status !== 'unpaid' &&  bill.status !== 'paid' && bill.status != 'cancelled' && bill.status != 'verify'">
+                                            <span ng-bind="bill.name" ng-if="bill.status === 'unpaid' ||  bill.status === 'paid' || bill.status === 'cancelled' || bill.status === 'verify'"></span>
+                                        </div>
+                                        <div class="bill-item per12">
+                                            <input type="text" ng-model="bill.start_date" data-max-date="{{bill.end_date}}" ng-if="bill.status !== 'unpaid' &&  bill.status !== 'paid' && bill.status != 'cancelled' && bill.status != 'verify'" data-date-format="yyyy-MM-dd" data-autoclose="1" placement="top" bs-datepicker>
+                                            <span ng-if="bill.status === 'unpaid' ||  bill.status === 'paid' || bill.status === 'cancelled' || bill.status === 'verify'">{{bill.start_date | date: 'yyyy-MM-dd'}}</span>
+                                        </div>
+                                        <div class="bill-item per12">
+                                            <input type="text" ng-model="bill.end_date" data-min-date="{{bill.start_date}}" ng-if="bill.status !== 'unpaid' &&  bill.status !== 'paid' && bill.status != 'cancelled' && bill.status != 'verify'" data-date-format="yyyy-MM-dd" data-autoclose="1" placement="top" bs-datepicker>
+                                            <span ng-if="bill.status === 'unpaid' ||  bill.status === 'paid' || bill.status === 'cancelled' || bill.status === 'verify'">{{bill.end_date | date: 'yyyy-MM-dd'}}</span>
+                                        </div>
+                                        <div class="bill-item per33">
+                                            <input type="text" ng-model="bill.description" ng-if="bill.status !== 'unpaid' &&  bill.status !== 'paid' && bill.status != 'cancelled' && bill.status != 'verify'">
+                                            <span ng-if="bill.status === 'unpaid' ||  bill.status === 'paid' || bill.status === 'cancelled' || bill.status === 'verify'">{{bill.description}}</span>
+                                        </div>
+                                        <div class="bill-item per12">
+                                            <input class="num-input" type="number" ng-model="bill.amount" ng-if="bill.status !== 'unpaid' &&  bill.status !== 'paid' && bill.status != 'cancelled' && bill.status != 'verify'">
+                                            <span ng-if="bill.status === 'unpaid' ||  bill.status === 'paid' || bill.status === 'cancelled' || bill.status === 'verify'">{{bill.amount}}</span>
+                                        </div>
+                                        <div class="bill-item per9">
+                                            <span class="link-txt" ng-click="deleteBill($index)" ng-if="!bill.id && bill.status !== 'unpaid' &&  bill.status !== 'paid' && bill.status != 'cancelled' && bill.status != 'verify'">删除</span>
+                                            <span class="link-txt" ng-click="deleteBill($index)" ng-if="bill.id && bill.status !== 'unpaid' &&  bill.status !== 'paid' && bill.status != 'cancelled' && bill.status != 'verify' && (currentAdmin.user.is_super_admin || currentAdmin.leasesMap[PERMISSION_LEASES_KEY + appointmentData.product.room.building.id] === 2)">删除</span>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="add-bill">
+                                    <span ng-click="addBill()">添加账单</span>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="bot-btns">
+                            <div class="long-btn" ng-click="createLeases('drafting')" ng-if="(pageType === 'createAgreement' || pageType == 'updateDraft') && (currentAdmin.user.is_super_admin || currentAdmin.leasesMap[PERMISSION_LEASES_KEY + permissionBuildingId] === 2)">保存</div>
+
+                            <div class="long-btn" ng-click="createLeases('confirming')" ng-if="(pageType === 'createAgreement' || pageType == 'updateDraft') && (currentAdmin.user.is_super_admin || currentAdmin.leasesMap[PERMISSION_LEASES_KEY + permissionBuildingId] === 2)">保存并提交</div>
+                            <div class="long-btn reverse f-right" ng-click="showDeleteLeaseConfirm()" ng-if="pageType == 'updateDraft' && (currentAdmin.user.is_super_admin || currentAdmin.leasesMap[PERMISSION_LEASES_KEY + permissionBuildingId] === 2)">删除</div>
+
+                            <div class="long-btn" ng-click="createLeases('reconfirming')" ng-if="pageType === 'updateAgreement' && (currentAdmin.user.is_super_admin || currentAdmin.leasesMap[PERMISSION_LEASES_KEY + appointmentData.product.room.building.id] === 2)">提交合同修改</div>
+                            <div class="long-btn reverse" ng-if="pageType === 'updateAgreement'" ng-click="backToLeaseDetail()">取消</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

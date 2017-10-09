@@ -1,0 +1,543 @@
+<table ng-mouseup="selectDone()">
+    <tr>
+        <td rowspan="2" class="hs-title">星期\时间</td>
+        <td colspan="12">00:00-06:00</td>
+        <td colspan="12">06:00-12:00</td>
+        <td colspan="12">12:00-18:00</td>
+        <td colspan="12">18:00-24:00</td>
+    </tr>
+    <tr>
+        <td colspan="2" ng-repeat="item in hours" ng-bind="item"></td>
+    </tr>
+    <tr ng-repeat="row in data track by $index">
+        <td class="hs-title">{{weeks[$index]}}</td>
+        <td data-row="{{$index}}"
+            data-col="0"
+            ng-class="{'hs-hour': true, selected: row[0] < 0, set: row[0] > 0}"
+            ng-mousedown="onMouseDown($event)" 
+            ng-mouseover="onMouseOver($event)"
+            ng-mouseout="onMouseOut($event)">
+            <div class="bubble">
+                <div class="bubble-pointer"></div>
+                <div class="bubble-body">{{popupTextFormatter(row[0])}}</div>
+            </div>
+        </td>
+        <td data-row="{{$index}}"
+            data-col="1"
+            ng-class="{'hs-hour': true, selected: row[1] < 0, set: row[1] > 0}"
+            ng-mousedown="onMouseDown($event)" 
+            ng-mouseover="onMouseOver($event)"
+            ng-mouseout="onMouseOut($event)">
+            <div class="bubble">
+                <div class="bubble-pointer"></div>
+                <div class="bubble-body">{{popupTextFormatter(row[1])}}</div>
+            </div>
+        </td>
+        <td data-row="{{$index}}"
+            data-col="2"
+            ng-class="{'hs-hour': true, selected: row[2] < 0, set: row[2] > 0}"
+            ng-mousedown="onMouseDown($event)" 
+            ng-mouseover="onMouseOver($event)"
+            ng-mouseout="onMouseOut($event)">
+            <div class="bubble">
+                <div class="bubble-pointer"></div>
+                <div class="bubble-body">{{popupTextFormatter(row[2])}}</div>
+            </div>
+        </td>
+        <td data-row="{{$index}}"
+            data-col="3"
+            ng-class="{'hs-hour': true, selected: row[3] < 0, set: row[3] > 0}"
+            ng-mousedown="onMouseDown($event)" 
+            ng-mouseover="onMouseOver($event)"
+            ng-mouseout="onMouseOut($event)">
+            <div class="bubble">
+                <div class="bubble-pointer"></div>
+                <div class="bubble-body">{{popupTextFormatter(row[3])}}</div>
+            </div>
+        </td>
+        <td data-row="{{$index}}"
+            data-col="4"
+            ng-class="{'hs-hour': true, selected: row[4] < 0, set: row[4] > 0}"
+            ng-mousedown="onMouseDown($event)" 
+            ng-mouseover="onMouseOver($event)"
+            ng-mouseout="onMouseOut($event)">
+            <div class="bubble">
+                <div class="bubble-pointer"></div>
+                <div class="bubble-body">{{popupTextFormatter(row[4])}}</div>
+            </div>
+        </td>
+        <td data-row="{{$index}}"
+            data-col="5"
+            ng-class="{'hs-hour': true, selected: row[5] < 0, set: row[5] > 0}"
+            ng-mousedown="onMouseDown($event)" 
+            ng-mouseover="onMouseOver($event)"
+            ng-mouseout="onMouseOut($event)">
+            <div class="bubble">
+                <div class="bubble-pointer"></div>
+                <div class="bubble-body">{{popupTextFormatter(row[5])}}</div>
+            </div>
+        </td>
+        <td data-row="{{$index}}"
+            data-col="6"
+            ng-class="{'hs-hour': true, selected: row[6] < 0, set: row[6] > 0}"
+            ng-mousedown="onMouseDown($event)" 
+            ng-mouseover="onMouseOver($event)"
+            ng-mouseout="onMouseOut($event)">
+            <div class="bubble">
+                <div class="bubble-pointer"></div>
+                <div class="bubble-body">{{popupTextFormatter(row[6])}}</div>
+            </div>
+        </td>
+        <td data-row="{{$index}}"
+            data-col="7"
+            ng-class="{'hs-hour': true, selected: row[7] < 0, set: row[7] > 0}"
+            ng-mousedown="onMouseDown($event)" 
+            ng-mouseover="onMouseOver($event)"
+            ng-mouseout="onMouseOut($event)">
+            <div class="bubble">
+                <div class="bubble-pointer"></div>
+                <div class="bubble-body">{{popupTextFormatter(row[7])}}</div>
+            </div>
+        </td>
+        <td data-row="{{$index}}"
+            data-col="8"
+            ng-class="{'hs-hour': true, selected: row[8] < 0, set: row[8] > 0}"
+            ng-mousedown="onMouseDown($event)" 
+            ng-mouseover="onMouseOver($event)"
+            ng-mouseout="onMouseOut($event)">
+            <div class="bubble">
+                <div class="bubble-pointer"></div>
+                <div class="bubble-body">{{popupTextFormatter(row[8])}}</div>
+            </div>
+        </td>
+        <td data-row="{{$index}}"
+            data-col="9"
+            ng-class="{'hs-hour': true, selected: row[9] < 0, set: row[9] > 0}"
+            ng-mousedown="onMouseDown($event)" 
+            ng-mouseover="onMouseOver($event)"
+            ng-mouseout="onMouseOut($event)">
+            <div class="bubble">
+                <div class="bubble-pointer"></div>
+                <div class="bubble-body">{{popupTextFormatter(row[9])}}</div>
+            </div>
+        </td>
+        <td data-row="{{$index}}"
+            data-col="10"
+            ng-class="{'hs-hour': true, selected: row[10] < 0, set: row[10] > 0}"
+            ng-mousedown="onMouseDown($event)" 
+            ng-mouseover="onMouseOver($event)"
+            ng-mouseout="onMouseOut($event)">
+            <div class="bubble">
+                <div class="bubble-pointer"></div>
+                <div class="bubble-body">{{popupTextFormatter(row[10])}}</div>
+            </div>
+        </td>
+        <td data-row="{{$index}}"
+            data-col="11"
+            ng-class="{'hs-hour': true, selected: row[11] < 0, set: row[11] > 0}"
+            ng-mousedown="onMouseDown($event)" 
+            ng-mouseover="onMouseOver($event)"
+            ng-mouseout="onMouseOut($event)">
+            <div class="bubble">
+                <div class="bubble-pointer"></div>
+                <div class="bubble-body">{{popupTextFormatter(row[11])}}</div>
+            </div>
+        </td>
+        <td data-row="{{$index}}"
+            data-col="12"
+            ng-class="{'hs-hour': true, selected: row[12] < 0, set: row[12] > 0}"
+            ng-mousedown="onMouseDown($event)" 
+            ng-mouseover="onMouseOver($event)"
+            ng-mouseout="onMouseOut($event)">
+            <div class="bubble">
+                <div class="bubble-pointer"></div>
+                <div class="bubble-body">{{popupTextFormatter(row[12])}}</div>
+            </div>
+        </td>
+        <td data-row="{{$index}}"
+            data-col="13"
+            ng-class="{'hs-hour': true, selected: row[13] < 0, set: row[13] > 0}"
+            ng-mousedown="onMouseDown($event)" 
+            ng-mouseover="onMouseOver($event)"
+            ng-mouseout="onMouseOut($event)">
+            <div class="bubble">
+                <div class="bubble-pointer"></div>
+                <div class="bubble-body">{{popupTextFormatter(row[13])}}</div>
+            </div>
+        </td>
+        <td data-row="{{$index}}"
+            data-col="14"
+            ng-class="{'hs-hour': true, selected: row[14] < 0, set: row[14] > 0}"
+            ng-mousedown="onMouseDown($event)" 
+            ng-mouseover="onMouseOver($event)"
+            ng-mouseout="onMouseOut($event)">
+            <div class="bubble">
+                <div class="bubble-pointer"></div>
+                <div class="bubble-body">{{popupTextFormatter(row[14])}}</div>
+            </div>
+        </td>
+        <td data-row="{{$index}}"
+            data-col="15"
+            ng-class="{'hs-hour': true, selected: row[15] < 0, set: row[15] > 0}"
+            ng-mousedown="onMouseDown($event)" 
+            ng-mouseover="onMouseOver($event)"
+            ng-mouseout="onMouseOut($event)">
+            <div class="bubble">
+                <div class="bubble-pointer"></div>
+                <div class="bubble-body">{{popupTextFormatter(row[15])}}</div>
+            </div>
+        </td>
+        <td data-row="{{$index}}"
+            data-col="16"
+            ng-class="{'hs-hour': true, selected: row[16] < 0, set: row[16] > 0}"
+            ng-mousedown="onMouseDown($event)" 
+            ng-mouseover="onMouseOver($event)"
+            ng-mouseout="onMouseOut($event)">
+            <div class="bubble">
+                <div class="bubble-pointer"></div>
+                <div class="bubble-body">{{popupTextFormatter(row[16])}}</div>
+            </div>
+        </td>
+        <td data-row="{{$index}}"
+            data-col="17"
+            ng-class="{'hs-hour': true, selected: row[17] < 0, set: row[17] > 0}"
+            ng-mousedown="onMouseDown($event)" 
+            ng-mouseover="onMouseOver($event)"
+            ng-mouseout="onMouseOut($event)">
+            <div class="bubble">
+                <div class="bubble-pointer"></div>
+                <div class="bubble-body">{{popupTextFormatter(row[17])}}</div>
+            </div>
+        </td>
+        <td data-row="{{$index}}"
+            data-col="18"
+            ng-class="{'hs-hour': true, selected: row[18] < 0, set: row[18] > 0}"
+            ng-mousedown="onMouseDown($event)" 
+            ng-mouseover="onMouseOver($event)"
+            ng-mouseout="onMouseOut($event)">
+            <div class="bubble">
+                <div class="bubble-pointer"></div>
+                <div class="bubble-body">{{popupTextFormatter(row[18])}}</div>
+            </div>
+        </td>
+        <td data-row="{{$index}}"
+            data-col="19"
+            ng-class="{'hs-hour': true, selected: row[19] < 0, set: row[19] > 0}"
+            ng-mousedown="onMouseDown($event)" 
+            ng-mouseover="onMouseOver($event)"
+            ng-mouseout="onMouseOut($event)">
+            <div class="bubble">
+                <div class="bubble-pointer"></div>
+                <div class="bubble-body">{{popupTextFormatter(row[19])}}</div>
+            </div>
+        </td>
+        <td data-row="{{$index}}"
+            data-col="20"
+            ng-class="{'hs-hour': true, selected: row[20] < 0, set: row[20] > 0}"
+            ng-mousedown="onMouseDown($event)" 
+            ng-mouseover="onMouseOver($event)"
+            ng-mouseout="onMouseOut($event)">
+            <div class="bubble">
+                <div class="bubble-pointer"></div>
+                <div class="bubble-body">{{popupTextFormatter(row[20])}}</div>
+            </div>
+        </td>
+        <td data-row="{{$index}}"
+            data-col="21"
+            ng-class="{'hs-hour': true, selected: row[21] < 0, set: row[21] > 0}"
+            ng-mousedown="onMouseDown($event)" 
+            ng-mouseover="onMouseOver($event)"
+            ng-mouseout="onMouseOut($event)">
+            <div class="bubble">
+                <div class="bubble-pointer"></div>
+                <div class="bubble-body">{{popupTextFormatter(row[21])}}</div>
+            </div>
+        </td>
+        <td data-row="{{$index}}"
+            data-col="22"
+            ng-class="{'hs-hour': true, selected: row[22] < 0, set: row[22] > 0}"
+            ng-mousedown="onMouseDown($event)" 
+            ng-mouseover="onMouseOver($event)"
+            ng-mouseout="onMouseOut($event)">
+            <div class="bubble">
+                <div class="bubble-pointer"></div>
+                <div class="bubble-body">{{popupTextFormatter(row[22])}}</div>
+            </div>
+        </td>
+        <td data-row="{{$index}}"
+            data-col="23"
+            ng-class="{'hs-hour': true, selected: row[23] < 0, set: row[23] > 0}"
+            ng-mousedown="onMouseDown($event)" 
+            ng-mouseover="onMouseOver($event)"
+            ng-mouseout="onMouseOut($event)">
+            <div class="bubble">
+                <div class="bubble-pointer"></div>
+                <div class="bubble-body">{{popupTextFormatter(row[23])}}</div>
+            </div>
+        </td>
+        <td data-row="{{$index}}"
+            data-col="24"
+            ng-class="{'hs-hour': true, selected: row[24] < 0, set: row[24] > 0}"
+            ng-mousedown="onMouseDown($event)" 
+            ng-mouseover="onMouseOver($event)"
+            ng-mouseout="onMouseOut($event)">
+            <div class="bubble">
+                <div class="bubble-pointer"></div>
+                <div class="bubble-body">{{popupTextFormatter(row[24])}}</div>
+            </div>
+        </td>
+        <td data-row="{{$index}}"
+            data-col="25"
+            ng-class="{'hs-hour': true, selected: row[25] < 0, set: row[25] > 0}"
+            ng-mousedown="onMouseDown($event)" 
+            ng-mouseover="onMouseOver($event)"
+            ng-mouseout="onMouseOut($event)">
+            <div class="bubble">
+                <div class="bubble-pointer"></div>
+                <div class="bubble-body">{{popupTextFormatter(row[25])}}</div>
+            </div>
+        </td>
+        <td data-row="{{$index}}"
+            data-col="26"
+            ng-class="{'hs-hour': true, selected: row[26] < 0, set: row[26] > 0}"
+            ng-mousedown="onMouseDown($event)" 
+            ng-mouseover="onMouseOver($event)"
+            ng-mouseout="onMouseOut($event)">
+            <div class="bubble">
+                <div class="bubble-pointer"></div>
+                <div class="bubble-body">{{popupTextFormatter(row[26])}}</div>
+            </div>
+        </td>
+        <td data-row="{{$index}}"
+            data-col="27"
+            ng-class="{'hs-hour': true, selected: row[27] < 0, set: row[27] > 0}"
+            ng-mousedown="onMouseDown($event)" 
+            ng-mouseover="onMouseOver($event)"
+            ng-mouseout="onMouseOut($event)">
+            <div class="bubble">
+                <div class="bubble-pointer"></div>
+                <div class="bubble-body">{{popupTextFormatter(row[27])}}</div>
+            </div>
+        </td>
+        <td data-row="{{$index}}"
+            data-col="28"
+            ng-class="{'hs-hour': true, selected: row[28] < 0, set: row[28] > 0}"
+            ng-mousedown="onMouseDown($event)" 
+            ng-mouseover="onMouseOver($event)"
+            ng-mouseout="onMouseOut($event)">
+            <div class="bubble">
+                <div class="bubble-pointer"></div>
+                <div class="bubble-body">{{popupTextFormatter(row[28])}}</div>
+            </div>
+        </td>
+        <td data-row="{{$index}}"
+            data-col="29"
+            ng-class="{'hs-hour': true, selected: row[29] < 0, set: row[29] > 0}"
+            ng-mousedown="onMouseDown($event)" 
+            ng-mouseover="onMouseOver($event)"
+            ng-mouseout="onMouseOut($event)">
+            <div class="bubble">
+                <div class="bubble-pointer"></div>
+                <div class="bubble-body">{{popupTextFormatter(row[29])}}</div>
+            </div>
+        </td>
+        <td data-row="{{$index}}"
+            data-col="30"
+            ng-class="{'hs-hour': true, selected: row[30] < 0, set: row[30] > 0}"
+            ng-mousedown="onMouseDown($event)" 
+            ng-mouseover="onMouseOver($event)"
+            ng-mouseout="onMouseOut($event)">
+            <div class="bubble">
+                <div class="bubble-pointer"></div>
+                <div class="bubble-body">{{popupTextFormatter(row[30])}}</div>
+            </div>
+        </td>
+        <td data-row="{{$index}}"
+            data-col="31"
+            ng-class="{'hs-hour': true, selected: row[31] < 0, set: row[31] > 0}"
+            ng-mousedown="onMouseDown($event)" 
+            ng-mouseover="onMouseOver($event)"
+            ng-mouseout="onMouseOut($event)">
+            <div class="bubble">
+                <div class="bubble-pointer"></div>
+                <div class="bubble-body">{{popupTextFormatter(row[31])}}</div>
+            </div>
+        </td>
+        <td data-row="{{$index}}"
+            data-col="32"
+            ng-class="{'hs-hour': true, selected: row[32] < 0, set: row[32] > 0}"
+            ng-mousedown="onMouseDown($event)" 
+            ng-mouseover="onMouseOver($event)"
+            ng-mouseout="onMouseOut($event)">
+            <div class="bubble">
+                <div class="bubble-pointer"></div>
+                <div class="bubble-body">{{popupTextFormatter(row[32])}}</div>
+            </div>
+        </td>
+        <td data-row="{{$index}}"
+            data-col="33"
+            ng-class="{'hs-hour': true, selected: row[33] < 0, set: row[33] > 0}"
+            ng-mousedown="onMouseDown($event)" 
+            ng-mouseover="onMouseOver($event)"
+            ng-mouseout="onMouseOut($event)">
+            <div class="bubble">
+                <div class="bubble-pointer"></div>
+                <div class="bubble-body">{{popupTextFormatter(row[33])}}</div>
+            </div>
+        </td>
+        <td data-row="{{$index}}"
+            data-col="34"
+            ng-class="{'hs-hour': true, selected: row[34] < 0, set: row[34] > 0}"
+            ng-mousedown="onMouseDown($event)" 
+            ng-mouseover="onMouseOver($event)"
+            ng-mouseout="onMouseOut($event)">
+            <div class="bubble">
+                <div class="bubble-pointer"></div>
+                <div class="bubble-body">{{popupTextFormatter(row[34])}}</div>
+            </div>
+        </td>
+        <td data-row="{{$index}}"
+            data-col="35"
+            ng-class="{'hs-hour': true, selected: row[35] < 0, set: row[35] > 0}"
+            ng-mousedown="onMouseDown($event)" 
+            ng-mouseover="onMouseOver($event)"
+            ng-mouseout="onMouseOut($event)">
+            <div class="bubble">
+                <div class="bubble-pointer"></div>
+                <div class="bubble-body">{{popupTextFormatter(row[35])}}</div>
+            </div>
+        </td>
+        <td data-row="{{$index}}"
+            data-col="36"
+            ng-class="{'hs-hour': true, selected: row[36] < 0, set: row[36] > 0}"
+            ng-mousedown="onMouseDown($event)" 
+            ng-mouseover="onMouseOver($event)"
+            ng-mouseout="onMouseOut($event)">
+            <div class="bubble">
+                <div class="bubble-pointer"></div>
+                <div class="bubble-body">{{popupTextFormatter(row[36])}}</div>
+            </div>
+        </td>
+        <td data-row="{{$index}}"
+            data-col="37"
+            ng-class="{'hs-hour': true, selected: row[37] < 0, set: row[37] > 0}"
+            ng-mousedown="onMouseDown($event)" 
+            ng-mouseover="onMouseOver($event)"
+            ng-mouseout="onMouseOut($event)">
+            <div class="bubble">
+                <div class="bubble-pointer"></div>
+                <div class="bubble-body">{{popupTextFormatter(row[37])}}</div>
+            </div>
+        </td>
+        <td data-row="{{$index}}"
+            data-col="38"
+            ng-class="{'hs-hour': true, selected: row[38] < 0, set: row[38] > 0}"
+            ng-mousedown="onMouseDown($event)" 
+            ng-mouseover="onMouseOver($event)"
+            ng-mouseout="onMouseOut($event)">
+            <div class="bubble">
+                <div class="bubble-pointer"></div>
+                <div class="bubble-body">{{popupTextFormatter(row[38])}}</div>
+            </div>
+        </td>
+        <td data-row="{{$index}}"
+            data-col="39"
+            ng-class="{'hs-hour': true, selected: row[39] < 0, set: row[39] > 0}"
+            ng-mousedown="onMouseDown($event)" 
+            ng-mouseover="onMouseOver($event)"
+            ng-mouseout="onMouseOut($event)">
+            <div class="bubble">
+                <div class="bubble-pointer"></div>
+                <div class="bubble-body">{{popupTextFormatter(row[39])}}</div>
+            </div>
+        </td>
+        <td data-row="{{$index}}"
+            data-col="40"
+            ng-class="{'hs-hour': true, selected: row[40] < 0, set: row[40] > 0}"
+            ng-mousedown="onMouseDown($event)" 
+            ng-mouseover="onMouseOver($event)"
+            ng-mouseout="onMouseOut($event)">
+            <div class="bubble">
+                <div class="bubble-pointer"></div>
+                <div class="bubble-body">{{popupTextFormatter(row[40])}}</div>
+            </div>
+        </td>
+        <td data-row="{{$index}}"
+            data-col="41"
+            ng-class="{'hs-hour': true, selected: row[41] < 0, set: row[41] > 0}"
+            ng-mousedown="onMouseDown($event)" 
+            ng-mouseover="onMouseOver($event)"
+            ng-mouseout="onMouseOut($event)">
+            <div class="bubble">
+                <div class="bubble-pointer"></div>
+                <div class="bubble-body">{{popupTextFormatter(row[41])}}</div>
+            </div>
+        </td>
+        <td data-row="{{$index}}"
+            data-col="42"
+            ng-class="{'hs-hour': true, selected: row[42] < 0, set: row[42] > 0}"
+            ng-mousedown="onMouseDown($event)" 
+            ng-mouseover="onMouseOver($event)"
+            ng-mouseout="onMouseOut($event)">
+            <div class="bubble">
+                <div class="bubble-pointer"></div>
+                <div class="bubble-body">{{popupTextFormatter(row[42])}}</div>
+            </div>
+        </td>
+        <td data-row="{{$index}}"
+            data-col="43"
+            ng-class="{'hs-hour': true, selected: row[43] < 0, set: row[43] > 0}"
+            ng-mousedown="onMouseDown($event)" 
+            ng-mouseover="onMouseOver($event)"
+            ng-mouseout="onMouseOut($event)">
+            <div class="bubble">
+                <div class="bubble-pointer"></div>
+                <div class="bubble-body">{{popupTextFormatter(row[43])}}</div>
+            </div>
+        </td>
+        <td data-row="{{$index}}"
+            data-col="44"
+            ng-class="{'hs-hour': true, selected: row[44] < 0, set: row[44] > 0}"
+            ng-mousedown="onMouseDown($event)" 
+            ng-mouseover="onMouseOver($event)"
+            ng-mouseout="onMouseOut($event)">
+            <div class="bubble">
+                <div class="bubble-pointer"></div>
+                <div class="bubble-body">{{popupTextFormatter(row[44])}}</div>
+            </div>
+        </td>
+        <td data-row="{{$index}}"
+            data-col="45"
+            ng-class="{'hs-hour': true, selected: row[45] < 0, set: row[45] > 0}"
+            ng-mousedown="onMouseDown($event)" 
+            ng-mouseover="onMouseOver($event)"
+            ng-mouseout="onMouseOut($event)">
+            <div class="bubble">
+                <div class="bubble-pointer"></div>
+                <div class="bubble-body">{{popupTextFormatter(row[45])}}</div>
+            </div>
+        </td>
+        <td data-row="{{$index}}"
+            data-col="46"
+            ng-class="{'hs-hour': true, selected: row[46] < 0, set: row[46] > 0}"
+            ng-mousedown="onMouseDown($event)" 
+            ng-mouseover="onMouseOver($event)"
+            ng-mouseout="onMouseOut($event)">
+            <div class="bubble">
+                <div class="bubble-pointer"></div>
+                <div class="bubble-body">{{popupTextFormatter(row[46])}}</div>
+            </div>
+        </td>
+        <td data-row="{{$index}}"
+            data-col="47"
+            ng-class="{'hs-hour': true, selected: row[47] < 0, set: row[47] > 0}"
+            ng-mousedown="onMouseDown($event)" 
+            ng-mouseover="onMouseOver($event)"
+            ng-mouseout="onMouseOut($event)">
+            <div class="bubble">
+                <div class="bubble-pointer"></div>
+                <div class="bubble-body">{{popupTextFormatter(row[47])}}</div>
+            </div>
+        </td>
+    </tr>
+</table>

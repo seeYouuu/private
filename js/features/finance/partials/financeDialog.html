@@ -1,0 +1,25 @@
+<div class="modal" role="dialog">
+    <div class="modal-center" ng-class="{'small-s': financeTplTag == 'finance', 'modal-dialog': financeTplTag == 'finance'}">
+        <div class="modal-content group-add">
+            <div class="modal-body clearfix">
+                <div class="com-dialog inv-box" ng-if="financeTplTag == 'finance'">
+                    <div class="dialog-head static has-bb">
+                        <div class="head-wra">
+                            <span>撤销申请</span>
+                            <span class="close" ng-click="$hide()">✖</span>
+                        </div>
+                    </div>
+                    <div class="dia-tip">
+                        是否确认撤销申请, 撤销后账单费用将重新计算到账单总额
+                    </div>
+                    <div class="dia-btn">
+                        <div class="con-btn" ng-click="cancelledServiceBill($hide)">确认撤销</div>
+                    </div>
+                </div>
+                <div ng-if="financeTplTag == 'showPic'">
+                    <img class="pic" ng-src="{{servillBillItem.bill_attachment[0].content}}" ng-click="$hide()">
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

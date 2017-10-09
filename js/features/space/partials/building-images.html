@@ -1,0 +1,30 @@
+<div class="group_detail">
+	<div class="com-detail">
+		<div class="com-d-head">
+			<div class="c-head-wra">
+				<span class="detail-tag green">使用中</span>
+				<span class="head-des">{{communityDetail.name}}</span>
+				<span class="head-des">社区图库({{communityImages.length}}张)</span>
+			</div>
+		</div>
+		<div class="com-d-con">
+			<div class="com-item">
+				<ul class="community-container">
+					<li ng-if="currentAdmin.buildingMap[PERMISSION_UPDATE_COMMUNITY_KEY + communityDetail.id] === 2 || currentAdmin.user.is_super_admin">
+						<div class="img-item add">
+							<img src="img/rectangle.png" ng-click="addCommunityImg()">
+                            <input id="uploadCommunityImg" type="file" nv-file-select uploader="imageUploader.community" multiple />
+						</div>
+					</li>
+					<li ng-repeat="item in communityImages">
+						<div class="img-item">
+							<img ng-src="{{item.content}}">
+							<div ng-bind="item.filename"></div>
+							<span ng-click="deleteCommunityImg(item, $index)" ng-if="currentAdmin.buildingMap[PERMISSION_UPDATE_COMMUNITY_KEY + communityDetail.id] === 2 || currentAdmin.user.is_super_admin"></span>
+						</div>
+					</li>
+				</ul>
+			</div>
+		</div>
+	</div>
+</div>

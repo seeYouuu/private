@@ -1,0 +1,101 @@
+<div class="modal" role="dialog">
+    <div class="modal-dialog modal-center modal-reate">
+        <div class="modal-content group-add">
+            <div class="modal-body clearfix">
+                <div class="reate_clues">
+                    <div class="reate_header clearfix">
+                        <p class="clearfix">
+                            <span><span>客户关系</span>&gt;<span>企业账户</span>&gt;<span>创建企业账户</span></span>
+                            <span ng-click="$hide()"></span>
+                        </p>
+                    </div>
+                    <div class="reate_nav company_nav">
+                        <div class="space_mes">
+                            <p class="s_m_title">账户信息<span class="q_mark">?</span></p>
+                            <div class="s_m_term">
+                                <span><font class="muted">*</font>企业全名：</span>
+                                <input type="text" ng-model="companyMessage.name">
+                            </div>
+                            <div class="s_m_term">
+                                <span>企业注册地址：</span>
+                                <input type="text" ng-model="companyMessage.register_address">
+                            </div>
+                            <div class="s_m_term">
+                                <span>企业营业执照号：</span>
+                                <input type="text" ng-model="companyMessage.business_license_number">
+                            </div>
+                            <div class="s_m_term">
+                                <span>组织机构代码证号：</span>
+                                <input type="text" ng-model="companyMessage.organization_certificate_code">
+                            </div>
+                            <div class="s_m_term">
+                                <span>税务登记号：</span>
+                                <input type="text" ng-model="companyMessage.tax_registration_number">
+                            </div>
+                            <div class="s_m_term">
+                                <span>纳税人识别号：</span>
+                                <input type="text" ng-model="companyMessage.taxpayer_identification_number">
+                            </div>
+                            <div class="s_m_term">
+                                <span>开户银行名称：</span>
+                                <input type="text" ng-model="companyMessage.bank_name">
+                            </div>
+                            <div class="s_m_term">
+                                <span>银行账户</span>
+                                <input type="text" ng-model="companyMessage.bank_account_number">
+                            </div>
+                        </div>
+                        <div class="space_mes">
+                            <p class="s_m_title">企业信息<span class="q_mark">?</span></p>
+                            <div class="s_m_term">
+                                <span>网站：</span>
+                                <input type="text" ng-model="companyMessage.website">
+                            </div>
+                            <div class="s_m_term">
+                                <span>电话：</span>
+                                <input type="text" ng-model="companyMessage.phone">
+                            </div>
+                            <div class="s_m_term">
+                                <span>所属行业：</span>
+                                <div class="area-company">
+                                    <sb-dropdown select="filterOption.type" options="industryList" no-empty></sb-dropdown>
+                                </div>
+                            </div>
+                            <div class="s_m_term">
+                                <span>邮寄地址：</span>
+                                <input type="text" ng-model="companyMessage.mailing_address">
+                            </div>
+                            <div class="s_m_term">
+                                <span>联系人：</span>
+                                <auto-complete class="mid_long" selectdata="selectedSearchData.customer" searchparams="search.customer" responsedata="searchReponse.customer" change="searchCustomer()"></auto-complete>
+                                <span class="search"></span>
+                            </div>
+                            <div class="s_m_term1" ng-if="customerList.length>0">
+                                <div class="customer-list" ng-repeat="item in customerList">
+                                    <div class="user-mes">
+                                        <sb-image-with-fallback default-url="/img/default.png" error-url="/img/default.png" class="sm-pic" url="{{item.customer.avatar}}"></sb-image-with-fallback>
+                                        <span>{{item.customer.name}}</span>
+                                        <span>{{item.customer.phone}}</span>
+                                        <span></span>
+                                    </div>
+                                    <div class="id_card">
+                                        <sb-dropdown select="item.id_type" options="idtypeList" placeholder="placeholder.idcard" no-empty></sb-dropdown>
+                                    </div>
+                                    <span class="del_linkman" ng-click="delLinkman(item)"></span>
+                                </div>
+                            </div>
+                            <div class="s_m_term">
+                                <span>备注：</span>
+                                <textarea class="textareabox" ng-model="companyMessage.comment"></textarea>
+                            </div>
+                        </div>
+                    </div>
+                   <div class="reate_btn r-i-btn clearfix">
+                        <span class="r-save-btn fl" ng-click="creatCompanyMessage($hide)">确定</span>
+                        <span class="r-btn fl" ng-click="$hide()">取消</span>
+                   </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

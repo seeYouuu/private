@@ -1,0 +1,113 @@
+<div class="sandBox_content" ng-if="pageType === 'list' || pageType === 'groupUser'">
+    <div class="tra-content">
+    	<div class="t-f-box" ng-if="pageType === 'list'">
+            <div class="t-f-line">
+                <div class="t-f-left">
+                    关键字
+                </div>
+                <div class="t-f-right">
+                    <div class="t-f-half t-f-s">
+                        <div class="drop-wra">
+                            <sb-dropdown select="filterOption.keyword" placeholder="placeholder.all" options="keywordList" flexible="true" no-empty></sb-dropdown>
+                        </div>
+                        <div class="ib-box" ng-if="filterOption.keyword">
+                            <input type="text" class="t-f-input" ng-model="filterOption.keyword_search" ng-keyup="$event.keyCode === 13 && searchList()">
+                        </div>
+                    </div>
+                    <div class="t-f-half t-f-b">
+                        <span class="t-f-left">用户组</span>
+                        <div class="drop-wra">
+                            <sb-dropdown select="filterOption.groupObj" placeholder="placeholder.all" options="groups" flexible="true" no-empty></sb-dropdown>
+                        </div>
+                    </div>
+
+
+                </div>
+            </div>
+    		<div class="t-btn-wra">
+    			<div class="t-search-btn" ng-click="searchList()">
+					搜索
+				</div>
+				<span class="clear-btn" ng-click="clearSearchFilters()">清空</span>
+    		</div>
+    	</div>
+
+        <div class="t-f-box pd" ng-if="pageType === 'list'">
+            <div class="r-link">
+                <span class="l-txt">共{{groupCount.card_group}}个会员用户组，{{groupCount.general_group}}个普通用户组</span>
+                <span class="n-icon ic-group"></span>
+                <span class="link-txt" ng-click="seePage('group')">用户组管理</span>
+            </div>
+        </div>
+
+        <div class="space-bot">
+            <div class="space-b-con">
+                <div class="s-info-page p25">
+                    <div class="tit-link" ng-if="pageType == 'groupUser'">
+                        <span class="l-txt link-txt" ng-click="seePage('group')"><-返回用户组</span>
+                    </div>
+                    <div class="line-width info-tit">
+                        <div class="line-item per25 t-left">
+                            用户
+                        </div>
+                        <div class="line-item per25">
+                            可开票
+                        </div>
+                        <div class="line-item per25">
+                            用户组
+                        </div>
+                        <div class="line-item per25">
+                            操作
+                        </div>
+                    </div>
+                    <div class="space-b-box n-bor">
+                        <div class="line-width s-line" ng-repeat="item in userList">
+                            <div class="line-item per25 t-left">
+                                <div class="item-con">
+                                    <div class="item-info">
+                                        <div class="h-bor" ng-class="{'red': item.banned, 'green': !item.banned}">
+                                            <image-with-fallback url="{{item.avatar}}" default-url="../img/head.png"></image-with-fallback>
+                                        </div>
+                                        <div class="u-info">
+                                            <p><span class="detail-tag" ng-class="{'grey': !item.authorized, 'red': item.authorized}">认</span><span>{{item.name}}</span></p>
+                                            <p><span class="grey-num">{{item.phone}}</span></p>
+                                            <p><span class="grey-num">{{item.email}}</span></p>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="line-item per25">
+                                <div class="item-con">
+                                    <span>{{userAccount[item.id].sales_invoice_balance | currency: ''}}</span>
+                                </div>
+                            </div>
+                            <div class="line-item per25">
+                                <div class="item-con">
+                                    <p class="s-des" ng-if="item.groups.length > 0" ng-mouseover="seeOptions('group', item)" trigger='hover' data-placement="bottom-left" data-content-template="js/features/user/partials/options.html" data-animation="am-fade" data-auto-close="1" bs-popover>所属用户组<span class="grey-num">（{{item.groups.length}}）</span></p>
+                                    <p ng-if="item.groups.length == 0">-</p>
+                                </div>
+                            </div>
+                            <div class="line-item per25">
+                                <div class="item-con">
+                                    <p  class="s-des"
+                                        ng-click="seeOptions('editUserGroup', item)"
+                                        data-placement="bottom-right"
+                                        data-content-template="js/features/user/partials/options.html"
+                                        data-animation="am-fade"
+                                        data-auto-close="1"
+                                        bs-popover
+                                        >操作<i class="arr arr-down"></i></p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="nodata" ng-if="userList.length <= 0 && loaded">无用户信息</div>
+                </div>
+                <pagination option="pageOptions" on-page="goPage(index)"></pagination>
+            </div>
+        </div>
+    </div>
+</div>
+
+<ng-include src="'/js/features/user/partials/userDetail.html'" ng-if="pageType == 'detail'"></ng-include>
+<ng-include src="'/js/features/user/partials/userGroup.html'" ng-if="pageType == 'group' || pageType == 'groupUser'"></ng-include>

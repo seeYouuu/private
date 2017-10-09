@@ -1,0 +1,58 @@
+<div class="modal" role="dialog">
+    <div class="modal-dialog modal-center small-s">
+        <div class="modal-content group-add">
+            <div class="modal-body clearfix">
+                
+                <div class="com-dialog" ng-if="diaType == 'createGroup' || diaType == 'updateGroup'">
+                	<div class="dialog-head static head-p30">
+                		<div class="head-wra">
+                			<span ng-if="diaType == 'createGroup'">新建用户组</span>
+                            <span ng-if="diaType == 'updateGroup'">编辑用户组</span>
+	                		<span class="close" ng-click="$hide()">✖</span>
+                		</div>
+                	</div>
+                    <div class="dia-box box-f">
+                        <div class="dia-line">
+                            <div><span>输入该用户组名称：</span></div>
+                        </div>
+                        <div class="dia-line pb55">
+                            <div>
+                                <input class="s-input height28" type="text" ng-model="editOption.g_name">
+                            </div>
+                        </div>
+                        <div class="dia-bot l-bot">
+                            <div class="dia-btns">
+                                <div class="long-btn" ng-if="diaType == 'createGroup'" ng-class="{'disabled': pendingFlag}" ng-click="createGroup($hide)">保存</div>
+                                <div class="long-btn" ng-if="diaType == 'updateGroup'" ng-class="{'disabled': pendingFlag}" ng-click="updateGroup($hide)">保存</div>
+                                <div class="long-btn reverse" ng-click="$hide()">取消</div>
+                            </div>   
+                        </div>
+                    </div>
+                </div>
+
+                <div class="com-dialog" ng-if="diaType == 'editGroupForUser'">
+                    <div class="dia-box box-f">
+                        <div class="dia-line">
+                            <div><span class="tit-f">请选择将该用户添加到的用户组：</span></div>
+                        </div>
+                        <div class="dia-line pb55">
+                            <div class="u-g-box">
+                                <div class="g-line" ng-repeat="item in createdGroups" ng-click="item.selected = !item.selected;">
+                                    <span class="cri-o" ng-class="{'on': item.selected}"><span class="cri-i"></span></span>
+                                    <span>{{item.name}}</span>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="dia-bot l-bot">
+                            <div class="dia-btns">
+                                <div class="long-btn" ng-class="{'disabled': pendingFlag}" ng-click="addUserToGroup($hide)">确定</div>
+                                <div class="long-btn reverse" ng-click="$hide()">取消</div>
+                            </div>   
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </div>
+</div>

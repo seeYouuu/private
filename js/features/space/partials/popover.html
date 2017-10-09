@@ -1,0 +1,125 @@
+<div ng-if="popoverType == 'community'">
+	<ul class="big-pop">
+		<li class="big-li" ng-click="seeCommunity(selectedCommunity.id)">查看社区详情</li>
+		<li class="big-li" ng-click="seeCommunityImages(selectedCommunity.id)">社区图库</li>
+		<li class="big-li" ng-click="editCommunity(selectedCommunity.id)" ng-if="currentAdmin.user.is_super_admin || currentAdmin.buildingMap[PERMISSION_UPDATE_COMMUNITY_KEY + selectedCommunity.id] === 2">编辑社区</li>
+		<li class="big-li" ng-click="setCommunityVisible(selectedCommunity, false, $hide, 'showLay')" ng-if="selectedCommunity.type == 'using' && (currentAdmin.user.is_super_admin || currentAdmin.buildingMap[PERMISSION_UPDATE_COMMUNITY_KEY + selectedCommunity.id] === 2)">下架社区</li>
+		<li class="big-li" ng-click="setCommunityVisible(selectedCommunity, true, $hide)" ng-if="selectedCommunity.type == 'invisible' && (currentAdmin.user.is_super_admin || currentAdmin.buildingMap[PERMISSION_UPDATE_COMMUNITY_KEY + selectedCommunity.id] === 2)">上架社区</li>
+	</ul>
+</div>
+
+<div ng-if="popoverType == 'filter'">
+	<div class="space-filter">
+		<div class="s-f-head">
+			<ul class="s-f-cat">
+				<li class="s-f-li" ng-class="{'on': item.selected}" ng-repeat="item in productFilters.status" ng-click="selectFilter(item, 'status')">{{item.name}}</li>
+			</ul>
+		</div>
+		<div class="s-f-type">
+			<div class="s-box" ng-class="{'on': item.selected}" ng-repeat="item in productFilters.type" ng-click="selectFilter(item, 'type')">{{item.name}}</div>
+		</div>
+		<div class="s-f-foot">
+			<span class="s-op" ng-click="allFilter(true)">全选</span>
+			<span class="s-op">|</span>
+			<span class="s-op" ng-click="allFilter(false)">清空</span>
+		</div>
+	</div>
+</div>
+
+<div ng-if="popoverType == 'detail-option'">
+	<ul class="big-pop">
+		<li class="big-li" ng-click="seeCommunityImages(communityDetail.id, $hide)" ng-if="currentAdmin.buildingMap[PERMISSION_UPDATE_COMMUNITY_KEY + communityDetail.id] === 2 || currentAdmin.user.is_super_admin">社区图库</li>
+		<li class="big-li" ng-click="setCommunityVisible(communityDetail, false, $hide, 'showLay')" ng-if="communityDetail.visible && communityDetail.status === 'accept' && (currentAdmin.buildingMap[PERMISSION_UPDATE_COMMUNITY_KEY + communityDetail.id] === 2 || currentAdmin.user.is_super_admin)">下架社区</li>
+		<li class="big-li" ng-click="setCommunityVisible(communityDetail, true, $hide)" ng-if="!communityDetail.visible && communityDetail.status === 'invisible' && (currentAdmin.buildingMap[PERMISSION_UPDATE_COMMUNITY_KEY + communityDetail.id] === 2 || currentAdmin.user.is_super_admin)">上架社区</li>
+		<li class="big-li red" ng-click="deleteCommunity(communityDetail, $hide)" ng-if="currentAdmin.buildingMap[PERMISSION_UPDATE_COMMUNITY_KEY + communityDetail.id] === 2 || currentAdmin.user.is_super_admin">删除社区</li>
+	</ul>
+</div>
+
+<div ng-if="popoverType == 'add-type'">
+	<ul class="big-pop" ng-repeat="type in roomTypes">
+		<li class="big-li" ng-click="seeAddRoom(type)">{{type.description}} <span class="detail-tag ora" ng-if="type.name == 'longterm'">长租</span></li>
+	</ul>
+</div>
+
+<div ng-if="popoverType == 'space-option'">
+	<ul class="big-pop">
+		<!-- <li class="big-li" ng-if="productItem && productItem.rent_set.status && productItem.visible && (currentAdmin.user.is_super_admin || currentAdmin.leasesMap[PERMISSION_LEASES_KEY + selectedCommunity.id] === 2)" ng-click="generateLeases(productItem.id)">生成合同</li> -->
+		<li class="big-li" ng-if="roomDetail.rent_type != 'long' && productItem && (currentAdmin.preorderMap[PERMISSION_PREORDER_KEY + selectedCommunity.id] === 2 || currentAdmin.user.is_super_admin)" ng-click="seeReserveDlg('preorder', $hide)">推送空间订单</li>
+		<li class="big-li" ng-if="roomDetail.rent_type != 'long' &&  productItem && (currentAdmin.reserveMap[PERMISSION_RESERVE_KEY + selectedCommunity.id] === 2 || currentAdmin.user.is_super_admin)" ng-click="seeReserveDlg('reserve', $hide)">设置内部占用</li>
+
+		<li class="big-li" ng-if="productItem && !productItem.sales_recommend && productItem.visible && (currentAdmin.reserveMap[PERMISSION_RESERVE_KEY + selectedCommunity.id] === 2 || currentAdmin.user.is_super_admin)" ng-click="addRecommend(productItem.id, $hide)">设置推荐</li>
+		<li class="big-li" ng-if="productItem && productItem.sales_recommend && productItem.visible && (currentAdmin.reserveMap[PERMISSION_RESERVE_KEY + selectedCommunity.id] === 2 || currentAdmin.user.is_super_admin)" ng-click="deleteRecommend(productItem.id, $hide)">取消推荐</li>
+
+		<li class="big-li" ng-if="productItem && productItem.visible && (currentAdmin.productMap[PERMISSION_PRODUCT_KEY + selectedCommunity.id] === 2 || currentAdmin.user.is_super_admin)" ng-click="showSpaceOffLineConfirm($hide)">下架空间</li>
+		<li class="big-li" ng-if="productItem && !productItem.visible && (currentAdmin.productMap[PERMISSION_PRODUCT_KEY + selectedCommunity.id] === 2 || currentAdmin.user.is_super_admin)" ng-click="showSpaceOnLineConfirm($hide)">上架空间</li>
+		<li class="big-li" ng-if="currentAdmin.roomMap[PERMISSION_ROOM_KEY + selectedCommunity.id] === 2 || currentAdmin.user.is_super_admin" ng-click="seeEditRoom(spaceItem)">空间设置</li>
+		<li class="big-li" ng-if="productItem && (currentAdmin.productMap[PERMISSION_PRODUCT_KEY + selectedCommunity.id] === 2 || currentAdmin.user.is_super_admin)" ng-click="seeProduct(spaceItem, 'edit')">租赁设置</li>
+		<li class="big-li" ng-if="!productItem && (currentAdmin.productMap[PERMISSION_PRODUCT_KEY + selectedCommunity.id] === 2 || currentAdmin.user.is_super_admin)" ng-click="seeProduct(spaceItem, 'create')">租赁设置</li>
+		<li class="big-li" ng-if="currentAdmin.roomMap[PERMISSION_ROOM_KEY + selectedCommunity.id] === 2 || currentAdmin.user.is_super_admin" ng-click="seeCopyRoom()">复制空间</li>
+		<li class="big-li red" ng-if="currentAdmin.roomMap[PERMISSION_ROOM_KEY + selectedCommunity.id] === 2 || currentAdmin.user.is_super_admin" ng-click="deleteRoom('',$hide)">删除空间</li>
+	</ul>
+</div>
+
+<div ng-if="popoverType == 'options'">
+	<ul class="big-pop">
+		<!-- <li class="big-li" ng-if="spaceItem.product.visible && spaceItem.product.rent_set.status && (currentAdmin.user.is_super_admin || currentAdmin.leasesMap[PERMISSION_LEASES_KEY + selectedCommunity.id] === 2)" ng-click="generateLeases(spaceItem.product.id)">生成合同</li> -->
+		<li class="big-li" ng-if="spaceItem.rent_type != 'long' && spaceItem.has_rent && spaceItem.product.visible && (currentAdmin.preorderMap[PERMISSION_PREORDER_KEY + selectedCommunity.id] === 2 || currentAdmin.user.is_super_admin)" ng-click="seeReserveDlg('preorder', $hide)">推送空间订单</li>
+		<li class="big-li" ng-if="spaceItem.rent_type != 'long' && spaceItem.has_rent && spaceItem.product.visible && (currentAdmin.reserveMap[PERMISSION_RESERVE_KEY + selectedCommunity.id] === 2 || currentAdmin.user.is_super_admin)" ng-click="seeReserveDlg('reserve', $hide)">设置内部占用</li>
+
+		<li class="big-li" ng-if="spaceItem.has_rent && !spaceItem.product.sales_recommend && spaceItem.product.visible && (currentAdmin.reserveMap[PERMISSION_RESERVE_KEY + selectedCommunity.id] === 2 || currentAdmin.user.is_super_admin)" ng-click="addRecommend(spaceItem.product.id, $hide)">设置推荐</li>
+		<li class="big-li" ng-if="spaceItem.has_rent && spaceItem.product.sales_recommend && spaceItem.product.visible && (currentAdmin.reserveMap[PERMISSION_RESERVE_KEY + selectedCommunity.id] === 2 || currentAdmin.user.is_super_admin)" ng-click="deleteRecommend(spaceItem.product.id, $hide)">取消推荐</li>
+
+		<li class="big-li" ng-if="spaceItem.has_rent && !spaceItem.product.visible && (currentAdmin.productMap[PERMISSION_PRODUCT_KEY + selectedCommunity.id] === 2 || currentAdmin.user.is_super_admin)" ng-click="showSpaceOnLineConfirm($hide)">上架空间</li>
+		<li class="big-li" ng-if="spaceItem.has_rent && spaceItem.product.visible && (currentAdmin.productMap[PERMISSION_PRODUCT_KEY + selectedCommunity.id] === 2 || currentAdmin.user.is_super_admin)" ng-click="showSpaceOffLineConfirm($hide)">下架空间</li>
+		<li class="slice" ng-if="(currentAdmin.roomMap[PERMISSION_ROOM_KEY + selectedCommunity.id] === 2 || currentAdmin.user.is_super_admin)"></li>
+		<li class="big-li" ng-click="seeMoreOpe()" ng-if="!operateMore && (currentAdmin.roomMap[PERMISSION_ROOM_KEY + selectedCommunity.id] === 2 || currentAdmin.user.is_super_admin)">更多<span class="down-arr">》</span></li>
+		<li class="big-li" ng-click="seeEditRoom(item)" ng-if="operateMore && (currentAdmin.roomMap[PERMISSION_ROOM_KEY + selectedCommunity.id] === 2 || currentAdmin.user.is_super_admin)">编辑空间</li>
+		<li class="big-li" ng-click="seeCopyRoom(item)" ng-if="operateMore && selectedCommunity.type == 'using' && (currentAdmin.roomMap[PERMISSION_ROOM_KEY + selectedCommunity.id] === 2 || currentAdmin.user.is_super_admin)">复制空间</li>
+		<li class="big-li red-color" ng-click="deleteRoom(item,$hide)" ng-if="operateMore && (currentAdmin.roomMap[PERMISSION_ROOM_KEY + selectedCommunity.id] === 2 || currentAdmin.user.is_super_admin)">删除空间</li>
+	</ul>
+</div>
+<div ng-if="popoverType == 'seat_price' && spaceItem.type_tag === 'dedicated_desk'">
+	<span class="p-tit">独享办公桌租赁价格</span>
+	<ul class="big-pop bigger">
+		<li class="big-li" ng-repeat="item in spaceItem.product.seats">{{item.seat_number}}
+			<p class="r-div">
+				<span class="red-num" ng-if="item.base_price">{{item.base_price | currency:''}}</span>
+				<span class="red-num" ng-if="!item.base_price">-</span>
+				<span class="grey-num">元/{{spaceItem.product.leasing_sets[0].unit_price.toUpperCase() | translate}}</span>
+			</p>
+		</li>
+	</ul>
+</div>
+
+<ul class="spec-con" ng-if="popoverType == 'seat_price' && spaceItem.type_tag !== 'dedicated_desk' && (spaceItem.product.leasing_sets.length > 0 || spaceItem.product.rent_set)">
+	<li ng-repeat="set in spaceItem.product.leasing_sets">
+		<div class="spec-line">
+			<span ng-if="set.unit_price === 'day'">日租</span>
+			<span ng-if="set.unit_price === 'hour'">时租</span>
+			<span ng-if="set.unit_price === 'week'">周租</span>
+			<span ng-if="set.unit_price === 'month'">月租</span>
+			<span class="f-r"><i class="red-f">{{set.base_price | number: 2}}</i> 元</span>
+		</div>
+		<div class="spec-time">{{set.amount || 0}}<span ng-if="set.unit_price === 'day'">天</span><span ng-if="set.unit_price === 'hour'">小时</span><span ng-if="set.unit_price === 'week'">个周</span><span ng-if="set.unit_price === 'month'">个月</span>起租</div>
+	</li>
+	<li ng-if="spaceItem.product.rent_set">
+		<div class="spec-line">
+			<span>长租</span>
+			<span class="f-r"><i class="red-f">{{spaceItem.product.rent_set.base_price | number: 2}}</i> 元</span>
+		</div>
+		<div class="spec-time">
+			<span>起租时间: {{spaceItem.product.rent_set.earliest_rent_date | date: 'yyyy-MM-dd'}}</span>
+		</div>
+	</li>
+</ul>
+
+<div ng-if="popoverType == 'reserve' || popoverType == 'preorder'">
+	<div sb-day ng-if="calendarOptions.type === 'start' && calendarOptions.timeType === 'hour'" type="calendarOptions.type" start="calendarOptions.start" end="calendarOptions.end" sdate="productItem.start_date" edate="productItem.end_date" book-dates="dateInfo" orderstart="hourOrderParam.start_date" orderend="hourOrderParam.end_date" auto-close="autoClose($hide)"></div>
+	<div sb-day ng-if="calendarOptions.type === 'end' && calendarOptions.timeType === 'hour'" type="calendarOptions.type" start="calendarOptions.start" end="calendarOptions.end" sdate="productItem.start_date" edate="productItem.end_date" book-dates="dateInfo" orderstart="hourOrderParam.start_date" orderend="hourOrderParam.end_date" auto-close="autoClose($hide)"></div>
+	<div sb-day ng-if="calendarOptions.type === 'start' && calendarOptions.timeType === 'day'" type="calendarOptions.type" start="calendarOptions.start" end="calendarOptions.end" sdate="productItem.start_date" edate="productItem.end_date" book-dates="dateInfo" orderstart="dayOrderParam.start_date" orderend="dayOrderParam.end_date" auto-close="autoClose($hide)"></div>
+	<div sb-day ng-if="calendarOptions.type === 'end' && calendarOptions.timeType === 'day'" type="calendarOptions.type" start="calendarOptions.start" end="calendarOptions.end" sdate="productItem.start_date" edate="productItem.end_date" book-dates="dateInfo" orderstart="dayOrderParam.start_date" orderend="dayOrderParam.end_date" auto-close="autoClose($hide)"></div>
+	<div sb-day ng-if="calendarOptions.type === 'start' && calendarOptions.timeType === 'week'" type="calendarOptions.type" start="calendarOptions.start" end="calendarOptions.end" sdate="productItem.start_date" edate="productItem.end_date" book-dates="dateInfo" orderstart="weekOrderParam.start_date" orderend="weekOrderParam.end_date" auto-close="autoClose($hide)"></div>
+	<div sb-day ng-if="calendarOptions.type === 'end' && calendarOptions.timeType === 'week'" type="calendarOptions.type" start="calendarOptions.start" end="calendarOptions.end" sdate="productItem.start_date" edate="productItem.end_date" book-dates="dateInfo" orderstart="weekOrderParam.start_date" orderend="weekOrderParam.end_date" auto-close="autoClose($hide)"></div>
+	<div sb-day ng-if="calendarOptions.type === 'start' && calendarOptions.timeType === 'month'" type="calendarOptions.type" start="calendarOptions.start" end="calendarOptions.end" sdate="productItem.start_date" edate="productItem.end_date" book-dates="dateInfo" orderstart="monthOrderParam.start_date" orderend="monthOrderParam.end_date" auto-close="autoClose($hide)"></div>
+	<div sb-day ng-if="calendarOptions.type === 'end' && calendarOptions.timeType === 'month'" type="calendarOptions.type" start="calendarOptions.start" end="calendarOptions.end" sdate="productItem.start_date" edate="productItem.end_date" book-dates="dateInfo" orderstart="monthOrderParam.start_date" orderend="monthOrderParam.end_date" auto-close="autoClose($hide)"></div>
+</div>

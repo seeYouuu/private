@@ -1,0 +1,36 @@
+<div class="search_input">
+	<input type="text" ng-model="searchParams.key" placeholder="可以根据用户名邮箱电话搜索" ng-change="iptChange()">
+	<!-- <ul ng-if="responseData.length > 0"> -->
+	<ul ng-if="listFlag && !boxFlag">
+		<li class="t-center">未找到匹配的客户？ <span class="blue-f" ng-click="showUserBox()">点此创建客户</span></li>
+		<li ng-repeat="item in responseData" ng-mouseover="itemOver(item)" ng-class="{act: item.id === responseData[currentIndex].id}" ng-click="selectItem(item)">
+			{{item[name]}}
+		</li>
+	</ul>
+	<div class="user-box" ng-if="boxFlag">
+		<div class="u-line">
+			<div class="u-left">
+				<span class="red-f">*</span>
+				<span>姓名</span>
+			</div>
+			<div class="u-right">
+				<input type="text" ng-model="userInfo.name">
+			</div>
+		</div>
+		<div class="u-line">
+			<div class="u-left">
+				<span class="red-f">*</span>
+				<span>手机</span>
+			</div>
+			<div class="u-right">
+				<input type="text" placeholder="+86" class="area-ipt" ng-model="userInfo.phone_code">
+				<input type="text" class="phone-ipt" ng-model="userInfo.phone">
+			</div>
+		</div>
+		<div class="u-line">
+			<div class="u-btn on" ng-click="createCustomer()">确定</div>
+			<div class="u-btn" ng-click="showUserBox()">取消</div>
+		</div>
+	</div>
+</div>
+

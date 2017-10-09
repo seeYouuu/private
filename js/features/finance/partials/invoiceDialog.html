@@ -1,0 +1,48 @@
+<div  class="modal gallery-upload-progress-modal" role="dialog">
+    <div class="modal-dialog modal-large">
+        <div class="modal-content">
+            <div class="modal-header head" ng-show="title">
+                <h3><span ng-bind="title"></span></h3>
+            </div>
+            <form class="form-horizontal">
+                <div class="modal-body bg_color">
+                    <ul class="inv_list">
+		                <li class="li_height">
+		                	<span class="item_label">发票编号：</span>
+		                	<input type="text" ng-model="deliveryOption.invoice_id" onkeyup="this.value=this.value.replace(/\D/g,'')"/>
+		                </li>
+		                <li class="li_height">
+		                	<span class="item_label">快递公司：</span>
+		                	<input type="text" ng-model="deliveryOption.delivery_company"/>
+		                </li>
+		                <li class="li_height">
+		                	<span class="item_label">快递单号：</span>
+		                	<input type="text" ng-model="deliveryOption.delivery_id" onkeyup="this.value=this.value.replace(/\D/g,'')"/>
+		                </li>
+		                <li class="li_height">
+		                	<span class="item_label">快递地址：</span>
+		                	<input class="lar_inp" type="text" ng-model="deliveryOption.address"/>
+		                </li>
+		                <li class="li_height">
+		                	<span class="item_label">电话：</span>
+		                	<input type="text" ng-model="deliveryOption.phone" onkeyup="this.value=this.value.replace(/\D/g,'')"/>
+		                </li>
+		                <li class="li_height">
+		                	<span class="item_label">姓名：</span>
+		                	<input type="text" ng-model="deliveryOption.name"/>
+		                </li>
+		                <li class="li_height">
+		                	<span class="item_label">邮编：</span>
+		                	<input type="text" ng-model="deliveryOption.zipCode" onkeyup="this.value=this.value.replace(/\D/g,'')"/>
+		                </li>
+		            </ul>
+
+		            <div class="c-btn">
+	                    <a type="button" class="primary_btn" ng-class="{disabled : pendingDeliv === true}" ng-if="currentAdmin.permissionMap[PERMISSION_INVOICE_KEY] === 2" ng-click="setDelivery($hide)">提交</a>
+	                    <a ng-click="confClose($hide)" class="primary_btn cancel_btn mPaddingLR5">取消</a>
+	                </div>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>

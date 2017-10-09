@@ -1,0 +1,267 @@
+<div class="group_detail">
+	<div class="com-detail">
+		<div class="com-d-head">
+			<div class="c-head-wra">
+				<span class="detail-tag" ng-class="{green: communityDetail.status==='accept',red: communityDetail.status==='banned', ora: communityDetail.status==='pending',grey: communityDetail.status==='invisible'}">{{statusOptions[communityDetail.status]}}</span>
+				<span class="head-des">{{communityDetail.name}}</span>
+				<div class="head-r">
+					<span ng-click="seePopover('detail-option')" data-placement="bottom-right" ng-if="currentAdmin.buildingMap[PERMISSION_UPDATE_COMMUNITY_KEY + communityDetail.id] === 2 || currentAdmin.user.is_super_admin" data-content-template="js/features/space/partials/popover.html" data-animation="am-fade" data-auto-close="1" bs-popover>
+						更多操作
+						<i class="arr blue-arr arr-down"></i>
+					</span>
+				</div>
+			</div>
+		</div>
+		<div class="com-d-con">
+			<div class="com-item">
+				<div class="com-item-head no-border">
+					<div class="com-h-tit"><span class="tit-des">{{communityDetail.name}}</span><span class="n-icon ic-mod" ng-click="editCommunity(communityDetail.id, 1)" ng-if="currentAdmin.buildingMap[PERMISSION_UPDATE_COMMUNITY_KEY + communityDetail.id] === 2 || currentAdmin.user.is_super_admin"></span></div>
+					<div class="com-head-des">{{communityDetail.subtitle}}</div>
+					<div class="com-avatar">
+						<img class="c-ava" ng-src="{{communityDetail.avatar}}">
+					</div>
+				</div>
+				<div class="com-info">
+					<div class="com-cover">
+						<div class="cover-title">社区封面 <span class="link" ng-if="currentAdmin.buildingMap[PERMISSION_UPDATE_COMMUNITY_KEY + communityDetail.id] === 2 || currentAdmin.user.is_super_admin" ng-click="seeCommunityImages()">(查看社区图库)</span></div>
+						<img ng-src="{{communityDetail.building_attachments[0].content}}">
+					</div>
+					<div class="info-btn" ng-click="showDialog('community-des')">
+						<span class="n-icon ic-rpro"></span>
+						查看社区介绍
+					</div>
+				</div>
+				
+			</div>
+
+			<div class="com-item">
+				<div class="com-item-head">
+				</div>
+				<div class="com-info">
+					<div class="info-box">
+						<div class="info-line">
+							<div class="info-l-left">
+								<span class="n-icon ic-pos"></span>
+								<span>社区地址</span>
+							</div>
+							<div class="info-l-right">
+								{{communityDetail.address}}  ( {{communityDetail.lat}} , {{communityDetail.lng}} )
+							</div>
+							<div class="info-l-right">
+								{{selectedCommunity.city.timezone}}
+							</div>
+						</div>
+						<div class="info-line">
+							<div class="info-l-left">
+								<span class="zip-c-icon">NO.</span>
+								<span>邮编</span>
+							</div>
+							<div class="info-l-right">
+								{{communityDetail.postal_code}}
+							</div>
+						</div>
+						<div class="info-line">
+							<div class="info-l-left">
+								<span class="n-icon ic-mic"></span>
+								<span>客服电话</span>
+							</div>
+							<div class="info-l-right">
+								{{communityDetail.building_company.phone}}
+							</div>
+						</div>
+						<div class="info-line">
+							<div class="info-l-left">
+								<span class="n-icon ic-cal"></span>
+								<span>营业日设置</span>
+							</div>
+							<div class="info-l-right">
+								{{communityDetail.business_hour}}
+							</div>
+						</div>
+						<div class="info-line">
+							<div class="info-l-left">
+								<span>社区配置</span>
+							</div>
+							<div class="info-l-right">
+								<div class="config-box">
+				                	<div class="config-item on" ng-repeat="item in communityDetail.building_services">
+				                		<div class="config-icon">
+				                			<img ng-src="{{item.service.selected_icon}}" class="config-pic">
+				                		</div>
+				                		<div class="config-des" ng-bind="item.service.name"></div>
+				                	</div>
+				                </div>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+
+			<div class="com-item">
+				<div class="com-item-head">
+					<div class="com-h-tit"><span class="tit-des">社区设置</span><span class="n-icon ic-mod" ng-click="editCommunity(communityDetail.id, 1)" ng-if="(currentAdmin.buildingMap[PERMISSION_UPDATE_COMMUNITY_KEY + communityDetail.id] === 2 || currentAdmin.user.is_super_admin)"></span></div>
+				</div>
+				<div class="com-info">
+					<div class="info-box">
+						<div class="info-line" ng-if="communityDetail.email">
+							<div class="info-l-left">
+								<span class="n-icon ic-people"></span>
+								<span>社区负责人</span>
+							</div>
+							<div class="info-l-right">
+								{{communityDetail.community_manager_name}}
+							</div>
+						</div>
+						<div class="info-line">
+							<div class="info-l-left">
+								<span class="n-icon ic-mic"></span>
+								<span>负责人手机</span>
+							</div>
+							<div class="info-l-right">
+								<span ng-repeat="phone in communityDetail.phones">{{phone.phone}} </span>
+							</div>
+						</div>
+						<div class="info-line" ng-if="communityDetail.email">
+							<div class="info-l-left">
+								<span class="n-icon ic-ema"></span>
+								<span>新订单提醒邮箱</span>
+							</div>
+							<div class="info-l-right">
+								{{communityDetail.email}}
+							</div>
+						</div>
+						<div class="info-line" ng-if="communityDetail.order_remind_phones">
+							<div class="info-l-left">
+								<span class="n-icon ic-mob"></span>
+								<span>新订单提醒手机号</span>
+							</div>
+							<div class="info-l-right">
+								{{communityDetail.order_remind_phones}}
+							</div>
+						</div>
+						<div class="info-line">
+							<div class="info-l-left">
+								<span class="n-icon ic-msg-i"></span>
+								<span>客服</span>
+							</div>
+							<div class="info-l-right">
+								<div class="user-wrapper no-h">
+				                	<div class="u-box" ng-repeat="item in communityDetail.customer_services">
+										<img class="u-ava" ng-src="{{userOptions[item.user_id].avatar}}" src="../img/head.png">
+										<div class="u-nick">{{userOptions[item.user_id].name}}</div>
+										<div class="u-info">
+											<span>{{userOptions[item.user_id].phone}}</span>
+											<span>{{userOptions[item.user_id].email}}</span>
+										</div>
+									</div>
+				                </div>
+							</div>
+						</div>
+						<div class="info-line">
+							<div class="info-l-left">
+								<span class="n-icon ic-bul"></span>
+								<span>门禁服务器</span>
+							</div>
+							<div class="info-l-right">
+								{{communityDetail.server}}
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+
+			<div class="com-item">
+				<div class="com-item-head">
+					<div class="com-h-tit"><span class="tit-des">社区租赁设置</span><span class="n-icon ic-mod" ng-click="editCommunity(communityDetail.id, 1)" ng-if="(currentAdmin.buildingMap[PERMISSION_UPDATE_COMMUNITY_KEY + communityDetail.id] === 2 || currentAdmin.user.is_super_admin)"></span></div>
+				</div>
+				<div class="com-info">
+					<div class="info-box">
+						<div class="info-line">
+							<div class="info-l-left">
+								<span>休息日</span>
+							</div>
+							<div class="info-l-right" ng-if="communityDetail.remove_dates">
+								<div class="font-size12">所选设置将做为空间预订的不可起租日</div>
+								<div sb-date-selector class="c-con" remove-dates="remove_dates" type="edit"></div>
+							</div>
+						</div>
+						<div class="info-line">
+							<div class="info-l-left">
+								<span>出租方名称</span>
+							</div>
+							<div class="info-l-right">
+								{{communityDetail.lessor_name}}
+							</div>
+						</div>
+						
+						<div class="info-line">
+							<div class="info-l-left">
+								<span>出租方地址</span>
+							</div>
+							<div class="info-l-right">
+								{{communityDetail.lessor_address}}
+							</div>
+						</div>
+						<div class="info-line">
+							<div class="info-l-left">
+								<span>出租方联系人</span>
+							</div>
+							<div class="info-l-right">
+								{{communityDetail.lessor_contact}}
+							</div>
+						</div>
+						<div class="info-line">
+							<div class="info-l-left">
+								<span>出租方电话</span>
+							</div>
+							<div class="info-l-right">
+								{{communityDetail.lessor_phone}}
+							</div>
+						</div>
+						<div class="info-line">
+							<div class="info-l-left">
+								<span>出租方邮箱</span>
+							</div>
+							<div class="info-l-right">
+								{{communityDetail.lessor_email}}
+							</div>
+						</div>
+						<div class="info-line">
+							<div class="info-l-left">
+								<span>出租方收款账户名</span>
+							</div>
+							<div class="info-l-right">
+								{{communityDetail.lessor_bank_account_name}}
+							</div>
+						</div>
+						<div class="info-line">
+							<div class="info-l-left">
+								<span>出租方收款账户</span>
+							</div>
+							<div class="info-l-right">
+								{{communityDetail.lessor_bank_account_number}}
+							</div>
+						</div>
+						<div class="info-line">
+							<div class="info-l-left">
+								<span>出租方收款开户行</span>
+							</div>
+							<div class="info-l-right">
+								{{communityDetail.lessor_bank_name}}
+							</div>
+						</div>
+						<div class="info-line">
+							<div class="info-l-left">
+								<span>出租方合同补充条款</span>
+							</div>
+							<div class="info-l-right">
+								{{communityDetail.lease_remarks}}
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+
+		</div>
+	</div>
+</div>

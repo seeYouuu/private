@@ -1,0 +1,6 @@
+<div class="gallery-image" ng-class="{'checked': selected === true}">
+    <img ng-src="{{::imgSrc}}" alt="gallery image"/>
+    <i ng-if="!selected" class="icon ic_checkbox"></i>
+    <i ng-if="selected" class="icon ic_checkbox_checked"></i>
+    <h5 class="filename" ng-bind="::fileName" ng-attr-title="{{::fileName}}"></h5>
+</div>

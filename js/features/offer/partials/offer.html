@@ -1,0 +1,100 @@
+<div class="sandBox_content"">
+    <div class="tra-content">
+        <div class="cus-select clearfix">
+            <div class="cus-sel-left">
+                <div class="c-s-dropdown">
+                    <sb-dropdown select="filterOption.keywordObj" placeholder="placeholder.all" options="keywordList" flexible="true" no-empty></sb-dropdown>
+                </div>
+                <input type="text" class="t-f-input" ng-model="filterOption.keyword_search" ng-keyup="$event.keyCode === 13 && searchList()"><input type="button" value="搜索" ng-click="searchList()">
+                <span ng-class="{'arrow-up': showFilter, 'arrow-down': !showFilter}" ng-click="showFilter = !showFilter;">更多筛选项</span>
+            </div>
+            <div class="cus-sel-right">
+                <span class="plus" ng-click="showOfferDialog('add')" ng-if="currentAdmin.permissionMap[PERMISSION_KEY] === 2"><img src="../img/u16881.png"></span>
+                <span class="plus" ng-click="seePopover('popOptions')" data-placement="bottom-right" data-content-template="js/features/clue/partials/popover.html" data-animation="am-fade" data-auto-close="1" bs-popover ng-if="currentAdmin.permissionMap[PERMISSION_KEY] === 2"><img src="../img/u16890.png"></span>
+            </div>
+        </div>
+        <div class="t-f-box" ng-if="showFilter">
+            <div class="t-f-line">
+                <div class="t-f-left">
+                    报价状态
+                </div>
+                <div class="t-f-right">
+                    <div class="t-f-half t-f-s">
+                        <div class="drop-wra">
+                            <sb-dropdown select="filterOption.statusObj" placeholder="placeholder.all" options="filterStatus" flexible="true" no-empty></sb-dropdown>
+                        </div>
+                    </div>
+                    <div class="t-f-half t-f-b">
+                        <span class="t-f-left">选择社区</span>
+                        <div class="t-four">
+                            <sb-dropdown select="filterOption.buildingObj" placeholder="placeholder.community" options="buildings" flexible="true" no-empty></sb-dropdown>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="t-f-line">
+                <div class="t-f-left">
+                    创建时间
+                </div>
+                <div class="t-f-right">
+                    <div class="t-f-half t-f-s">
+                        <div class="date_input">
+                            <input type="text" ng-model="filterOption.create_start" data-max-date="{{filterOption.create_end}}" data-date-format="yyyy-MM-dd" data-autoclose="1" bs-datepicker>
+                            <span><i class="fa fa-calendar"></i></span>
+                        </div>
+                        <div class="date_input">
+                            <input type="text" ng-model="filterOption.create_end" data-min-date="{{filterOption.create_start}}" data-date-format="yyyy-MM-dd" data-autoclose="1" bs-datepicker>
+                            <span><i class="fa fa-calendar"></i></span>
+                        </div>
+                    </div>
+                    <div class="t-f-half t-f-b"">
+                        <span class="t-f-left">租赁时间</span>
+                        <div class="drop-wra">
+                            <sb-dropdown select="filterOption.rentMode" placeholder="placeholder.all" options="rentModes" flexible="true" no-empty></sb-dropdown>
+                        </div>
+                        <div class="date_input">
+                            <input type="text" ng-model="filterOption.start_date" data-max-date="{{filterOption.end_date}}" data-date-format="yyyy-MM-dd" data-autoclose="1" bs-datepicker>
+                            <span><i class="fa fa-calendar"></i></span>
+                        </div>
+                        <div class="date_input">
+                            <input type="text" ng-model="filterOption.end_date" data-min-date="{{filterOption.start_date}}" data-date-format="yyyy-MM-dd" data-autoclose="1" bs-datepicker>
+                            <span><i class="fa fa-calendar"></i></span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="t-btn-wra">
+                <div class="t-search-btn" ng-click="searchList()">
+                    搜索
+                </div>
+                <div class="t-search-btn pierced" ng-click="resetSearch()">
+                    取消
+                </div>
+                <span class="clear-btn" ng-click="clearSearchFilters()">清空</span>
+            </div>
+        </div>
+        <mutiple-tags options="tags" class="tags-area" ng-show="showFilter" async-obj="filterOption.buildingObj"></mutiple-tags>
+        <div class="space-bot cus-bot">
+            <div class="space-b-con cus-b-con">
+                <div class="s-info-page p25">
+                    <div class="line-width info-tit cus-nav">
+                        <div class="b-span line-item cus_drop"  ng-click="seePopover('listOptions')" data-placement="bottom-left" data-content-template="js/features/offer/partials/popover.html" data-animation="am-fade" data-auto-close="1" bs-popover></div>
+                        <div class="line-item t-left" ng-repeat="header in tableHeaders" ng-bind="header.name"></div>
+                    </div>
+                    <div class="line-width info-tit cus-lists" ng-repeat='item in offerList'>
+                        <div class="line-item t-left"></div>
+                        <div class="line-item t-left" ng-repeat="value in tableHeaders">
+                            <span ng-if="value.column === 'serial_number'" class="color-blue" ng-click="showOfferDialog('detail', item)">{{item.customization[value.column]}}</span>
+                            <span ng-if="value.column === 'status' && statusLogs[item.id].length > 0" trigger='hover' data-placement="bottom-left" data-content-template="js/features/offer/partials/listOptions.html" data-animation="am-fade" data-auto-close="1" bs-popover>{{item.customization[value.column]}}</span>
+                            <span ng-if="value.column === 'status' && !statusLogs[item.id]" >{{item.customization[value.column]}}</span>
+
+                            <span ng-if="value.column !== 'serial_number' && value.column !== 'status'">{{item.customization[value.column]}}</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="nodata" ng-if="offerList.length <= 0 && loaded">无此类结果</div>
+        </div>
+        <pagination option="pageOptions" on-page="goPage(index)"></pagination>
+    </div>
+</div>   

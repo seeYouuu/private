@@ -1,0 +1,8 @@
+<div>
+	<ul class="mutiple-tags" ng-if="options.length > 0">
+		<li class="mutiple-tag" ng-repeat="item in options">
+			{{::item.des}}: {{item.value}}
+			<span class="close" ng-click="deleteItem(item)">X</span>
+		</li>
+	</ul>
+</div>

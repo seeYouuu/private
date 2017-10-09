@@ -1,0 +1,14 @@
+<div ng-if="pages.length&gt;0" class="turnPage clearfix">
+	<span class="page">{{option.pageIndex}}/{{page.pageNum}}</span>
+	<ul>
+		<li class="prev" ng-class="{act: $currentIndex === 1 || $currentIndex === 0}" ng-click="goToPage($currentIndex-1)"><i class="icon ic_left"></i></li>
+		<li ng-repeat="page in pages" ng-class="{active: page.selected}" ng-click="goToPage(page.num)" ng-bind="page.num"></li>
+		<li class="next" ng-class="{act: $currentIndex === $totalPages}" ng-click="goToPage($currentIndex+1)"><i class="icon ic_right"></i></li>
+	</ul>
+	<form ng-submit="go()">
+		<div class="page-container">
+			<input type="text" ng-model="page.index" class="page_ipt">
+			<span ng-click="go()" class="page_btn">{{'GO' | translate}}</span>
+		</div>
+	</form>
+</div>

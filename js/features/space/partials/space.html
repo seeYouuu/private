@@ -1,0 +1,200 @@
+<div class="group_detail" ng-if="pageType === 'list'">
+	<div class="group">
+		<div class="group-left">
+			<div class="job-container">
+				<div class="input-box">
+					<input type="text" placeholder="搜索空间名" ng-model="search.key" ng-keyup="$event.keyCode === 13 && searchSpace()">
+					<span class="cross" ng-if="search.key" ng-click="clearSearch()">x</span>
+				</div>
+				<div class="job-cat" id="leftContainer">
+					<div class="left-block" ng-if="communitiyList.using.length > 0">
+						<div class="block-tit">
+							<span class="dot green"></span>
+							使用中的社区
+						</div>
+						<div class="block-cat" ng-repeat="item in communitiyList.using">
+							<div class="block-cat-t" ng-click="switchCommunity(item, true)">
+								<span class="t-tag" ng-class="{reduce: item.selected}"></span>{{item.name}}<span class="grey-num">({{item.using_number}}/{{item.all_number}})</span>
+							</div>
+							<div class="item-container" ng-if="item.selected && item.roomTypes && item.roomTypes.length > 0">
+								<div class="block-item" ng-repeat="type in item.roomTypes track by $index" ng-if="$index == 0" ng-class="{'on': type.selected}" ng-click="switchRoomType(type)">
+									<span class="room-icon n-icon ic-cube"></span>{{type.name}}<span class="grey-num">({{recommendCount}})</span>
+								</div>
+								<div class="block-item" ng-repeat="type in item.roomTypes track by $index" ng-if="$index > 0" ng-class="{'on': type.selected}" ng-click="switchRoomType(type)">
+									<img class="room-icon"  ng-src="{{type.icon}}">{{type.name}}<span class="grey-num">({{type.using_number}}/{{type.all_number}})</span>
+								</div>
+							</div>
+						</div>
+					</div>
+					<!-- <div class="left-block" ng-if="communitiyList.pending.length > 0">
+						<div class="block-tit">
+							<span class="dot ori"></span>
+							审核中的社区
+						</div>
+						<div class="block-cat" ng-repeat="item in communitiyList.pending">
+							<div class="block-cat-t" ng-click="switchCommunity(item, true)">
+								<span class="t-tag" ng-class="{reduce: item.selected}"></span>{{item.name}}<span class="grey-num">({{item.using_number}}/{{item.all_number}})</span>
+							</div>
+							<div class="item-container" ng-if="item.selected && item.roomTypes && item.roomTypes.length > 0">
+								<div class="block-item" ng-repeat="type in item.roomTypes track by $index" ng-if="$index == 0" ng-class="{'on': type.selected}" ng-click="switchRoomType(type)">
+									<span class="room-icon n-icon ic-cube"></span>{{type.name}}<span class="grey-num">({{recommendCount}})</span>
+								</div>
+								<div class="block-item" ng-repeat="type in item.roomTypes track by $index" ng-if="$index > 0" ng-class="{'on': type.selected}" ng-click="switchRoomType(type)">
+									<img class="room-icon"  ng-src="{{type.icon}}">{{type.name}}<span class="grey-num">({{type.using_number}}/{{type.all_number}})</span>
+								</div>
+							</div>
+						</div>
+					</div> -->
+					<div class="left-block" ng-if="communitiyList.banned.length > 0">
+						<div class="block-tit">
+							<span class="dot red"></span>
+							冻结中的社区
+						</div>
+						<div class="block-cat" ng-repeat="item in communitiyList.banned">
+							<div class="block-cat-t" ng-click="switchCommunity(item, true)">
+								<span class="t-tag" ng-class="{reduce: item.selected}"></span>{{item.name}}<span class="grey-num">({{item.using_number}}/{{item.all_number}})</span>
+							</div>
+							<div class="item-container" ng-if="item.selected && item.roomTypes && item.roomTypes.length > 0">
+								<div class="block-item" ng-repeat="type in item.roomTypes track by $index" ng-if="$index == 0" ng-class="{'on': type.selected}" ng-click="switchRoomType(type)">
+									<span class="room-icon n-icon ic-cube"></span>{{type.name}}<span class="grey-num">({{recommendCount}})</span>
+								</div>
+								<div class="block-item" ng-repeat="type in item.roomTypes track by $index" ng-if="$index > 0" ng-class="{'on': type.selected}" ng-click="switchRoomType(type)">
+									<img class="room-icon"  ng-src="{{type.icon}}">{{type.name}}<span class="grey-num">({{type.using_number}}/{{type.all_number}})</span>
+								</div>
+							</div>
+						</div>
+					</div>
+					<div class="left-block" ng-if="communitiyList.invisible.length > 0">
+						<div class="block-tit">
+							<span class="dot grey"></span>
+							下架中的社区
+						</div>
+						<div class="block-cat" ng-repeat="item in communitiyList.invisible">
+							<div class="block-cat-t" ng-click="switchCommunity(item, true)">
+								<span class="t-tag" ng-class="{reduce: item.selected}"></span>{{item.name}}<span class="grey-num">({{item.using_number}}/{{item.all_number}})</span>
+							</div>
+							<div class="item-container" ng-if="item.selected && item.roomTypes && item.roomTypes.length > 0">
+								<div class="block-item" ng-repeat="type in item.roomTypes track by $index" ng-if="$index == 0" ng-class="{'on': type.selected}" ng-click="switchRoomType(type)">
+									<span class="room-icon n-icon ic-cube"></span>{{type.name}}<span class="grey-num">({{recommendCount}})</span>
+								</div>
+								<div class="block-item" ng-repeat="type in item.roomTypes track by $index" ng-if="$index > 0" ng-class="{'on': type.selected}" ng-click="switchRoomType(type)">
+									<img class="room-icon"  ng-src="{{type.icon}}">{{type.name}}<span class="grey-num">({{type.using_number}}/{{type.all_number}})</span>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+			<div class="add-com">
+				<div class="add-wrapper" ng-click="seeCreate()" ng-if="currentAdmin.user.is_super_admin || currentAdmin.permissionMap[PERMISSION_ADD_COMMUNITY_KEY] === 2">
+					<span class="n-icon ic-a-btn"></span>
+					<span>增加社区</span>
+				</div>
+			</div>
+
+		</div>
+		<div class="group-right">
+			<div class="right-head clearfix">
+				<div class="r-h-left">
+					<div class="r-title" ng-if="!search.query"><span class="r-name">{{selectedCommunity.name}}</span><span class="b-span" ng-if="(communitiyList.using.length + communitiyList.invisible.length + communitiyList.pending.length + communitiyList.banned.length) > 0" ng-click="seePopover('community')" data-placement="bottom-left" data-content-template="js/features/space/partials/popover.html" data-animation="am-fade" data-auto-close="1" bs-popover>社区操作<i class="arr blue-arr arr-down"></i></span></div>
+					<div class="r-title" ng-if="search.query"><span class="r-name">搜索</span><span class="grey-num obl-num">“{{search.query}}”</span></div>
+				</div>
+				<div class="r-h-right" ng-if="(communitiyList.using.length + communitiyList.invisible.length + communitiyList.pending.length + communitiyList.banned.length) > 0">
+					<span>
+						<span class="b-span" ng-click="seePopover('filter')" data-placement="bottom-right" data-content-template="js/features/space/partials/popover.html" data-animation="am-fade" data-auto-close="1" bs-popover>
+						<span ng-if="selectedStatus || selectedProFilter.length > 0">{{selectedStatus ? selectedProFilter.length + 1 : selectedProFilter.length}}个筛选条件</span>
+						<span ng-if="!selectedStatus && selectedProFilter.length == 0">筛选</span>
+						<i class="arr blue-arr arr-down"></i></span>
+						<span class="grey-num" ng-if="selectedCommunity.type == 'using'">|</span>
+					</span>
+					
+					<span class="b-span" ng-if="selectedCommunity.type == 'using' && (currentAdmin.roomMap[PERMISSION_ROOM_KEY + selectedCommunity.id] === 2 || currentAdmin.user.is_super_admin)" ng-click="seePopover('add-type')" data-placement="bottom-right" data-content-template="js/features/space/partials/popover.html" data-animation="am-fade" data-auto-close="1" bs-popover>添加空间</span>
+				</div>
+			</div>
+			<div class="right-content" id="listContainer">
+				<div class="search-b" ng-repeat="community in comSpaceList">
+					<div class="com-room-line tit-line" ng-if="search.query"><span class="r-name">{{community.name}}</span><span class="grey-num">（{{community.space.length}}）</span></div>
+					<div class="com-room-line" ng-repeat="item in community.space | typeFilter: [selectedProFilter, selectedRoomType] | statusFilter: [selectedStatus, selectedRoomType] track by $index">
+						<div class="com-f">
+							<div class="top-icon" ng-if="item.product.sales_recommend"><span class="n-icon ic-rec">荐</span></div>
+							<div class="p-wrap" ng-class="{'grey': !item.has_rent, 'green': item.has_rent && item.product.visible, 'red': item.has_rent && !item.product.visible}">
+								<img class="p-pic" ng-src="{{item.content}}">
+							</div>
+							<div class="room-tit">
+								<span class="detail-tag" ng-class="{'red': item.product.leasing_sets && item.has_rent, 'grey': !item.has_rent}" ng-if="item.product.leasing_sets.length > 0">秒租</span>
+								<span class="detail-tag" ng-class="{'ora': item.product.rent_set && item.has_rent, 'grey': !item.has_rent}" ng-if="item.product.rent_set && item.product.rent_set.status">长租</span>
+								<span class="tit-des" ng-click="seeSpaceDetail(item)">{{item.name}}</span>
+							</div>
+							<div class="room-in">
+								<span class="in-item">{{item.type_tag_description}}</span>
+								<span class="in-item"><span class="n-icon ic-cap"></span>{{item.area}}m<sup>2</sup></span>
+								<span class="in-item"><span class="n-icon ic-people"></span>{{item.allowed_people}}</span>
+							</div>
+							<div class="room-in" ng-if="item.has_rent">
+								<span class="in-item"><span class="n-icon ic-favorite"></span> ({{item.product.favorite}})</span>
+							</div>
+						</div>
+						<div class="com-s">
+							<div class="s-wrap">
+								<div ng-if="item.has_rent">
+									<a ng-if="!item.product.seats || item.product.seats.length == 0" ng-click="seePopover('seat_price', item)" data-placement="bottom-right" data-content-template="js/features/space/partials/popover.html" data-animation="am-fade" data-auto-close="1" bs-popover>
+										<span ng-if="!item.product.rent_set || !item.product.rent_set.status">
+											<span class="red-num">{{item.product.leasing_sets[0].base_price | currency:''}}</span>
+											<span class="grey-num">元/{{item.product.leasing_sets[0].unit_price.toUpperCase() | translate}}起</span>
+										</span>
+										<span ng-if="item.product.rent_set && item.product.rent_set.status">
+											<span class="red-num">{{item.product.rent_set.base_price | currency:''}}</span>
+											<span class="grey-num">元/{{item.product.rent_set.unit_price.toUpperCase() | translate}}起</span>
+										</span>
+									</a>
+									<a ng-if="item.type == 'desk' && item.product.seats.length > 0" ng-click="seePopover('seat_price', item)" data-placement="bottom-right" data-content-template="js/features/space/partials/popover.html" data-animation="am-fade" data-auto-close="1" bs-popover>
+										<span class="red-num">{{item.base_price}}</span><i class="arr grey-arr arr-down"></i>
+										<span class="grey-num">元/{{item.product.leasing_sets[0].unit_price.toUpperCase() | translate}}</span>
+									</a>
+								</div>
+								<div ng-if="item.product && item.product.unit_price == 'month' && item.type == 'longterm'">起租日: {{item.product.earliest_rent_date | date: 'yyyy-MM-dd'}}</div>
+								<div ng-if="!item.has_rent">
+									<span class="grey-num">无租赁信息  <a class="t-link" ng-if="selectedCommunity.type == 'using' && (currentAdmin.productMap[PERMISSION_PRODUCT_KEY + selectedCommunity.id] === 2 || currentAdmin.user.is_super_admin)" ng-click="seeProduct(item, 'create')">点击设置</a></span>
+								</div>
+							</div>
+						</div>
+						<div class="com-t">
+							<div class="t-wrap" ng-if="selectedRoomType.type != 'recommend'">
+								<div class="t-link" ng-if="item.has_rent && (currentAdmin.productMap[PERMISSION_PRODUCT_KEY + selectedCommunity.id] === 2 || currentAdmin.user.is_super_admin)" ng-click="seeProduct(item, 'edit')">租赁设置</div>
+								<div class="t-drop" 
+									ng-click="seePopover('options', item)" 
+									ng-if="(item.has_rent && currentAdmin.preorderMap[PERMISSION_PREORDER_KEY + selectedCommunity.id] === 2 && item.rent_type != 'long') || 
+										(currentAdmin.reserveMap[PERMISSION_RESERVE_KEY + selectedCommunity.id] === 2 && item.has_rent && item.rent_type != 'long')|| 
+										currentAdmin.user.is_super_admin || 
+										currentAdmin.roomMap[PERMISSION_ROOM_KEY + selectedCommunity.id] === 2 || 
+										(currentAdmin.productMap[PERMISSION_PRODUCT_KEY + selectedCommunity.id] === 2 && item.product.base_price) || 
+										(currentAdmin.leasesMap[PERMISSION_LEASES_KEY + selectedCommunity.id] === 2 && item.has_rent && item.type === 'longterm' && item.product.visible) " 
+									data-placement="bottom-right" 
+									data-content-template="js/features/space/partials/popover.html" 
+									data-animation="am-fade" data-auto-close="1" bs-popover>
+									<span class="hover-op" ng-click="seePopover('options', item)" >操作<i class="arr grey-arr arr-down"></i></span>
+								</div>
+							</div>
+							<div class="t-wrap" ng-if="selectedRoomType.type == 'recommend' && !search.query && (currentAdmin.productMap[PERMISSION_PRODUCT_KEY + selectedCommunity.id] === 2 || currentAdmin.user.is_super_admin)">
+								<div class="t-link" ng-click="changePosition(item, 'up')" ng-if="$index != 0">上移</div>
+								<div class="t-link" ng-click="changePosition(item, 'down')" ng-if="$index != community.space.length-1">下移</div>
+								<div class="t-link" ng-click="deleteRecommend(item.product.id)">取消推荐</div>
+							</div>
+						</div>
+					</div>
+				</div>
+				
+				<div class="nodata" ng-if="comSpaceList.length <= 0">暂无空间信息</div>
+			</div>
+		</div>
+	</div>
+</div>
+
+<ng-include src="'/js/features/space/partials/add-community.html'" ng-if="pageType == 'addCommunity'"></ng-include>
+<ng-include src="'/js/features/space/partials/edit-community.html'" ng-if="pageType == 'editCommunity'"></ng-include>
+<ng-include src="'/js/features/space/partials/see-community.html'" ng-if="pageType == 'communityDetail'"></ng-include>
+<ng-include src="'/js/features/space/partials/see-room.html'" ng-if="pageType == 'spaceDetail'"></ng-include>
+<ng-include src="'/js/features/space/partials/add-room.html'" ng-if="pageType == 'addRoom'"></ng-include>
+<ng-include src="'/js/features/space/partials/edit-room.html'" ng-if="pageType == 'editRoom' || pageType == 'copyRoom'"></ng-include>
+<ng-include src="'/js/features/space/partials/product.html'" ng-if="pageType == 'operateProduct'"></ng-include>
+<ng-include src="'/js/features/space/partials/building-images.html'" ng-if="pageType == 'communityImages'"></ng-include>

@@ -1,0 +1,34 @@
+<div class="modal" role="dialog">
+    <div class="modal-dialog modal-center modal-reate">
+        <div class="modal-content group-add">
+            <div class="modal-body clearfix">
+                <div class="reate_clues">
+                    <div class="reate_header clearfix">
+                        <p class="clearfix">
+                            <span><span>客户关系</span>&gt;<span>客户组</span>&gt;<span>客户信息</span></span>
+                            <span ng-click="$hide()"></span>
+                        </p>
+                    </div>
+                    <div class="reate_nav">
+                        <div class="linkman_title">
+                            <span class="indent per30">客户</span>
+                            <span class="per18">性别</span>
+                            <span class="per30">手机</span>
+                            <span ng-if="groupType !== 'card' && currentAdmin.permissionMap[PERMISSION_KEY] == 2"  class="per18">操作</span>
+                        </div>
+                        <div class="linkman_list" ng-repeat="item in customerLists">
+                            <div class="h-pic">
+                                <sb-image-with-fallback default-url="/img/default.png" error-url="/img/default.png" class="sm-pic" url="{{item.avatar}}"></sb-image-with-fallback>
+                                <span>{{item.name}}</span>
+                                <i ng-if="item.user_id"></i>
+                            </div>
+                            <span class="per18">{{item.sex}}</span>
+                            <span class="per30">{{item.phone}}</span>
+                            <span ng-if="groupType !== 'card' && currentAdmin.permissionMap[PERMISSION_KEY] == 2"  class="per18 color-blue" ng-click="addUserToGroup($hide, item.id)">移出客户组</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

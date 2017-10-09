@@ -1,0 +1,220 @@
+<div class="sandBox_content">
+    <!-- <div class="sandBox_hp" ng-if="currentAdmin.permissions.length > 0">{{'ON_LINE' | translate}}</div> -->
+    <div class="sandBox_hp" ng-if="currentAdmin.permissions.length === 0">管理员暂时未给你配置任何职位。</div>
+    <div class="dash-wrapper" ng-if="currentAdmin.permissions.length > 0">
+        <div class="dash-use">
+            <div class="t-f-box">
+                <div class="t-f-line">
+                    <div class="t-f-left">
+                        社区名称
+                    </div>
+                    <div class="t-f-right">
+                        <div class="t-f-half t-f-s">
+                            <div class="drop-wra longer">
+                                <sb-dropdown select="filterOption.buildingObj" placeholder="placeholder.selectBuilding" options="buildingsList" flexible="true"></sb-dropdown>
+                            </div>
+                        </div>
+                        <div class="t-f-half t-f-b">
+                            <span class="t-f-left">关键字</span>
+                            <div class="ib-box">
+                                <input type="text" class="t-f-input" ng-keyup="$event.keyCode === 13 && searchList()" ng-model="filterOption.query" placeholder="请输入空间名进行搜索">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="t-f-line" ng-if="tabType !== 'membership_card'">
+                    <div class="t-f-left">
+                        空间状态
+                    </div>
+                    <div class="t-f-right">
+                        <div class="t-f-half t-f-s">
+                            <div class="drop-wra longer">
+                                <sb-dropdown select="filterOption.statusObj" placeholder="placeholder.all" options="roomStatus" flexible="true"></sb-dropdown>
+                            </div>
+                        </div>
+                        <div class="t-f-half t-f-b">
+                            <div class="t-search-btn" ng-click="searchList()">
+                                搜索
+                            </div>
+                            <span class="clear-btn" ng-click="clearSearchFilters()">清空</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="t-f-line" ng-if="tabType === 'membership_card'">
+                    <div class="t-f-left">
+                        会员卡状态
+                    </div>
+                    <div class="t-f-right">
+                        <div class="t-f-half t-f-s">
+                            <div class="drop-wra longer">
+                                <sb-dropdown select="filterOption.statusObj" placeholder="placeholder.all" options="roomStatus" flexible="true"></sb-dropdown>
+                            </div>
+                        </div>
+                        <div class="t-f-half t-f-b">
+                            <div class="t-search-btn" ng-click="searchList()">
+                                搜索
+                            </div>
+                            <span class="clear-btn" ng-click="clearSearchFilters()">清空</span>
+                        </div>
+                    </div>
+                </div>
+                <!-- <div class="t-btn-wra">
+                    <div class="t-search-btn" ng-click="searchList()">
+                        搜索
+                    </div>
+                    <span class="clear-btn" ng-click="clearSearchFilters()">清空</span>
+                </div> -->
+            </div>
+        </div>
+
+    	<div class="dash-content">
+    		<div class="dash-head">
+                <div class="head-box" ng-click="switchTab(type.name)" ng-class="{on: tabType === type.name,disabled: !loaded}" ng-repeat="type in roomTypes">
+                    <div class="head-name">
+                        {{::type.description}}
+                        <div class="head-line"></div>
+                    </div>
+                </div>
+            </div>
+            <div class="dash-line title">
+                <div class="line-left">
+                    <div class="mode-box" ng-if="tabType != 'membership_card'">
+                        <div class="mode-item" ng-click="changeTime('hour')" ng-class="{on: timeType !== 'hour'}" ng-if="tabType === 'meeting' || tabType === 'others'">日</div>
+                        <div class="mode-item" ng-click="changeTime('month')" ng-class="{on: timeType !== 'month'}" ng-if="tabType === 'desk' || tabType === 'office'">年</div>
+                        <div class="mode-item" ng-click="changeTime('day')" ng-class="{on: timeType !== 'day'}">月</div>
+                    </div>
+                    <div class="dash-pick-date" ng-class="{left28: tabType === 'membership_card'}">
+                        <div class="arr-box" ng-click="changeDate('prev')">
+                            <span class="arr-squ arr-left"></span>
+                        </div>
+                        <div class="date-info">
+                            <div class="info-box">
+                                <div ng-if="timeType == 'hour'">{{pickoptions.selectedDate | date: 'yyyy/MM/dd'}}</div>
+                                <div ng-if="timeType == 'month'">{{pickoptions.selectedDate.getFullYear()}}年</div>
+                                <div class="thinner" ng-if="timeType == 'day' && pickoptions.startYear != pickoptions.endYear">{{pickoptions.startYear}}年 - {{pickoptions.endYear}}年</div>
+                                <div class="thinner" ng-if="timeType == 'day' && pickoptions.startYear == pickoptions.endYear">{{pickoptions.startYear}}年</div>
+                                <div class="grey-f" ng-if="timeType == 'day'">({{pickoptions.startDay | date: 'MM/dd'}}-{{pickoptions.endDay | date: 'MM/dd'}})</div>
+                                <input type="text" class="dash-date" ng-model="pickoptions.selectedDate" data-autoclose="1" on-hide="closedPicker()" placement="bottom" bs-datepicker>
+                            </div>
+                        </div>
+                        <div class="arr-box" ng-click="changeDate('next')">
+                            <span class="arr-squ arr-right"></span>
+                        </div>
+                    </div>
+                </div>
+                <div class="line-right for-dot" ng-class="{'hour-lh': timeType == 'hour' || timeType == 'day'}">
+                    <div class="right-box month-width" ng-repeat="item in timeItems" ng-if="timeType == 'month'">
+                        <div class="r-b-con" ng-class="{now: item.isNow}">
+                            <div>{{::item.name}}</div>
+                        </div>
+                    </div>
+                    <div class="right-box day-width" ng-repeat="item in timeItems" ng-if="timeType == 'day'">
+                        <div class="r-b-con" ng-class="{now: item.isNow}">
+                             <div>{{::item.name}}</div>
+                             <div>{{::item.date_show}}</div>
+                        </div>
+                    </div>
+                    <div class="right-box hour-width no-br" ng-repeat="item in timeItems" ng-if="timeType == 'hour'">
+                        <div class="r-b-con move50" ng-if="item.name != 24" ng-class="{now: item.isNow}">
+                             <div>{{::item.name}}</div>
+                             <div>时</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="con-wrapper">
+                <div class="dash-date-con">
+                    <div class="dash-line" ng-repeat="room in rooms track by $index">
+                        <div class="line-left">
+                            <!-- <div class="com-f" ng-click="showSeats(room)"> -->
+                            <div class="com-f">
+                                <div class="p-wrap" ng-class="{'red': !room.product.visible, 'green': room.product.visible}" ng-if="tabType !== 'membership_card'">
+                                    <img class="p-pic" src="../img/room.jpg" ng-src="{{::room.product.attachment[0].content}}">
+                                </div>
+                                <div class="p-wrap" ng-class="{'red': !room.card.visible, 'green': room.card.visible}" ng-if="tabType === 'membership_card'">
+                                    <img class="p-pic" ng-src="{{::room.card.background}}">
+                                </div>
+                                <div class="room-tit" ng-if="tabType !== 'membership_card'">
+                                    <span class="tit-des" ng-click="seeProductDetail(room)">{{::room.product.room_name}}</span>
+                                </div>
+                                <div class="room-tit" ng-if="tabType === 'membership_card'">
+                                    <span class="tit-des" ng-click="seeCardDetail(room)">{{::room.card.name}}</span>
+                                </div>
+                                <div class="room-info" ng-if="tabType !== 'membership_card'">
+                                    <span class="in-item">
+                                        <i ng-if="room.product.type_tag === 'hot_desk'">共享工位</i>
+                                        <i ng-if="room.product.type_tag === 'dedicated_desk'">独享工位</i>
+                                        <i ng-if="room.product.room_type === 'meeting'">会议室</i>
+                                        <i ng-if="room.product.room_type === 'office'">办公室</i>
+                                        <i ng-if="room.product.type_tag === 'recording_studio'">录音棚</i>
+                                        <i ng-if="room.product.type_tag === 'multi_function_room'">多功能厅</i>
+                                        <i ng-if="room.product.type_tag === 'dinning_hall'">餐饮空间</i>
+                                        <i ng-if="room.product.type_tag === 'lecture_hall'">阶梯教室</i>
+                                        <i ng-if="room.product.type_tag === 'broadcasting_studio'">演播室</i>
+                                        <i ng-if="room.product.type_tag === 'photo_studio'">摄影室</i>
+                                        <i ng-if="room.product.type_tag === 'theater'">放映院</i>
+                                        <i ng-if="room.product.type_tag === 'outdoor_space'">室外露天</i>
+                                        <i ng-if="room.product.type_tag === 'exhibition_hall'">会展空间</i>
+                                        <i ng-if="room.product.type_tag === 'entertainment_space'">娱乐设施</i>
+                                    </span>|
+                                    <span class="in-item"><span class="n-icon ic-cap"></span>{{room.product.area}}m<sup>2</sup></span>|
+                                    <span class="in-item"><span class="n-icon ic-people"></span>{{room.product.allowed_people}}</span>
+                                </div>
+                                <div class="room-info" ng-if="tabType === 'membership_card'">{{::room.card.description}}</div>
+                                <div class="room-in" ng-if="tabType !== 'membership_card'" ng-click="selectProduct(room)" data-placement="bottom-left" 
+                                    data-content-template="js/features/dashboard/partials/popover.html" 
+                                    data-animation="am-fade" data-auto-close="1" bs-popover>
+                                    <span class="red-f">{{::room.product.min_price}}</span><span class="red-f" ng-if="room.product.min_price != room.product.max_price">-{{::room.product.max_price}}</span> 元
+                                </div>
+                                <div class="room-in" ng-if="tabType === 'membership_card'" ng-click="selectProduct(room)" data-placement="bottom-left" 
+                                    data-content-template="js/features/dashboard/partials/popover.html" 
+                                    data-animation="am-fade" data-auto-close="1" bs-popover>
+                                    <span class="red-f">{{::room.card.min_price}}</span><span class="red-f" ng-if="room.card.min_price != room.card.max_price">-{{::room.card.max_price}}</span> 元
+                                </div>
+                            </div>
+                        </div>
+                        <div class="line-right">
+                            <sb-dash-date room="room" tab="tabType" orders="room.orders" rooms="transferRooms" type="timeType" room-nums="rooms.length" selected-date="pickoptions.selectedDate" pick-options="pickoptions"></sb-dash-date>
+                            <div class="right-box" ng-repeat="item in timeItems" ng-class="{'month-width': timeType == 'month','day-width': timeType == 'day','hour-width': timeType == 'hour',weekend: timeType == 'day' && (item.num == 7 || item.num == 1)}">
+                                <div class="r-con" ng-if="timeType == 'month' || timeType == 'day'" ng-class="{disabled: item.disabled || !room.product.visible}" ng-click="seePopover('showWays', room, item)">
+                                    <div class="r-con-num" ng-if="timeType === 'day' && tabType === 'desk'"><span ng-repeat="pos in room.poses" ng-if="room.poses.length > 0 && pos.pos == item.num - 1">{{pos.nums}}</span><span ng-if="!room.poses || room.poses.length == 0">0</span> / {{::room.product.allowed_people}}</div>
+                                    <div class="target" ng-click="clicked($event, room.index, pos.pos, room, item)" ng-class="{hide: pos.nums == room.product.allowed_people}" ng-repeat="pos in room.poses" ng-if="pos.pos == item.num - 1 && timeType == 'day'"></div>
+                                    <div class="target" ng-click="clicked($event, room.index, $index, room, item)" ng-if="timeType == 'month'"></div>
+                                </div>
+                                <div class="half-r-con" ng-if="timeType == 'hour'" ng-class="{disabled: item.disabled || !room.product.visible}">
+                                    <div class="half-r-half" ng-class="{disabled: item.passedHalf}" ng-click="seePopover('showWays', room, item)">
+                                        <div class="target" ng-click="clicked($event, room.index, $index, room, item)"></div>
+                                    </div>
+                                    <div class="half-r-half" ng-click="seePopover('showWays', room, item, 'endHalf')">
+                                        <div class="target" ng-click="clicked($event, room.index, $index, room, item, 'endHalf')"></div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="desk-div" ng-if="room.unfolded && tabType === 'desk'">
+                            <div class="desk-line" ng-repeat="seat in room.product.seats">
+                                <div class="line-left">
+                                    <div class="seat-info">
+                                        座位 {{::seat.seat_number}}
+                                    </div>
+                                </div>
+                                <div class="line-right">
+                                    <sb-dash-date room="room" tab="tabType" orders="" method="'seat'" rooms="transferRooms" type="timeType" room-nums="rooms.length" selected-date="pickoptions.selectedDate" pick-options="pickoptions"></sb-dash-date>
+                                    <div class="right-box" ng-repeat="item in timeItems" ng-class="{'month-width': timeType == 'month','day-width': timeType == 'day','hour-width': timeType == 'hour',weekend: timeType == 'day' && (item.num == 7 || item.num == 1)}">
+                                        <div class="r-con" ng-if="timeType == 'month' || timeType == 'day'" ng-class="{disabled: item.disabled || !room.product.visible}" ng-click="seePopover('showWays', room, item)">
+                                            <div class="r-con-num" ng-if="timeType === 'day' && tabType === 'desk'"><span ng-repeat="pos in room.poses" ng-if="room.poses.length > 0 && pos.pos == item.num - 1">{{pos.nums}}</span><span ng-if="!room.poses || room.poses.length == 0">0</span> / {{::room.product.allowed_people}}</div>
+                                            <div class="target" ng-click="clicked($event, room.index, pos.pos, room, item)" ng-class="{hide: pos.nums == room.product.allowed_people}" ng-repeat="pos in room.poses" ng-if="pos.pos == item.num - 1 && timeType == 'day'"></div>
+                                            <div class="target" ng-click="clicked($event, room.index, $index, room, item)" ng-if="timeType == 'month'"></div>
+                                        </div>
+                                        
+                                    </div>
+                                </div>                                
+                            </div>
+                        </div>
+                    </div>
+                    <div class="nodata" ng-if="rooms.length <= 0 && loaded">无房间信息</div>
+                </div>
+            </div>
+    	</div>
+    </div>
+</div>

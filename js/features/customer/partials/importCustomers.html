@@ -1,0 +1,62 @@
+<div class="modal" role="dialog">
+    <div class="modal-dialog modal-center modal-reate">
+        <div class="modal-content group-add">
+            <div class="modal-body clearfix">
+            	<div class="reate_clues">
+			    	<div class="reate_header clearfix">
+			    		<p class="clearfix">
+			    			<span>导入客户</span>
+			    			<span ng-click="$hide()"></span>
+			    		</p>
+				    </div>
+				    <div class="react_download">
+				    	<div class="r_d_top">
+				    		<span>第1步</span>
+				    		<u></u>
+				    		<span>第2步</span>
+				    		<u></u>
+				    		<span>第3步</span>
+				    	</div>
+				    	<div class="r_d_bottom">
+				    		<button class="download" ng-click="importDownload()"><u></u>下载Excel模板</button>
+				    		<span>在模板内填入客户资料</span>
+				    		<button class="upload"><u></u><input type="file" id="excelUpload" nv-file-select uploader="excelFileUploader">上传模板</button>
+				    	</div>
+				    </div>
+				    <div ng-if="importCustomerlist" class="react_import_success">
+				    	<div class="r-i-top">
+				    		<p>即将导入客户：<span> {{importCustomers.length}}位 </span><span>（重复{{repeatLength}}位）</span></p>
+				    		<div class="top-table">
+				    			<div class="table-head">
+				    				<span class="per18">姓名</span>
+				    				<span class="per16">性别</span>
+				    				<span class="per28">手机</span>
+				    				<span class="per16">邮箱</span>
+				    				<span class="per18">导入状态</span>
+				    			</div>
+				    			<div class="table-body">
+				    				<div ng-repeat="item in importCustomers">
+				    					<span class="per18">{{item.name}}</span>
+				    					<span class="per16">{{item.sex}}</span>
+				    					<span class="per28">({{item.phone_code}}){{item.phone}}</span>
+				    					<span class="per16">{{item.email}}</span>
+				    					<span ng-class="{'blue': item.status==='new', 'red': item.status==='repeat'}">{{item.status}}</span>
+				    				</div>
+				    			</div>
+				    		</div>
+				    		<div class="top-select" ng-if="repeatLength>0">
+				    			<p>重复记录 <span>（根据客户手机号查重）</span></p>
+				    			<p><input type="radio" name="tel" value="bypass" ng-model="importConfirm.action"/>&nbsp;&nbsp;跳过手机号相同客户 <span>（手机号与系统相同的客户信息不导入系统）</span><br>
+				    			<input type="radio" name="tel" value="cover" ng-model="importConfirm.action"/>&nbsp;&nbsp;覆盖手机号相同客户 <span>（更新手机号与系统相同已有信息）</span></p>
+				    		</div>
+				    	</div>
+				    	<div class="reate_btn r-i-btn clearfix">
+				    		<span class="r-save-btn fl" ng-click="importCustomerConfirm($hide)">确定</span>
+			    		 	<span class="r-btn fl" ng-click="$hide()">取消</span>
+				    	</div>
+				    </div>
+				</div>
+            </div>
+        </div>
+    </div>
+</div>

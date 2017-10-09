@@ -1,0 +1,117 @@
+<div class="modal" role="dialog">
+    <div class="modal-dialog modal-center smaller-s">
+        <div class="modal-content group-add">
+            <div class="modal-body clearfix">
+
+                <div class="com-dialog of" ng-if="productItem && !productItem.appointment && productItem.visible && popType == 'appointment'">
+                	<div class="dialog-head static top-r">
+                		<div class="head-wra">
+                			<span>开启预约</span>
+	                		<span class="close" ng-click="$hide()">✖</span>
+                		</div>
+                	</div>
+                    <div class="dia-box f14">
+						<div class="dia-tip b-n">
+							<span>开启预约后, 创合用户将能在APP预览并预约此办公室,是否确认开启预约?</span>
+						</div>
+                        <div class="input-b">
+                        	<div>请设置起租日</div>
+                        	<div class="date_in"><input type="text" ng-model="productItem.earliest_rent_date" data-date-format="yyyy-MM-dd"  data-autoclose="1" bs-datepicker><span><i class="fa fa-calendar"></i></span></div>
+                        </div>
+                        <div class="dia-bot pd">
+                            <div class="dia-btns">
+                                <div class="long-btn" ng-click="setAppointment($hide)">开启预约</div>
+                                <div class="long-btn grey" ng-click="$hide()">取消</div>
+                            </div>   
+                        </div>
+                    </div>
+                </div>
+
+                <div class="com-dialog of" ng-if="popType == 'visible'">
+                    <div class="dialog-head static top-r">
+                        <div class="head-wra">
+                            <span>上架空间</span>
+                            <span class="close" ng-click="$hide()">✖</span>
+                        </div>
+                    </div>
+                    <div class="dia-box f14">
+                        <div class="dia-tip b-n">
+                            <span>是否上架此空间? 上架后此空间将在创合APP展示. 请确保信息正确.</span>
+                        </div>
+                        <div class="input-b">
+                            <div>请设置起租日</div>
+                            <div class="date_in"><input type="text" ng-model="productItem.earliest_rent_date" data-date-format="yyyy-MM-dd"  data-autoclose="1" bs-datepicker><span><i class="fa fa-calendar"></i></span></div>
+                        </div>
+                        <div class="dia-bot pd">
+                            <div class="dia-btns">
+                                <div class="long-btn" ng-click="setVisible(true, $hide)">上架</div>
+                                <div class="long-btn grey" ng-click="$hide()">取消</div>
+                            </div>   
+                        </div>
+                    </div>
+                </div>
+
+                <div class="com-dialog of" ng-if="productItem && productItem.appointment && productItem.visible && popType == 'appointment'">
+                	<div class="dialog-head static top-r">
+                		<div class="head-wra">
+                			<span>关闭预约</span>
+	                		<span class="close" ng-click="$hide()">✖</span>
+                		</div>
+                	</div>
+                    <div class="dia-box f14">
+						<div class="dia-tip b-n">
+							<span>关闭预约后, 创合用户将无法在APP预约此办公室, 是否确认关闭预约?</span>
+						</div>
+                        <div class="dia-bot pd">
+                            <div class="dia-btns">
+                                <div class="long-btn" ng-click="setAppointment($hide)">关闭预约</div>
+                                <div class="long-btn grey" ng-click="$hide()">取消</div>
+                            </div>   
+                        </div>
+                    </div>
+                </div>
+
+                <div class="com-dialog of" ng-if="!productItem && popType == 'appointment'">
+                	<div class="dialog-head static top-r">
+                		<div class="head-wra">
+                			<span>开启预约</span>
+	                		<span class="close" ng-click="$hide()">✖</span>
+                		</div>
+                	</div>
+                    <div class="dia-box f14">
+						<div class="dia-tip b-n">
+							<p>你当前尚未完成租赁设置</p>
+							<p>完成租赁设置后选择"保存并上架", 空间将自动开启预约, 开启后可手动关闭预约.</p>
+						</div>
+                        <div class="dia-bot pd">
+                            <div class="dia-btns">
+                                <div class="long-btn longer" ng-click="$hide()">我知道了</div>
+                            </div>   
+                        </div>
+                    </div>
+                </div>
+
+                <div class="com-dialog of" ng-if="productItem && !productItem.visible && popType == 'appointment'">
+                    <div class="dialog-head static top-r">
+                        <div class="head-wra">
+                            <span>开启预约</span>
+                            <span class="close" ng-click="$hide()">✖</span>
+                        </div>
+                    </div>
+                    <div class="dia-box f14">
+                        <div class="dia-tip b-n">
+                            <p>当前空间处于下架状态</p>
+                            <p>上架商品后可手动设置预约.</p>
+                        </div>
+                        <div class="dia-bot pd">
+                            <div class="dia-btns">
+                                <div class="long-btn longer" ng-click="$hide()">我知道了</div>
+                            </div>   
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </div>
+</div>

@@ -1,0 +1,116 @@
+<div  class="modal gallery-upload-progress-modal" role="dialog">
+    <div class="modal-dialog log-popup">
+        <div class="modal-content log-radius">
+            <div class="modal-header log-header" ng-show="title">
+                <h4><span ng-bind="title"></span></h4>
+            </div>
+            <div class="modal-body log-body">
+                <div class="log-content">
+                	<div class="mbox">
+			            <div class="mtitle">
+			                {{'EVENT' | translate}}
+			                <a class="btnLink" ng-click="showUserList(event)" ng-if="event.registration_method==='online' && !event.is_saved">查看报名用户</a>
+			            </div>
+
+			            <ul class="room_lsit log-list">
+			                <li>
+			                    <span class="item_label">{{'EVENT_NAME' | translate}}：</span>
+			                    <p class="word">{{event.name}}</p>
+			                </li>
+			                <li>
+			                    <span class="item_label">{{'EVENT_IMAGES' | translate}}：</span>
+			                    <div class="add_slide">
+			                        <div class="detail-cover-image">
+			                            <img class="detail-cover-image" ng-src="{{event.attachments[0].content}}" alt="cover image"/>
+			                        </div>
+			                        <ul class="addImg three">
+			                            <li ng-repeat="attachment in event.attachments" ng-if="$index !== 0">
+			                                <img ng-src="{{attachment.content}}" alt=" image"/>
+			                            </li>
+			                        </ul>
+			                    </div>
+			                </li>
+			                <li>
+			                    <span class="item_label">{{'EVENT_DESCRIPTION' | translate}}：</span>
+			                    <p class="word" ng-bind-html="event.r_description"></p>
+			                </li>
+			                <li>
+			                    <span class="item_label">{{'EVENT_TIME' | translate}}：</span>
+			                    <p class="word"><span ng-repeat="item in event.arr">{{item}}<br></span></p>
+			                </li>
+			                <li>
+			                    <span class="item_label">{{'EVENT_LOCATION' | translate}}：</span>
+			                    <p class="word">{{event.city.name}} {{event.address}} </p>
+			                </li>
+			                <li>
+			                    <span class="item_label">{{'EVENT_LIMITATION' | translate}}：</span>
+			                    <p class="word">{{event.limit_number}}</p>
+			                </li>
+			                <li>
+			                    <span class="item_label">{{'REGISTRATION_TIME' | translate}}：</span>
+			                    <p class="word">{{event.registration_start_date | date: 'yyyy-MM-dd'}} - {{event.registration_end_date | date: 'yyyy-MM-dd'}}</p>
+			                </li>
+			                <li>
+			                    <span class="item_label">发起公司：</span>
+			                    <p class="word">{{event.publish_company}}</p>
+			                </li>
+			                <li>
+			                    <span class="item_label">是否收费：</span>
+			                    <p class="word"><span ng-if="event.is_charge">是</span><span ng-if="!event.is_charge">否</span></p>
+			                </li>
+			                <li ng-if="event.is_charge">
+			                    <span class="item_label">收费金额：</span>
+			                    <p class="word">{{event.price}} 元/人</p>
+			                </li>
+			                <li>
+			                    <span class="item_label">{{'REGISTRATION_FORM' | translate}}：</span>
+			                    <p class="word" ng-if="event.registration_method==='offline'">{{'OFFLINE' | translate}}</p>
+			                    <p class="word" ng-if="event.registration_method==='online'">{{'ONLINE' | translate}}</p>
+			                </li>
+			                <li ng-if="event.registration_method==='online'">
+			                    <span class="item_label">是否审核：</span>
+			                    <p class="word">
+			                        <span ng-if="event.verify">{{'YES' | translate}}</span>
+			                        <span ng-if="!event.verify">{{'NO' | translate}}</span>
+			                    </p>
+			                </li>
+			            </ul>
+
+			            <div class="mtitle mid" ng-if="event.registration_method==='online'">
+			                表单
+			            </div>
+
+			            <ul class="room_lsit" ng-if="event.registration_method==='online'">
+			                <li ng-repeat="item in event.forms">
+			                <span class="item_label" ng-if="item.type==='text'">{{'BASIC_TEXT' | translate}}：</span>
+			                    <span class="item_label" ng-if="item.type==='phone'">{{'TELEPHONE' | translate}}：</span>
+			                    <span class="item_label" ng-if="item.type==='email'">{{'EMAIL' | translate}}：</span>
+			                    <span class="item_label textarea" ng-if="item.type==='radio'">{{'SINGLE_SELECT' | translate}}：</span>
+			                    <span class="item_label textarea" ng-if="item.type==='checkbox'">{{'MULTISELECT' | translate}}：</span>
+
+			                    <p class="word" ng-if="item.type==='text' || item.type==='phone' || item.type==='email'" ng-bind="item.title"></p>
+			                    <p class="word" ng-if="item.type==='radio'">
+			                        <span ng-repeat="option in item.options" style="margin-right: 10px;"><i class="icon ic_radio"></i>{{option.content}}</span>
+			                    </p>
+			                    <p class="word" ng-if="item.type==='checkbox'">
+			                        <span class="block" ng-repeat="option in item.options"><i class="icon ic_checkbox"></i>{{option.content}}</span>
+			                    </p>
+			                </li>
+			            </ul>
+
+			            <div class="mtitle mid btns">
+			                <a
+			                    ng-if="currentAdmin.permissionMap[PERMISSION_KEY] === 2"
+			                    class="op_btn"
+			                    ng-click="seeEventEdit(event)"
+			                >编辑</a>
+			            </div>
+			        </div>
+
+				</div>
+            </div>
+        </div>
+
+
+    </div>
+</div>

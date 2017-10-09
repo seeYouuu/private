@@ -1,0 +1,215 @@
+<div class="group_detail">
+    <div class="space-detail">
+        <div class="space-head">
+            <span class="detail-tag" ng-class="{'green': membershipItem.visible && membershipItem.specification.length > 0, 'red': !membershipItem.visible && membershipItem.specification.length > 0, 'grey': membershipItem.specification.length == 0}">ID: {{membershipItem.id}}</span>
+            <span class="head-des">{{membershipItem.name}}</span>
+            <div class="head-r">
+                <span ng-click="seePopover('editCard-detail')" ng-if="currentAdmin.permissionMap[PERMISSION_KEY] == 2 || currentAdmin.permissionMap[PERMISSION_CARD_SALES_KEY] == 2" data-placement="bottom-right" data-content-template="js/features/membership/partials/options.html" data-animation="am-fade" data-auto-close="1" bs-popover>
+					操作
+					<i class="arr blue-arr arr-down"></i>
+				</span>
+            </div>
+        </div>
+        <div class="space-con" ng-if="loading">
+            <div class="space-top">
+                <div class="space-t-left">
+                    <div class="img_slider">
+                        <img ng-src="{{membershipItem.background}}">
+                    </div>
+                </div>
+                <div class="space-t-right">
+                    <div class="s-t-tit">
+                        {{membershipItem.name}}
+                    </div>
+                    <div class="s-t-pri" ng-if="membershipItem.priceDesc">
+                        <span class="r-num">{{membershipItem.priceDesc}}</span>元
+                        <p class="grey-num">有效期{{membershipItem.periodDesc}}</p>
+                    </div>
+                    <div class="s-t-line m35" ng-if="membershipItem.doors_control.length > 0">
+                        <div>
+                            <span>应用社区</span>
+                        </div>
+                        <div class="s-line-box" ng-repeat="item in membershipItem.door_desc">
+							<span class="dot"></span>
+							<span>{{item.building_name}}</span>
+                            <div class="s-line-pop">
+                                <span class="dot"></span>
+                                <span>{{item.building_name}}</span><span class="grey-num"> - 应用社区</span>
+                                <ul>
+                                    <li ng-repeat="door in item.doors">{{door.name}}</li>
+                                </ul>
+                            </div>
+						</div>
+                        
+                    </div>
+                </div>
+            </div>
+            <div class="space-holder"></div>
+            <div class="space-bot">
+                <div class="space-b-head">
+                    <div class="b-box" ng-click="switchCardDetailTab(0)" ng-class="{on: detailTab == 0}">
+                        <div class="b-name">会员卡信息
+                            <div class="b-line"></div>
+                        </div>
+                    </div>
+                    <div class="b-box" ng-click="switchCardDetailTab(1)" ng-class="{on: detailTab == 1}" ng-if="currentAdmin.permissionMap[PERMISSION_CARD_ORDER_KEY]">
+                        <div class="b-name">会员卡订单
+                            <div class="b-line"></div>
+                        </div>
+                    </div>
+                </div>
+                <div class="space-b-con">
+                    <div class="s-info-page" ng-if="detailTab == 0">
+                        <div class="info-con">
+                        	<ul class="room_lsit">
+                        		<li>
+                        			<span class="item_label">会籍规格</span>
+                    				<div class="rule-box" ng-repeat = "item in membershipItem.specification">
+                    					<h5>{{item.specification}}</h5>
+                    					<div class="p-line"><span class="r-num">{{item.price | currency: ''}}</span>元 </div>
+                    					<span class="g-num">有效期{{item.valid_period}}个月</span>
+                    				</div>
+                        		</li>
+                        		<li>
+                        			<span class="item_label">应用社区</span>
+                        			<div class="commun-l">
+                        				<ul>
+                        					<li ng-repeat="item in membershipItem.door_desc">
+                        						<div class="c-tit">{{item.building_name}}<span class="grey-num"> - 应用门禁</span></div>
+                        						<p ng-repeat="door in item.doors">{{door.name}}</p>
+                        					</li>
+                        				</ul>
+                        			</div>
+                        		</li>
+                        		<li>
+                        			<span class="item_label">会员卡说明</span>
+                        			<div class="commun-l s-li">
+                                        <p ng-bind-html="membershipItem.description_html"></p>
+                        			</div>
+                        		</li>
+                        		<li>
+                        			<span class="item_label">使用须知</span>
+                        			<div class="commun-l s-li">
+                        				<p ng-bind-html="membershipItem.instructions_html"></p>
+                        			</div>
+                        		</li>
+                        		<li>
+                        			<span class="item_label">客服电话</span>
+                        			<div class="commun-l">
+                						<p>{{membershipItem.phone}}</p>
+                        			</div>
+                        		</li>
+                                <li>
+                                    <span class="item_label">商品地址</span>
+                                    <div class="commun-l">
+                                        <p>{{membershipItem.card_url}}</p>
+                                    </div>
+                                </li>
+                        	</ul>
+                        </div>
+                    </div>
+                    <div class="s-info-page p25" ng-if="detailTab == 1">
+                        <div class="line-width info-tit">
+                            <div class="line-item per40 t-left">
+                                会员卡
+                            </div>
+                            <div class="line-item per15">
+                                单价
+                            </div>
+                            <div class="line-item per15">
+                                有效期
+                            </div>
+                            <div class="line-item per15">
+                                购买者
+                            </div>
+                            <div class="line-item per15">
+                                操作
+                            </div>
+                        </div>
+                        <div class="space-b-box" ng-repeat="item in membershipOrders">
+                            <div class="b-title tit-top">
+                                <span class="blake-txt">订单号：{{item.order_number}}</span>
+                                <span class="f-right" ng-bind="item.creation_date | date: 'yyyy-MM-dd'"></span>
+                            </div>
+                            <div class="line-width">
+                                <div class="line-item per40 t-left">
+                                    <div class="item-con">
+                                        <div class="p-w-t">
+                                            <div class="p-p">
+                                                <img ng-src="{{item.card.background}}">
+                                            </div>
+                                            <div class="p-t">
+                                                <div class="p-t-top black hover" ng-click="seeOrderDetail(item, 'memberDetail')">
+                                                    {{item.card.name}}
+                                                </div>
+                                                <div class="p-t-bot grey">
+                                                    <div class="text-con">{{item.specification}}</div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="line-item per15">
+                                    <div class="item-con">
+                                        <div>
+                                            <div>{{item.price}}元</div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="line-item per15">
+                                    <div class="item-con">
+                                        <div>{{item.valid_period}}个月</div>
+                                    </div>
+                                </div>
+                                <div class="line-item per15">
+                                    <div class="item-con">
+                                        <div class="link-txt">
+                                            {{::userOptions[item.user].name}}
+                                            <div class="u-box just-show">
+                                                <img ng-src="{{userOptions[item.user].avatar}}" class="u-ava">
+                                                <div class="u-nick">{{userOptions[item.user].name}}</div>
+                                                <div class="u-info">
+                                                    <span ng-if="userOptions[item.user].phone">{{userOptions[item.user].phone}}</span>
+                                                    <span ng-if="userOptions[item.user].email">{{userOptions[item.user].email}}</span>
+                                                </div>
+                                                <span class="n-icon ic_msg" ng-click="generateChat(item.user, item.product.room.building.id)" ng-if="customerservice[item.product.room.building.id]"></span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="line-item per15 last-box">
+                                    <div class="item-con">
+                                        <div class="status">
+                                            <span class="status-txt">已完成</span>
+                                            <div class="status-box">
+                                                <div class="status-head">
+                                                    订单历史状态记录
+                                                </div>
+                                                <div class="status-con">
+                                                    <div class="status-line">
+                                                        <div class="con-left">创建时间:</div>
+                                                        <div class="con-right">{{item.creation_date | date: 'yyyy-MM-dd HH:mm:ss'}}</div>
+                                                    </div>
+                                                    <div class="status-line">
+                                                        <div class="con-left">付款时间:</div>
+                                                        <div class="con-right">{{item.payment_date | date: 'yyyy-MM-dd HH:mm:ss'}}</div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="link-txt" ng-click="seeOrderDetail(item)">查看详情</div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="b-title tit-bot">
+                                <span class="blake-txt f-right">实付款: {{::item.price | currency: '￥':2 }}</span>
+                                <div class="detail-tag f-right" ng-class="{account: item.pay_channel == 'account',blue: item.pay_channel == 'alipay',green: item.pay_channel == 'wx'}">{{item.pay_channel | translate}}</div>
+                            </div>
+                        </div>
+                    </div>
+                    <pagination ng-if="detailTab == 1" option="pageOptions" on-page="goPage(index)"></pagination>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

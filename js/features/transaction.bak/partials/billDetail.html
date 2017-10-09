@@ -1,0 +1,190 @@
+<div class="sandBox_content">
+    <div class="tra-content">
+		<div class="detail-page">
+			<div class="detail-head">
+				<span class="detail-tag red">{{billItem.transfer[0].transfer_status.toUpperCase() | translate}}</span>
+				<span>账单号：{{billItem.serial_number}}</span>
+				<span class="head-right link-txt" ng-click="seeRemarkDialog()">备注 <span class="grey-num">({{remarkList.length}})</span></span>
+			</div>
+			<div class="detail-mid">
+				<div class="d-m-top">
+					<div class="d-t-item">
+						<span class="item-cat">租赁人 :</span>
+						<span>{{userOptions[billItem.drawee].name || userOptions[billItem.lease.drawee].name}}</span>
+					</div>
+					<div class="d-t-item">
+						<span class="item-cat">手机 :</span>
+						<span>{{userOptions[billItem.drawee].phone || userOptions[billItem.lease.drawee].phone}}</span>
+					</div>
+					<div class="d-t-item">
+						<span class="item-cat">邮箱 :</span>
+						<span>{{userOptions[billItem.drawee].email || userOptions[billItem.lease.drawee].email}}</span>
+					</div>
+					<div class="d-t-item">
+						<span class="item-cat">会员卡号 :</span>
+						<span>{{userOptions[billItem.drawee].card_no || userOptions[billItem.lease.drawee].card_no}}</span>
+					</div>
+				</div>
+				<div class="d-m-top" ng-if="billItem.payment_user_id && billItem.payment_user_id != billItem.drawee">
+					<div class="d-t-item">
+						<span class="item-cat">租赁人 :</span>
+						<span>{{userOptions[billItem.payment_user_id].name}}</span>
+						<span class="detail-tag d-ora">代</span>
+					</div>
+					<div class="d-t-item">
+						<span class="item-cat">手机 :</span>
+						<span>{{userOptions[billItem.payment_user_id].phone}}</span>
+					</div>
+					<div class="d-t-item">
+						<span class="item-cat">邮箱 :</span>
+						<span>{{userOptions[billItem.payment_user_id].email}}</span>
+					</div>
+					<div class="d-t-item">
+						<span class="item-cat">会员卡号 :</span>
+						<span>{{userOptions[billItem.payment_user_id].card_no}}</span>
+					</div>
+				</div>
+				<div class="space-b-box">
+                    <div class="b-title tit-top">
+                        <div class="line-width info-tit">
+                            <div class="line-item per32 t-left">
+                                合同号: <span class="link-txt" ng-bind="billItem.lease.serial_number" ng-click="backToLeaseDetail()"></span>
+                            </div>
+                            <div class="line-item per38">
+                                账单
+                            </div>
+                            <div class="line-item per15">
+                                账单时间段
+                            </div>
+                            <div class="line-item per15">
+                                账单金额
+                            </div>
+                        </div>
+                    </div>
+                    <div class="line-width">
+                        <div class="line-item per32 t-left">
+                            <div class="item-con">
+                                <div class="p-w-t">
+                                    <div class="p-p">
+                                    	<img ng-src="{{billItem.lease.product.room.attachment}}">
+                                    </div>
+                                    <div class="p-t">
+                                        <div class="p-t-top">
+                                        	{{billItem.lease.product.room.city}}, {{billItem.lease.product.room.building.name}}, {{billItem.lease.product.room.number}}, {{billItem.lease.product.room.name}}
+                                        </div>
+                                        <div class="p-t-bot">
+                                            <span class="detail-tag ora">长</span>
+                                            <span>{{roomTypeDesc[billItem.lease.product.room.type].description}}</span>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="line-item per38">
+                            <div class="item-con">
+                            	<div class="big-f">{{billItem.name}}</div>
+                            	<div>{{billItem.description}}</div>
+                            </div>
+                        </div>
+                        <div class="line-item per15">
+                            <div class="item-con">
+                                <div>{{billItem.start_date | date: 'yyyy-MM-dd'}}</div>
+                                <div>-</div>
+                                <div>{{billItem.end_date | date: 'yyyy-MM-dd'}}</div>
+                            </div>
+                        </div>
+                        <div class="line-item per15">
+                            <div class="item-con">
+                                <div class="big-f">{{billItem.amount}}元</div>
+                                <div ng-if="billItem.status === 'unpaid'"><span class="link-txt" ng-click="seePopup('billAmount', billItem)" ng-if="currentAdmin.user.is_super_admin || currentAdmin.leasesMap[PERMISSION_LEASES_KEY + billItem.lease.product.room.building.id] === 2">更改价格</span></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <!-- <div class="primary-btn" ng-if="billItem.status == 'verify'" ng-click="seePopup('remark')">确认已收款</div> -->
+				<div class="order_info offl" style="height: {{offlineHeight}}px" ng-if="billItem.pay_channel === 'offline' && billItem.transfer[0].transfer_attachments.length > 0">
+                	<span class="expand-btn link-txt" ng-class="{'btm': expandFlag}" ng-if="billItem.transfer.length > 4" ng-click="expand()">
+                		<span ng-if="!expandFlag">查看全部({{billItem.transfer.length}})</span>
+                		<!-- <span ng-if="expandFlag">收起</span> -->
+                	</span>
+	                <div class="offline" ng-class="{'no-r-border': expandFlag}" ng-repeat="item in billItem.transfer">
+	                    <ul>
+	                        <li>
+	                            <span>账户名称：</span>
+	                            {{item.account_name}}
+	                        </li>
+	                        <li>
+	                            <span>银行账号：</span>
+	                            {{item.account_no}}
+	                        </li>
+	                    </ul>
+	                    <div class="off-pic">
+	                        <span class="pic-tit">汇款凭证:</span>
+	                        <div class="pic">
+	                            <img class="s-pic" ng-click="showOriginImage(item.transfer_attachments[0].content)" ng-src="{{item.transfer_attachments[0].content}}" img-fix-orientation="item.transfer_attachments[0].content">
+	                            <span class="grey-num">{{item.modification_date | date: 'yyyy-MM-dd HH:mm'}}</span>
+	                        </div>
+	                    </div>
+	                </div>
+	                <p class="buttom-btn" ng-if="expandFlag">
+	                	<span class="link-txt" ng-click="expand()">收起</span>
+	                </p>
+	            </div>
+			</div>
+			<div class="detail-bot">
+				<div class="d-b-left">
+					<div class="d-left-line">
+						<span class="line-cat">创建时间</span>
+						<span class="line-cat">{{billItem.creation_date | date: 'yyyy-MM-dd HH:mm'}}</span>
+						<span ng-if="billItem.sender">由<span class="d-r-name">{{userOptions[billItem.sender].name}}</span>推送</span>
+						<span ng-if="billItem.order_method == 'auto'">由<span class="d-r-name" >系统</span>自动推动</span>
+					</div>
+					<div class="d-left-line">
+						<span class="line-cat">下单方式</span>
+						<span ng-if="billItem.order_method === 'backend'">后台推送</span>
+						<span ng-if="billItem.order_method === 'auto'">自动推送</span>
+					</div>
+					<div class="d-left-line" ng-if="billItem.pay_channel">
+						<span class="line-cat">付款渠道</span>
+						<span class="detail-tag green">{{billItem.pay_channel | translate}}</span>
+					</div>
+					<div class="d-left-line" ng-if="billItem.payment_date">
+						<span class="line-cat" >付款时间</span>
+						<span>{{billItem.payment_date | date: 'yyyy-MM-dd HH:mm'}}</span>
+					</div>
+				</div>
+				<div class="d-b-right">
+					<div class="d-right-line" ng-if="billItem.revision_note">
+						<div class="d-r-op grey-f">
+							<span class="d-r-name">{{userOptions[billItem.reviser].name}}</span>
+							<span>将订单金额改为 {{billItem.revised_amount | number: 2}}元</span>
+						</div>
+						<div class="d-r-left">
+							更改备注
+						</div>
+						<div class="d-r-right grey-f">
+							{{billItem.revision_note}}
+						</div>
+					</div>
+					<div class="d-right-line">
+						<div class="d-r-left">
+							价格模板
+						</div>
+						<div class="d-r-right">
+						</div>
+					</div>
+					<div class="d-right-line red-th">
+						<div class="d-r-left">
+							<span ng-if="billItem.status == 'paid'">实付款</span>
+							<span ng-if="billItem.status != 'paid'">应付款</span>
+						</div>
+						<div class="d-r-right">
+							{{billItem.revised_amount}} 元
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+    </div>
+</div>

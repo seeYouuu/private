@@ -1,0 +1,68 @@
+<div class="calendar_head">
+    <div class="direction">
+        <a ng-click="prev()" class="prev"><i class="icon ic_prev"></i></a>
+        <a ng-click="next()" class="next"><i class="icon ic_next"></i></a>
+    </div>
+
+    <a ng-click="today()" class="today">今年</a>
+    <a class="now">
+        {{date|date:'yyyy'}}
+    </a>
+</div> 
+<div class="cYear">
+    <table cellpadding="0" cellspacing="0" width="100%" border="0" class="year">
+        <tr>
+            <th ng-repeat="item in monthDesc" ng-bind="item"></th>
+        </tr>
+        <tr>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+        </tr>
+    </table>
+    <div class="detail_prog begin end" style="background:#ff93b6;left:{{item.left}}px;width:{{item.width}}px;" ng-repeat="item in bookItems">
+        <span ng-if="item.width >= 30"><img class="ava-use" ng-src="{{item.user.avatar}}">{{item.user.name}}</span>
+        <div class="stDown">
+            <div class="stContent">
+                <div class="u_title"><span class="tit">租用人</span><span class="float_r">{{item.start | date: 'yyyy/MM/dd'}} - {{item.end | date: 'yyyy/MM/dd'}}</span></div>
+                <div class="u-box mg10">
+                    <img class="u-ava" ng-src="{{item.user.avatar}}">
+                    <div class="u-nick">{{item.user.name}}</div>
+                    <div class="u-info">
+                        <span>{{item.user.phone}}</span>
+                        <span>{{item.user.email}}</span>
+                    </div>
+                </div>
+            </div>
+            <div class="stContent">
+                <div class="u_title t" ng-if="item.invited_people.length > 0"><span class="tit">受邀人</span></div>
+                <div class="u_title t" ng-if="item.appointed_user"><span class="tit">指定人</span></div>
+                <div class="u-box mg10" ng-repeat="user in item.invited_people" ng-if="item.invited_people.length > 0">
+                    <img class="u-ava" ng-src="{{user.avatar}}">
+                    <div class="u-nick">{{user.name}}</div>
+                    <div class="u-info">
+                        <span>{{user.phone}}</span>
+                        <span>{{user.email}}</span>
+                    </div>
+                </div>
+                <div class="u-box mg10" ng-if="item.appointed_user">
+                    <img class="u-ava" ng-src="{{item.appointed_user.avatar}}">
+                    <div class="u-nick">{{item.appointed_user.name}}</div>
+                    <div class="u-info">
+                        <span>{{item.appointed_user.phone}}</span>
+                        <span>{{item.appointed_user.email}}</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

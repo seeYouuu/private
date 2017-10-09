@@ -1,0 +1,82 @@
+<div class="group_detail add-room">
+	<div class="space-detail">
+		<div class="space-head">
+			<span class="head-des">添加{{currentRoomType.description}}</span>
+		</div>
+		<div class="space-con">
+			<ul class="room_lsit">
+                <li>
+                    <span class="item_label"><font class="muted">*</font>空间名称</span>
+                    <input type="text" class="default_text" ng-model="roomCreateoptions.name">
+                </li>
+                <li>
+                    <span class="item_label"><font class="muted">*</font>选择空间类型</span>
+                    <div class="tag_line">
+                        <span class="tag_item" ng-if="tag.tag_key != 'dedicated_desk'" ng-class="{cur: tag.selected}" ng-click="selectTypeTag(tag)" ng-repeat="tag in roomTypeTags"><span>{{tag.tag_name}}</span></span>
+                    </div>
+                </li>
+                <li>
+                    <span class="item_label">空间描述</span>
+                    <textarea class="default_text txt-a" ng-model="roomCreateoptions.description"></textarea>
+                </li>
+                <li>
+                    <span class="item_label"><font class="muted">*</font>空间主图</span>
+                    <div class="single-pic-box" ng-if="roomMainPic.content">
+                        <img class="m-pic" ng-src="{{roomMainPic.content}}">
+                    </div>
+                    <div class="single-pic-box add-ico" ng-click="seeRoomPics(true)" ng-if="!roomMainPic.content"></div>
+                    <span class="main-mod" ng-click="seeRoomPics(true)" ng-if="roomMainPic">更改</span>
+                    <div class="bt-tip bt-m"><small translate translate-values="{width: roomGallery.width, height: roomGallery.height}">IMAGE_RULE</small></div>
+                </li>
+                <li>
+                    <span class="item_label">空间图片</span>
+                    <div class="single-pic-box" ng-repeat="pic in selectedRoomPics">
+                        <img class="m-pic" ng-src="{{pic.content}}">
+                        <span class="close-ico" ng-click="removeRoomPic($index)">✖</span>
+                    </div>
+                    <div class="single-pic-box add-ico" ng-click="seeRoomPics(false)"></div>
+                    <div class="bt-tip bt-m"><small translate translate-values="{width: roomGallery.width, height: roomGallery.height}">IMAGE_RULE</small></div>
+                </li>
+                <li>
+                    <span class="item_label"><font class="muted">*</font>面积</span>
+                    <div class="li-left">
+                    	<input type="number" class="default_text" ng-model="roomCreateoptions.area" ng-keydown="prevInput($event)">
+                    	<span class="r-unit">㎡</span>
+                    </div>
+                    <div class="li-right" ng-if="roomType != 'fixed'">
+                    	<span class="right_label"><font class="muted">*</font>容纳</span>
+                    	<input type="number" min="0" class="default_text" ng-model="roomCreateoptions.allowed_people" ng-keydown="prevInput($event)">
+                    	<span class="r-unit">人</span>
+                    </div>
+                </li>
+                <li ng-if="hourRentFlag">
+                    <span class="item_label"><font class="muted">*</font>每日允许租用时间段</span>
+                    <div class="li-left">
+						<sb-dropdown select="roomCreateoptions.start_hour" options="clock" flexible="true" no-empty></sb-dropdown>
+                    </div>
+                    <div class="li-right">
+                    	<span class="right_label">至</span>
+						<sb-dropdown select="roomCreateoptions.end_hour" options="clock" flexible="true" no-empty></sb-dropdown>
+                    </div>
+                </li>
+                <li>
+                    <span class="item_label">基本办公用品</span>
+                    <sb-muti-dropdown class="room-supply" select="roomCreateoptions.office_supplies" options="suppliesList" number="true"></sb-muti-dropdown>
+                </li>
+                <li ng-if="roomType == 'fixed'">
+                    <div class="b-top"></div>
+                    <span class="item_label"><font class="muted">*</font>办公桌编号</span>
+                    <p class="n" ng-repeat="item in deskNums track by $index"><input type="text" maxlength='14' class="default_text short" ng-model="item.number"><i ng-click="deleteItem(deskNums, $index, item)">×</i></p>
+                    <a ng-click="addItem('deskNums', 'number')"><i class="icon ic_add"></i></a>
+                </li>
+                <li>
+                    <span class="item_label">门禁</span>
+                    <sb-muti-dropdown select="roomCreateoptions.door" options="doorLists" ></sb-muti-dropdown>
+                </li>
+                <li>
+                	<div class="add-btn" ng-click="createRoom()" ng-if="currentAdmin.user.is_super_admin || currentAdmin.roomMap[PERMISSION_ROOM_KEY + selectedCommunity.id] === 2">创建空间</div>
+                </li>
+            </ul>
+		</div>
+	</div>
+</div>

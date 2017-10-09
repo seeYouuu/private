@@ -1,0 +1,71 @@
+<div class="sandBox_content">
+    <div class="tra-content" ng-if="pageType == 'group'">
+        <div class="space-bot">
+            <div class="space-b-con">
+                <div class="s-info-page p25">
+                	<div class="tit-link">
+    		            <span class="l-txt link-txt" ng-click="seePage('list')"><-返回用户列表</span>
+    		            <span class="link-txt" ng-if="currentAdmin.permissionMap[PERMISSION_KEY] == 2" ng-click="seeModal('createGroup')"><span class="n-icon ic-add"></span>新建用户组</span>
+    		        </div>
+                    <div class="line-width info-tit">
+                        <div class="line-item per20 t-left">
+                            用户组
+                        </div>
+                        <div class="line-item per20">
+                            社区
+                        </div>
+                        <div class="line-item per20">
+                            用户数
+                        </div>
+                        <div class="line-item per20">
+                            创建时间
+                        </div>
+                        <div class="line-item per20">
+                            操作
+                        </div>
+                    </div>
+                    <div class="space-b-box n-bor">
+                        <div class="line-width s-line" ng-repeat="item in groups">
+                            <div class="line-item per20 t-left">
+                                <div class="item-con">
+                                    <span class="n-icon" ng-class="{'ic-vip': item.type == 'card', 'ic-group': item.type == 'created'}"></span><span>{{item.name}}</span>
+                                </div>
+                            </div>
+                            <div class="line-item per20">
+                                <div class="item-con">
+                            		<p class="user-des" ng-if="item.building" ng-class="{'dis': item.building.length < 1}" trigger='click' ng-mouseover="seeOptions('buildings', item)" data-placement="bottom-left" data-content-template="js/features/user/partials/options.html" data-animation="am-fade" data-auto-close="1" bs-popover><span>{{item.building_desc}} </span></p>
+                                    <p ng-if="!item.building">-</p>
+                                </div>
+                            </div>
+                            <div class="line-item per20">
+                                <div class="item-con">
+                                    <span>{{item.user_count}}个</span>
+                                </div>
+                            </div>
+                            <div class="line-item per20">
+                                <div class="item-con">
+                                    <span>{{item.creation_date | date: 'yyyy-MM-dd HH:mm:ss'}}</span>
+                                </div>
+                            </div>
+                            <div class="line-item per20">
+                                <div class="item-con">
+                                    <p  class="s-des"
+                                        ng-click="seeOptions('editUserGroup', item)"
+                                        data-placement="bottom-right"
+                                        data-content-template="js/features/user/partials/options.html"
+                                        data-animation="am-fade"
+                                        data-auto-close="1"
+                                        bs-popover
+                                        >操作<i class="arr arr-down"></i></p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="nodata" ng-if="groups.length <= 0 && loaded">无用户组信息</div>
+                </div>
+                <pagination option="pageOptions" on-page="goPage(index)"></pagination>
+            </div>
+        </div>
+    </div>
+</div>
+

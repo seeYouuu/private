@@ -1,0 +1,30 @@
+<div class="modal" role="dialog">
+    <div class="modal-dialog modal-center modal-reate add_to_group">
+        <div class="modal-content group-add">
+            <div class="modal-body clearfix">
+                <div class="reate_clues">
+                    <div class="reate_header clearfix">
+                        <p class="clearfix">
+                            <span ng-if="!gropuId">新建客户组</span>
+                            <span ng-if="gropuId">更改组名</span>
+                            <span ng-click="$hide()"></span>
+                        </p>
+                    </div>
+                    <div ng-if="!gropuId" class="set_groups">
+                        请输入该客户组名称： <br><br>
+                        <input class="g_name" type="text" ng-model="editOption.g_name">
+                    </div>
+                    <div ng-if="gropuId" class="set_groups">
+                        请输入新的客户组名称： <br><br>
+                        <input class="g_name" type="text" ng-model="editOption.g_name">
+                    </div>
+                    <div class="reate_btn clearfix">
+                         <span class="r-save-btn fl" ng-if="!gropuId" ng-click="addCreateGroup($hide)">保存</span>
+                         <span class="r-save-btn fl" ng-if="gropuId" ng-click="updateGroup($hide)">保存</span>
+                         <span class="r-btn fl" ng-click="$hide()">取消</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

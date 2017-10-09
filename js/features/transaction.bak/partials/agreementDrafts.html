@@ -1,0 +1,95 @@
+<div class="sandBox_content">
+    <div class="tra-content page-height">
+		<div class="detail-page page-height pt69">
+			<div class="detail-head fixed">
+				<span>合同草稿箱</span>
+			</div>
+			<div class="detail-scroller">
+				<div class="space-b-con">
+					<div class="s-info-page p25">
+                        <div class="line-width info-tit">
+                            <div class="line-item per32 t-left">
+                                空间
+                            </div>
+                            <div class="line-item per19 t-left">
+                                承租方
+                            </div>
+                            <div class="line-item per19">
+                                租用时间段
+                            </div>
+                            <div class="line-item per9_5">
+                                合同账单
+                            </div>
+                            <div class="line-item per9_5">
+                                其它账单
+                            </div>
+                            <div class="line-item per11">
+                                操作
+                            </div>
+                        </div>
+                        <div class="space-b-box" ng-repeat="item in leasesList">
+                            <div class="b-title tit-top">
+                                <!-- <span class="blake-txt">合同号：{{item.serial_number}}</span> -->
+                                <span class="f-right">最后保存：{{item.modification_date | date: 'yyyy-MM-dd HH:mm:ss'}}</span>
+                            </div>
+                            <div class="line-width">
+                                <div class="line-item per32 t-left">
+                                    <div class="item-con">
+                                        <div class="p-w-t">
+                                            <div class="p-p">
+                                                <img ng-src="{{item.product.room.attachment[0].attachment_id.content || item.product.room.attachment}}">
+                                            </div>
+                                            <div class="p-t">
+                                                <div class="p-t-top">
+                                                    {{item.product.room.city.name || item.product.room.city}}, {{item.product.room.building.name}}, {{item.product.room.number}}, {{item.product.room.name}}
+                                                </div>
+                                                <div class="p-t-bot">
+                                                    <span class="detail-tag red" ng-if="item.product.room.type !== 'longterm'">秒</span>
+                                                    <span class="detail-tag ora" ng-if="item.product.room.type === 'longterm'">长</span>
+                                                    <span>{{roomTypeDesc[item.product.room.type].description}}</span>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="line-item per19 t-left">
+                                    <div class="item-con">
+                                        <div ng-bind="item.lessee_name"></div>
+                                        <div class="link-txt" ng-bind="item.lessee_email"></div>
+                                        <div class="link-txt" ng-bind="item.lessee_phone"></div>
+                                    </div>
+                                </div>
+                                <div class="line-item per19">
+                                    <div class="item-con">
+                                        <div>{{item.start_date | date: 'yyyy-MM-dd'}}</div>
+                                        <div>-</div>
+                                        <div>{{item.end_date | date: 'yyyy-MM-dd'}}</div>
+                                    </div>
+                                </div>
+                                <div class="line-item per9_5">
+                                    <div class="item-con">
+                                        <div><span class="link-txt">{{item.pushed_lease_bills_fees}}</span> / <span class="link-txt">{{item.total_lease_bills_amount}}</span></div>
+                                    </div>
+                                </div>
+                                <div class="line-item per9_5">
+                                    <div class="item-con">
+                                        <div><span class="link-txt">{{item.other_bills_amount}}</span></div>
+                                    </div>
+                                </div>
+                                <div class="line-item per11 last-box">
+                                    <div class="item-con">
+                                        <div class="link-txt" ng-click="seeUpdateDraft(item.id)" ng-if="currentAdmin.user.is_super_admin || currentAdmin.leasesMap[PERMISSION_LEASES_KEY + item.product.room.building.id] === 2">编辑</div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="b-title tit-bot">
+                            	<span class="blake-txt">合同负责人:</span>
+                                <span class="blake-txt">{{userOptions[item.supervisor].name}}</span>
+                            </div>
+                        </div>
+                    </div>
+				</div>
+			</div>
+		</div>
+    </div>
+</div>

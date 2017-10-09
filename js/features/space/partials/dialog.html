@@ -1,0 +1,209 @@
+<div class="modal" role="dialog">
+    <!-- <div class="modal-dialog modal-center" ng-class="{'b-body': addType !== 'move','s-body': addType === 'move'}"> -->
+    <div class="modal-dialog modal-center" ng-class="{'small-s': dialogType == 'confirm-invisible'}">
+        <div class="modal-content group-add">
+            <div class="modal-body clearfix">
+                
+                <div class="com-dialog" ng-if="dialogType == 'community-des'">
+                	<div class="dialog-head">
+                		<div class="head-wra">
+                			<span>社区介绍</span>
+	                		<span class="n-icon ic-mod" ng-click="editCommunity(communityDetail.id)" ng-if="currentAdmin.buildingMap[PERMISSION_UPDATE_COMMUNITY_KEY + communityDetail.id] === 2 || currentAdmin.user.is_super_admin"></span>
+	                		<span class="close" ng-click="$hide()">✖</span>
+                		</div>
+                	</div>
+                	<div class="dialog-con">
+                		<div class="dia-wra">
+                			<div class="dia-con">
+								<div ng-bind-html="communityDetail.detail"></div>
+                			</div>
+                		</div>
+            		</div>
+                </div>
+
+               <!--  <div class="com-dialog" ng-if="dialogType == 'add-main-pic'">
+                	<div class="dialog-head static">
+                		<div class="head-wra">
+                			<span>社区封面 </span><span class="s-tit">(默认显示)</span>
+	                		<span class="close" ng-click="$hide()">✖</span>
+                		</div>
+                	</div>
+                	<div class="a-pic-wrapper">
+                		<div class="a-pic-box" id="main-pic">
+                            <sb-cover-image-uploader 
+                                ng-if="pageType != 'communityDetail'"
+                                url="form.coverImage.download_link"
+                                attachment="form.coverImage"
+                                is-uploading="form.coverImage.isUploading"
+                                target="building"
+                                server="uploadImgServer"
+                                default-url="/img/rectangle.png"
+                                error-url="/img/rectangle.png"
+                                class="building">
+                            </sb-cover-image-uploader>
+                            <div class="a-p-top" ng-if="pageType === 'communityDetail'">
+                                <img class="a-pic" ng-src="{{selectedCommunity.building_attachments[0].content}}">
+                            </div>
+                		</div>
+                        <span class="c-main" ng-click="changeMainPic()">更改</span>
+                	</div>
+                	<div class="dialog-head static">
+                		<div class="head-wra">
+                			<span>社区图库 </span><span class="s-tit">({{gallery.building.length}}张)</span>
+                		</div>
+                	</div>
+                	<div class="a-pic-wrapper">
+                        <div class="a-pic-box" ng-if="pageType != 'communityDetail'">
+                            <label class="a-p-top add-icon btnLink upload">
+                                <input type="file" nv-file-select uploader="imageUploader.building" multiple/>
+                            </label>
+                        </div>
+                        <div class="a-pic-box" ng-repeat="item in gallery.building track by $index" ng-if="(pageType === 'communityDetail' && $index > 0) || pageType != 'communityDetail'">
+                			<div class="a-p-top">
+                				<img class="a-pic" ng-src="{{item.content}}">
+                				<span class="del" ng-if="pageType != 'communityDetail'" ng-click="deleteItem(gallery.building, $index)">✖</span>
+                			</div>
+                			<div class="a-p-bot" ng-bind="item.filename"></div>
+                		</div>
+                	</div>
+                    <div class="a-btn" ng-click="$hide()">确定</div>
+                </div> -->
+                <div class="com-dialog" ng-if="dialogType == 'add-main-pic' || dialogType == 'add-logo-pic'">
+                    <div class="dialog-head static">
+                        <div class="head-wra">
+                            <span>社区图库</span><span class="s-tit">({{gallery.building.length}}张)</span>
+                        </div>
+                    </div>
+                    <div class="a-pic-wrapper">
+                        <div class="a-pic-box" ng-if="pageType != 'communityDetail'">
+                            <label class="a-p-top add-icon btnLink upload">
+                                <input type="file" nv-file-select uploader="imageUploader.community" multiple/>
+                            </label>
+                        </div>
+                        <div class="a-pic-box" ng-repeat="item in communityImages track by $index">
+                            <div class="a-p-top" ng-click="showCropView(item)">
+                                <img class="a-pic" ng-src="{{item.content}}">
+                                <!-- <span class="del">✖</span> -->
+                            </div>
+                            <div class="a-p-bot" ng-bind="item.filename"></div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="com-dialog" ng-if="dialogType === 'crop'">
+                    <div class="dialog-head static">
+                        <div class="head-wra">
+                            <span>选择图片展示区域</span>
+                        </div>
+                    </div>
+                    <div class="crop-container">
+                        <div ng-if="cropFlag === 'building'" ng-jcrop="selectedCropImgUrl" ng-jcrop-config-name="roomConfig" selection="obj.coords" thumbnail="obj.thumbnail"></div>
+                        <div ng-if="cropFlag === 'logo'" ng-jcrop="selectedCropImgUrl" ng-jcrop-config-name="logoConfig" selection="obj.coords" thumbnail="obj.thumbnail"></div>
+                        <div ng-if="cropFlag === 'room' || cropFlag === 'room-main'" ng-jcrop="selectedCropImgUrl" ng-jcrop-config-name="roomConfig" selection="obj.coords" thumbnail="obj.thumbnail"></div>
+                    </div>
+                    <div class="com-bottom">
+                        <div class="f-left" ng-click="uploadRoomImage($hide)">确 定</div>
+                        <div class="f-right" ng-if="pageType != 'addCommunity'" ng-click="backToCommunityImages()">换一张</div>
+                        <div class="f-right" ng-if="pageType == 'addCommunity'" ng-click="$hide()">换一张</div>
+                    </div>
+                </div>
+                
+                <!-- 添加社区  添加各房间图片 -->
+                <div class="com-dialog" ng-if="dialogType == 'addRoomType'">
+                    <div class="dialog-head static">
+                        <div class="head-wra">
+                            <span>{{selectedRoomType.description}}</span>
+                            <span class="close" ng-click="$hide()">✖</span>
+                        </div>
+                    </div>
+                    <div class="a-pic-wrapper">
+                        <div class="a-pic-box" ng-if="pageType != 'communityDetail'">
+                            <label class="a-p-top add-icon btnLink upload">
+                                <input type="file" nv-file-select uploader="imageUploader[selectedRoomType.name]" multiple/>
+                            </label>
+                        </div>
+                        <div class="a-pic-box" ng-repeat="item in gallery[selectedRoomType.name]">
+                            <div class="a-p-top">
+                                <img class="a-pic" ng-src="{{item.content}}">
+                                <span class="del" ng-if="pageType != 'communityDetail'" ng-click="deleteItem(gallery[selectedRoomType.name], $index, true)">✖</span>
+                            </div>
+                            <div class="a-p-bot" ng-bind="item.filename"></div>
+                        </div>
+                    </div>
+                    <div class="a-btn" ng-click="$hide()">确定</div>
+                </div>
+                
+                <!-- 添加房间 添加各类型房间的图片 -->
+                <div class="com-dialog" ng-if="dialogType == 'select-room-pic'">
+                    <div class="dialog-head static">
+                        <div class="head-wra">
+                            <span>社区图库</span>
+                        </div>
+                    </div>
+                    <div class="a-pic-wrapper" ng-if="!selecteMain" ng-class="{'for-more': !selectMain}">
+                        <div class="a-pic-box">
+                            <label class="a-p-top add-icon btnLink upload">
+                                <input type="file" nv-file-select uploader="imageUploader[roomType]" multiple/>
+                            </label>
+                        </div>
+                        <div class="a-pic-box" ng-repeat="pic in roomPics" ng-class="{'main-selected': pic.mainSelected}">
+                            <div class="a-p-top" ng-click="showCropView(pic)">
+                                <img class="a-pic" ng-class="{'on': pic.selected}" ng-src="{{pic.content}}">
+                            </div>
+                            <div class="a-p-bot">{{pic.filename}}</div>
+                        </div>
+                    </div>
+                    <div class="a-pic-wrapper for-main" ng-if="selecteMain">
+                        <div class="a-pic-box">
+                            <label class="a-p-top add-icon btnLink upload">
+                                <input type="file" nv-file-select uploader="imageUploader[roomType]" multiple/>
+                            </label>
+                        </div>
+                        <div class="a-pic-box" ng-repeat="pic in roomPics" ng-class="{'m-selected': pic.mainSelected}">
+                            <div class="a-p-top" ng-click="showCropView(pic)">
+                                <img class="a-pic" ng-class="{'on': pic.selected}" ng-src="{{pic.content}}">
+                            </div>
+                            <div class="a-p-bot">{{pic.filename}}</div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="com-dialog inv-box" ng-if="dialogType == 'confirm-invisible'">
+                    <div class="dialog-head static has-bb">
+                        <div class="head-wra">
+                            <span>下架社区</span>
+                            <span class="close" ng-click="$hide()">✖</span>
+                        </div>
+                    </div>
+                    <div class="dia-tip">
+                        是否下架此社区? 下架后此社区的所有空间都将不在创合APP展示, 但社区以及空间信息不回被删除. 你仍可对社区和空间进行编辑以及上架操作.
+                    </div>
+                    <div class="dia-btn">
+                        <div class="con-btn" ng-click="setCommunityVisible(selectedCommunity, false, $hide)">下架</div>
+                    </div>
+                </div>
+
+                <!-- <div class="com-dialog" ng-if="dialogType == 'show-com-pic'">
+                	<div class="dialog-head static">
+                		<div class="head-wra">
+                			<span>{{showRoom.description}} </span><span class="s-tit">({{showRoom.attachments.length}}张)</span>
+                			<span class="close" ng-click="$hide()">✖</span>
+                		</div>
+                	</div>
+                	<div class="a-pic-wrapper" ng-repeat="pic in showRoom.attachments">
+                		<div class="a-pic-box">
+                			<div class="a-p-top">
+                				<img ng-src="{{pic.preview}}" class="a-pic">
+                				<span class="del">✖</span>
+                			</div>
+                			<div class="a-p-bot">
+                				{{pic.filename}}
+                			</div>
+                		</div>
+                	</div>
+                </div> -->
+
+            </div>
+        </div>
+    </div>
+</div>

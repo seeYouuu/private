@@ -1,0 +1,102 @@
+<div class="group-right p-e-box">
+	<div class="right-head clearfix new-head">
+		<div class="r-h-left">
+			<div class="p-header" ng-if="positionType == 'edit'"><span>职位编辑</span></div>
+			<div class="p-header" ng-if="positionType == 'create'"><span>创建职位</span></div>
+		</div>
+		<div class="r-h-right">
+			<a class="n-btn" ng-click="addPosition()" ng-if="positionType == 'create'">创建</a>
+			<a class="n-btn" ng-click="editPosition()" ng-if="positionType == 'edit'">保存</a>
+		</div>
+	</div>
+	<div class="p-content">
+		<div class="p-content-left">
+			<div class="add-left">
+				<p class="add-cat">职位信息</p>
+				<p class="add-tip">(职位信息将应用于你的管理员职位设置)</p>
+				<input class="j-name" ng-model="createPosition.name" type="text" placeholder="请输入职位名称">
+				<div class="point">
+					<sb-new-dropdown select="createPosition.leader" options="positions" placeholder="placeholder.reportTo" flexible=true></sb-new-dropdown>
+				</div>
+
+				<p class="add-cat">职位Icon</p>
+				<p class="add-tip">(职位Icon将应用于你的管理员职位设置)</p>
+				<div class="icon-box">
+					<div class="icon-item" ng-repeat="icon in positionIcons" ng-click="selectIcon(icon)" ng-class="{'on' : icon.selected}">
+						<img ng-src="{{icon.url}}" ng-if="!icon.selected">
+						<img ng-src="{{icon.selected_url}}" ng-if="icon.selected">
+					</div>
+				</div>
+			</div>
+		</div>
+		<div class="p-content-right">
+			<div class="p-box p-mid">
+				<div class="p-box-con">
+					<p class="add-cat">配置板块</p>
+					<p class="add-tip">(所配置的板块将显示在后台的左侧菜单)</p>
+					<div class="p-module">
+						<div class="p-g-item" ng-repeat="item in permissionGroup" ng-if="item.permissions.length > 0" >
+							<div class="g-t"><input type="checkbox" ng-model="item.selected" ng-click="selectGroupPer(item, 'group')"><span ng-bind="item.group.group_name"></span></div>
+							<div class="g-c">
+								<span ng-repeat="per in item.permissions" ng-class="{'on': per.selected, 'disabled': !item.selected}" ng-click="selectGroupPer(per, 'per')" ng-bind="per.name"></span>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+			<div class="p-box p-right">
+				<div class="p-box-con">
+					<div class="add-right">
+						<div ng-if="globalArr.length > 0">
+							<p class="add-cat">平台权限配置</p>
+							<p class="add-tip">(平台权限为“全局职位”管理权限，通用权限和社区权限不可同时设置)</p>
+							<div class="per-box">
+								<div class="per-line" ng-repeat="per in createPosition.perArr | filter:'global'">
+									<div class="per-name" ng-bind="per.name"></div>
+									<div class="per-des" ng-class="{'disable' : !per.levelItem1}" ng-click="setPermission(per, 1)">
+										<span class="cir" ng-class="{'on' : per.op_level == 1}"><i></i></span>
+										查看
+									</div>
+									<div class="per-des" ng-class="{'disable' : !per.levelItem2}" ng-click="setPermission(per, 2)">
+										<span class="cir" ng-class="{'on' : per.op_level == 2}"><i></i></span>
+										编辑
+									</div>
+									<div class="per-des" ng-class="{'disable' : !per.levelItem3}" ng-click="setPermission(per, 3)">
+										<span class="cir" ng-class="{'on' : per.op_level == 3}"><i></i></span>
+										冻结
+									</div>
+								</div>
+							</div>
+						</div>
+						
+						<div ng-if="specifyArr.length > 0">
+							<p class="add-cat">社区权限配置</p>
+							<p class="add-tip">(社区权限职位需配置到大楼，通用权限和社区权限不可同时设置)</p>
+							<div class="per-box">
+								<div class="per-line" ng-repeat="per in createPosition.perArr | filter:'specify'">
+									<div class="per-name" ng-bind="per.name"></div>
+									<div class="per-des" ng-class="{'disable' : !per.levelItem1}" ng-click="setPermission(per, 1)">
+										<span class="cir" ng-class="{'on' : per.op_level == 1}"><i></i></span>
+										查看
+									</div>
+									<div class="per-des" ng-class="{'disable' : !per.levelItem2}" ng-click="setPermission(per, 2)">
+										<span class="cir" ng-class="{'on' : per.op_level == 2}"><i></i></span>
+										编辑
+									</div>
+									<div class="per-des" ng-class="{'disable' : !per.levelItem3}" ng-click="setPermission(per, 3)">
+										<span class="cir" ng-class="{'on' : per.op_level == 3}"><i></i></span>
+										冻结
+									</div>
+								</div>
+							</div>
+						</div>
+					</div>
+					<div class="power-nodata" ng-if="(globalArr.length <= 0 && specifyArr.length <= 0) || !globalArr || !specifyArr">
+						权限配置<br/>未选择任何职位
+					</div>
+				</div>
+			</div>
+		</div>
+		
+	</div>
+</div>

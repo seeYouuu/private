@@ -1,0 +1,30 @@
+<div class="input_select">
+    <span class="choose" ng-click="toggleDropdown()"><i class="down_arr"></i></span>    
+    <span class="item" ng-repeat="(text, value) in selection">
+      {{text}}
+      <a ng-click="removeSelection(text)">×</a>
+    </span> 
+    <div class="down" ng-class="{show: showDrop, hide:!showDrop}" ng-if="hasOptions">
+        <div class="modal-header container-fluid">
+            <div class="row">
+                <div class="col-sm-6">
+                    <div class="searchBar">
+                        <input type="text" placeholder="Search..." ng-model="search.keyword">
+                    </div>
+                </div>
+                <div class="col-sm-5 col-sm-offset-1">
+                    <a class="primary_btn" ng-click="selectAll()">全选</a>
+                    <a class="default_btn" ng-click="selectNone()">反选</a>
+                </div>
+            </div>
+        </div>
+        <div class="row mPadding15">
+            <ul>
+                <li ng-repeat="(text, value) in filtered" class="col-sm-3">
+                    <input type="checkbox" ng-checked="selection[text]" ng-click="toggleSelection(text, value, $event)">
+                    <span>{{text}}</span>
+                </li>
+            </ul>
+        </div>
+    </div>
+</div>

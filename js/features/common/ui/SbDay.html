@@ -1,0 +1,24 @@
+<div class="d_calendar">
+	<div class="d_head">
+		<span class="prev" ng-click="prev()"><</span>
+		<span class="date_b" ng-click="today()">{{date|date:'MMM yyyy'}}</span>
+		<span class="next" ng-click="next()">></span>
+	</div>
+	<div class="d_box">
+		<div class="d_week">
+			<span>Sun</span>
+			<span>Mon</span>
+			<span>Tue</span>
+			<span>Wen</span>
+			<span>Thu</span>
+			<span>Fri</span>
+			<span>Sat</span>
+		</div>
+
+		<div class="d_day" ng-repeat="week in copyWeeks">
+			<span ng-repeat="item in week" ng-bind="item.date.getDate()" ng-click="print(item)" ng-class="{'selected': item.selected, 'today': item.today, 'booked':item.booked, 'disable':item.flag}">
+			</span>
+		</div>
+
+	</div>
+</div>

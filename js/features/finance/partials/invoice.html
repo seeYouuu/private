@@ -1,0 +1,198 @@
+<div class="sandBox_content" ng-if="pageType == 'invoice'">
+    <div class="tra-content">
+        <div class="t-f-box">
+            <div class="t-f-line">
+                <div class="t-f-left">
+                    关键字
+                </div>
+                <div class="t-f-right">
+                    <div class="t-f-half t-f-s">
+                        <div class="drop-wra">
+                            <sb-dropdown select="filterOption.keyword" placeholder="placeholder.all" options="keywordList" flexible="true" no-empty></sb-dropdown>
+                        </div>
+                        <div class="ib-box" ng-if="filterOption.keyword">
+                            <input type="text" ng-if="filterOption.keyword.value == 'order_number'" class="t-f-input" ng-model="filterOption.order_number" ng-keyup="$event.keyCode === 13 && searchList()">
+                            <input type="text" ng-if="filterOption.keyword.value == 'invoice_number'" class="t-f-input" ng-model="filterOption.invoice_number" ng-keyup="$event.keyCode === 13 && searchList()">
+                            <input type="text" ng-if="filterOption.keyword.value == 'user_name'" class="t-f-input" ng-model="filterOption.user_name" ng-keyup="$event.keyCode === 13 && searchList()">
+                        </div>
+                    </div>
+                    <div class="t-f-half t-f-b">
+                        <span class="t-f-left">金额范围</span>
+                        <div class="date_input bigger">
+                            <input type="number" ng-model="filterOption.amount_min" ng-keyup="$event.keyCode === 13 && searchList()">
+                        </div>
+                        <span>-</span>
+                        <div class="date_input bigger">
+                            <input type="number" ng-model="filterOption.amount_max" ng-keyup="$event.keyCode === 13 && searchList()">
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="t-f-line">
+                <div class="t-f-left">
+                    申请时间
+                </div>
+                <div class="t-f-right">
+                    <div class="t-f-half t-f-s">
+                        <div class="date_input">
+                            <input type="text" ng-model="filterOption.requestStart" data-max-date="{{filterOption.requestEnd}}" data-date-format="yyyy-MM-dd"  data-autoclose="1" bs-datepicker>
+                            <span><i class="fa fa-calendar"></i></span>
+                        </div>
+                        <span>-</span>
+                        <div class="date_input">
+                            <input type="text" ng-model="filterOption.requestEnd" data-max-date="{{filterOption.requestEnd}}" data-date-format="yyyy-MM-dd"  data-autoclose="1" bs-datepicker>
+                            <span><i class="fa fa-calendar"></i></span>
+                        </div>
+                    </div>
+                    <div class="t-f-half t-f-b">
+                        <span class="t-f-left">发票类型</span>
+                        <div class="drop-wra">
+                            <sb-dropdown select="filterOption.type" placeholder="placeholder.all" options="invTypeList" flexible="true"></sb-dropdown>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="t-btn-wra">
+                <div class="t-search-btn" ng-click="searchList()">
+                    搜索
+                </div>
+                <span class="clear-btn" ng-click="clearSearchFilters()">清空</span>
+            </div>
+        </div>
+
+        <div class="space-bot">
+                <div class="space-b-head">
+                    <div class="b-box" ng-click="switchTab('all')" ng-class="{on: tabType === 'all'}">
+                        <div class="b-name">所有状态
+                            <div class="b-line"></div>
+                        </div>
+                    </div>
+                    <div class="b-box" ng-click="switchTab('pending')" ng-class="{on: tabType === 'pending'}">
+                        <div class="b-name">待开发票
+                            <div class="b-line"></div>
+                        </div>
+                    </div>
+                    <div class="b-box" ng-click="switchTab('completed')" ng-class="{on: tabType === 'completed'}">
+                        <div class="b-name">已开发票
+                            <div class="b-line"></div>
+                        </div>
+                    </div>
+                    <div class="b-box" ng-click="switchTab('cancelled')" ng-class="{on: tabType === 'cancelled'}">
+                        <div class="b-name">撤销发票
+                            <div class="b-line"></div>
+                        </div>
+                    </div>
+                </div>
+                <div class="space-b-con">
+                    <div class="s-info-page p25">
+                        <div class="line-width info-tit" ng-if="invoiceList.length > 0">
+                            <div class="line-item per10">
+                                ID
+                            </div>
+                            <div class="line-item per13">
+                                订单号/发票号
+                            </div>
+                            <div class="line-item per10">
+                                订单金额
+                            </div>
+                            <div class="line-item per15">
+                                公司抬头
+                            </div>
+                            <div class="line-item per15">
+                                科目/类型
+                            </div>
+                            <div class="line-item per15">
+                                快递信息
+                            </div>
+                            <div class="line-item per11">
+                                状态
+                            </div>
+                            <div class="line-item per11">
+                                操作
+                            </div>
+                        </div>
+                        <div class="space-b-box" ng-repeat="item in invoiceList">
+                            <div class="b-title tit-top">
+                                <div class="blake-txt">申请发票用户：
+                                    <div class="link-txt">
+                                        {{userOptions[item.user_id].name}}
+                                        <div class="u-box just-show">
+                                            <img ng-src="{{userOptions[item.user_id].avatar}}" class="u-ava">
+                                            <div class="u-nick">{{userOptions[item.user_id].name}}</div>
+                                            <div class="u-info">
+                                                <span ng-if="userOptions[item.user_id].phone">{{userOptions[item.user_id].phone}}</span>
+                                                <span ng-if="userOptions[item.user_id].email">{{userOptions[item.user_id].email}}</span>
+                                                <span class="n-icon ic_msg" ng-click="generateChat(item.user_id, orderOptions[item.order_id] || billOptions[item.bill_id])" ng-if="customerservice[orderOptions[item.order_id] || billOptions[item.bill_id]]"></span>
+                                            </div>
+                                        </div>
+                                        <!-- （<span ng-if="userOptions[item.user_id].phone">{{userOptions[item.user_id].phone}}</span><span ng-if="userOptions[item.user_id].email">{{userOptions[item.user_id].email}}</span>） -->
+                                    </div>
+                                </div>
+                                <span class="f-right">申请开票时间：{{item.creation_date | date: 'yyyy-MM-dd'}}</span>
+                            </div>
+                            <div class="line-width">
+                                <div class="line-item per10">
+                                    <div class="item-con">
+                                        <div>{{item.id}}</div>
+                                    </div>
+                                </div>
+                                <div class="line-item per13">
+                                    <div class="item-con">
+                                        <div class="link-txt">{{item.order_number}}</div>
+                                        <div ng-if="item.invoice_number">{{item.invoice_number}}</div>
+                                        <div ng-if="!item.invoice_number">-</div>
+                                    </div>
+                                </div>
+                                <div class="line-item per10">
+                                    <div class="item-con">
+                                        <div class="primary_f">{{item.amount | currency: ''}}元</div>
+                                    </div>
+                                </div>
+                                <div class="line-item per15">
+                                    <div class="item-con">
+                                        <div>{{item.invoice_profile.title}}</div>
+                                    </div>
+                                </div>
+                                <div class="line-item per15">
+                                    <div class="item-con">
+                                        <div>{{item.invoice_category}}</div>
+                                        <div>{{invoiceType[item.invoice_profile.invoice_type]}}</div>
+                                    </div>
+                                </div>
+                                <div class="line-item per15">
+                                    <div class="item-con">
+                                        <div ng-if="item.status === 'pending' || item.status === 'cancelled' || item.status === 'cancelled_wait'">
+                                            <div>{{item.address.name}}</div>
+                                            <div>{{item.address.phone}}</div>
+                                            <div>{{item.region}}{{item.address.detail_address}}</div>
+                                        </div>
+                                        <div ng-if="item.status === 'completed'">
+                                            <div>{{item.consignee_name}}</div>
+                                            <div>{{item.consignee_phone}}</div>
+                                            <div>{{item.consignee_address}}</div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="line-item per11">
+                                    <div class="item-con">
+                                        <div class="detail-tag" ng-class="{red: item.status == 'pending', grey: item.status == 'cancelled' || item.status == 'cancelled_wait',green: item.status == 'completed'}">{{invoiceStatus[item.status]}}</div>
+                                    </div>
+                                </div>
+                                <div class="line-item per11 last-box">
+                                    <div class="item-con">
+                                        <div class="link-txt" ng-if="item.status === 'pending' && currentAdmin.permissionMap[PERMISSION_INVOICE_KEY] === 2" ng-click="showInvDialog(item)">开票</div>
+                                        <div class="link-txt" ng-if="item.status === 'cancelled_wait' && currentAdmin.permissionMap[PERMISSION_INVOICE_KEY] === 2" ng-click="editCancel(item)">同意</div>
+                                        <div class="link-txt" ng-click="seeInvoiceDetail(item)">查看详情</div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="nodata" ng-if="invoiceList.length <= 0">无发票信息</div>
+                    </div>
+                    
+                    <pagination option="pageOptions" on-page="goPage(index)"></pagination>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

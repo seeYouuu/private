@@ -1,0 +1,257 @@
+<div class="sandBox_detail" ng-if="pageFlag === 'new' || pageFlag === 'edit'">
+    <div class="mbox">
+        <div class="mtitle">
+            {{pageFlag === 'new' ? '创建' : '修改'}}价格模板
+        </div>
+
+        <ul class="room_lsit">
+
+            <li>
+                <span class="item_label"><font class="muted">*</font>规则名称</span>
+                <div class="out_input">
+                    <input type="text" ng-model="priceRule.rule_name">
+                </div>
+            </li>
+                        <li>
+                <span class="item_label"><font class="muted">*</font>起始时间</span>
+
+                <div class="out_input">
+                    <input type="text" ng-model="priceRule.start_time"
+                           data-autoclose="true"
+                           data-date-format="yyyy-MM-dd" 
+                           data-timezone="+0800"
+                           data-autoclose="true"
+                           bs-datepicker><span><i class="fa fa-calendar"></i></span>
+                </div>
+                <div class="out_input">
+                    <input type="text" 
+                           size="5" 
+                           ng-model="priceRule.start_time" 
+                           data-time-format="HH:mm" 
+                           data-minute-step="1"
+                           data-autoclose="true" 
+                           placeholder="00:00" 
+                           bs-timepicker><span><i class="fa fa-clock-o"></i></span>
+                </div>
+            </li>
+            <li>
+                <span class="item_label"><font class="muted">*</font>结束时间</span>
+                
+                <div class="out_input">
+                    <input type="text"
+                           ng-model="priceRule.end_time" 
+                           data-date-format="yyyy-MM-dd" 
+                           data-timezone="+0800" 
+                           data-autoclose="true"
+                           bs-datepicker><span><i class="fa fa-calendar"></i></span>
+                </div>
+                <div class="out_input">
+                    <input type="text" 
+                           size="5" 
+                           ng-model="priceRule.end_time" 
+                           data-time-format="HH:mm" 
+                           data-minute-step="1"
+                           data-autoclose="true" 
+                           placeholder="00:00" 
+                           bs-timepicker><span><i class="fa fa-clock-o"></i></span>
+                </div>
+            </li>
+            <li>
+                <span class="item_label"><font class="muted">*</font>适用用户类型</span>
+
+                <div>
+                    <input type="checkbox" ng-model="priceRule.suitable_user.normal" style="vertical-align: top">
+                    <p class="word" style="vertical-align: bottom">普通用户</p>
+                    <input type="checkbox" ng-model="priceRule.suitable_user.vip" style="vertical-align: top">
+                    <p class="word" style="vertical-align: bottom">VIP用户</p>
+                </div>
+            </li>
+            <li>
+                <span class="item_label"><font class="muted">*</font>规则定义</span>
+                <sb-dropdown select="filterOption.rule_define" options="ruleDefinitionsArr" no-empty></sb-dropdown>
+                <p class="word"
+                   ng-if="pageFlag === 'edit'">
+                    {{getRuleDefinition(priceRule.rule_define)}}
+                </p>
+            </li>
+        </ul>
+
+
+        <ul class="room_lsit" ng-if="filterOption.rule_define && filterOption.rule_define.value === 1">
+            <li>
+                <span class="item_label"><font class="muted">*</font>城市</span>
+                <sb-dropdown select="filterOption.city" options="cities" no-empty></sb-dropdown>
+            </li>
+            <li>
+                <span class="item_label"><font class="muted">*</font>大楼</span>
+                <sb-muti-dropdown options="buildings" name="name" on-change="selectBuilding()"></sb-muti-dropdown>
+            </li>
+            <li ng-if="roomTypes">
+                <span class="item_label">房间类型</span>
+                <sb-muti-dropdown options="roomTypes" name="description" on-change="selectRoomType()"></sb-muti-dropdown>
+            </li>
+            <li>
+                <span class="item_label">选择房间</span>
+                <sb-searchable-dropdown select="filterOption.rooms"
+                                        options="rooms"
+                                        placeholder="所有房间"
+                                        reset-on-options-change="resetOnOptionsChange"></sb-searchable-dropdown>
+            </li>
+        </ul>
+
+        <ul class="room_lsit" ng-if="filterOption.rule_define && filterOption.rule_define.value === 2">
+            <li>
+                <span class="item_label"><font class="muted">*</font>城市</span>
+                <sb-dropdown select="filterOption.city" options="cities" no-empty></sb-dropdown>
+            </li>
+            <li>
+                <span class="item_label"><font class="muted">*</font>大楼</span>
+                <sb-muti-dropdown options="buildings" name="name" on-change="selectBuilding()"></sb-muti-dropdown>
+            </li>
+            <li>
+                <span class="item_label"><font class="muted">*</font>租用单位</span>
+                <div style="display: inline-block;">
+                    <sb-dropdown select="filterOption.rent_type" options="rentUnits" normal="true" no-empty></sb-dropdown>
+                </div>
+                &nbsp;&nbsp;&nbsp;
+                <div class="out_input" style="display: inline-block;" ng-if="filterOption.rent_type && filterOption.rent_type.value === 'hour'">
+                    <input type="number" ng-model="priceRule.rent_amount" placeholder="0" ng-min="0"><span>小时</span>
+                </div>
+                <div class="out_input" style="display: inline-block;" ng-if="filterOption.rent_type && filterOption.rent_type.value === 'day'">
+                    <input type="number" ng-model="priceRule.rent_amount" placeholder="0" ng-min="0"><span>天</span>
+                </div>
+                <p style="display: inline-block;" ng-if="filterOption.rent_type && filterOption.rent_type.value === 'month'">
+                   选择月租时为设定续订折扣
+                </p>
+            </li>
+        </ul>
+
+        <ul class="room_lsit" ng-if="filterOption.rule_define && filterOption.rule_define.value === 3">
+            <li>
+                <span class="item_label"><font class="muted">*</font>城市</span>
+                <sb-dropdown select="filterOption.city" options="cities" no-empty></sb-dropdown>
+            </li>
+            <li>
+                <span class="item_label"><font class="muted">*</font>大楼</span>
+                <sb-muti-dropdown options="buildings" name="name" on-change="selectBuilding()"></sb-muti-dropdown>
+            </li>
+            <li>
+                <span class="item_label"><font class="muted">*</font>起租类型</span>
+                <sb-dropdown select="filterOption.rent_type" options="rentTypes" no-empty></sb-dropdown>
+            </li>
+            <li ng-if="filterOption.rent_type">
+                <span class="item_label">选择房间</span>
+                <sb-searchable-dropdown select="filterOption.rooms"
+                                        options="rooms"
+                                        placeholder="所有房间"
+                                        reset-on-options-change="resetOnOptionsChange"></sb-searchable-dropdown>
+            </li>
+            <li>
+                <span class="item_label"><font class="muted">*</font>设置折扣</span>
+                <div  ng-if="filterOption.rent_type && filterOption.rent_type.value === 'day'">
+                    <sb-day-selector on-selected="daySelected"
+                                     data="priceRule.discounts"
+                                     popup-text-formatter="discountFormatter"/>
+                </div>
+                <div  ng-if="filterOption.rent_type && filterOption.rent_type.value === 'hour'">
+                    <sb-hour-selector on-selected="timeSelected"
+                                      data="priceRule.discounts"
+                                      popup-text-formatter="discountFormatter"/>
+                </div>
+            </li>
+        </ul>
+
+        <div ng-if="filterOption.rule_define &&  filterOption.rule_define.value < 3">
+            <div class="mtitle mid">
+                设置折扣
+            </div>
+            <ul class="room_lsit">
+                <li>
+
+                    <span class="item_label" style="margin-top: -40px"><font class="muted">*</font>规则类型</span>
+
+                    <div style="display: inline-block;">
+                        <sb-dropdown select="filterOption.ruleType" options="ruleTypesArr" normal='true'  no-empty></sb-dropdown>
+                        <p class="word"
+                           ng-if="pageFlag === 'edit'">
+                            {{getRuleType(priceRule.rule_type)}}
+                        </p>
+                    </div>
+                    &nbsp;&nbsp;&nbsp;
+                    <div class="out_input" style="display: inline-block;" ng-if="filterOption.ruleType && filterOption.ruleType.value === 1">
+                        <input type="number" ng-model="priceRule.discounts" min="0" placeholder="0"><span>元</span>
+                    </div>
+                    <div class="out_input" style="display: inline-block;" ng-if="filterOption.ruleType && filterOption.ruleType.value === 2">
+                        <input type="number" min="1" max="99" ng-model="priceRule.discounts" min="0" max="99" placeholder="0"><span>%off</span>
+                    </div>
+                    <span class="item_label"></span>
+
+                    <p style="margin-top: 10px">当规则类型为“满减”时，请输入现金减免的金额；当规则类型为“折扣”时，请输入<br>折扣（1-99），如：打九折，就输入10(%off)。</p>
+                </li>
+                <li>
+                    <span class="item_label"><font class="muted">*</font>金额上下限</span>
+
+                    <div class="out_input" style="display: inline-block;">
+                        <input type="number" 
+                               ng-model="priceRule.limit_min" 
+                               min="{{priceRule.rule_type === 1 ? priceRule.discounts : 0}}" 
+                               max="{{priceRule.limit_max}}" 
+                               placeholder="请输入下限金额"><span>元</span>
+                    </div>
+                    <em>/</em>
+
+                    <div class="out_input" style="display: inline-block;">
+                        <input type="number" 
+                               ng-model="priceRule.limit_max" 
+                               min="{{priceRule.limit_min || 0}}"
+                               placeholder="请输入上限金额"><span>元</span>
+                    </div>
+                </li>
+                <li>
+                    <span class="item_label">绑定销售</span>
+
+                    <div style="display: inline-block;">
+                      <sb-dropdown select="filterOption.product" options="products" name="product_name" normal='true' allname="无"></sb-dropdown>
+                    </div>
+                    &nbsp;&nbsp;&nbsp;
+                    <div class="out_input" style="display: inline-block;">
+                        <input type="number" ng-model="priceRule.bind_product_price" min="0" placeholder="0"><span>元</span>
+                    </div>
+                </li>
+                <li>
+                    <span class="item_label">输入折扣描述</span>
+                    <textarea ng-model="priceRule.rule_description"></textarea>
+                </li>
+             </ul>
+        </div>
+
+        <div ng-if="filterOption.rule_define &&  filterOption.rule_define.value === 3">
+            <div class="mtitle mid">
+                其他设置
+            </div>
+            <ul class="room_lsit">
+                <li>
+                    <span class="item_label">绑定销售</span>
+
+                    <div style="display: inline-block;">
+                      <sb-dropdown select="filterOption.product" options="products" name="product_name" normal='true' allname="无"></sb-dropdown>
+                    </div>
+                    &nbsp;&nbsp;&nbsp;
+                    <div class="out_input" style="display: inline-block;">
+                        <input type="number" ng-model="priceRule.bind_product_price" placeholder="0"><span>元</span>
+                    </div>
+                </li>
+                <li>
+                    <span class="item_label">输入商品描述</span>
+                    <textarea ng-model="priceRule.rule_description"></textarea>
+                </li>
+            </ul>
+        </div>
+
+        <div class="mtitle mid btns">
+            <a ng-click="createPriceRule()" ng-class="{primary_btn: true}" ng-if="canModify() && pageFlag === 'new'">OK</a>
+            <a ng-click="updatePriceRule()" ng-class="{primary_btn: true}" ng-if="canModify() && pageFlag === 'edit'">OK</a>
+            <a ng-click="back()" class="op_btn">Cancel</a>
+        </div>
+    </div>
+</div>

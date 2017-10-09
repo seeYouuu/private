@@ -1,0 +1,120 @@
+<div class="modal" role="dialog">
+    <div class="modal-dialog modal-center modal-reate">
+        <div class="modal-content group-add">
+            <div class="modal-body clearfix">
+            	<div class="reate_clues">
+			    	<div class="reate_header clearfix">
+			    		<p class="clearfix">
+			    			<span><span>客户关系</span>&gt;<span>客户</span>&gt;<span>客户信息</span></span>
+			    			<span ng-click="$hide()"></span>
+			    		</p>
+				    </div>
+				    <div class="reate_nav">
+				    	<div class="space_mes">
+				    		<p class="s_m_title2">账户信息</p>
+			    			<div class="creat-cusmes">
+			    				<font class="muted">*</font>
+				    			<span>手机</span>
+			                    <div class="area-box" ng-if="changeTel">
+			                    	{{cusDetails.phone_code}}&nbsp;{{cusDetails.phone}}
+			                    	<span class="change-tel" ng-click="changeCusTel(!changeTel)" ng-if="currentAdmin.permissionMap[PERMISSION_KEY] === 2">更改</span>
+			                    </div> 
+			                    <div class="area-box" ng-if="!changeTel">
+				                    <div class="area-box">
+				                        <sb-dropdown select="cusDetails.phone_code" options="codeList" placeholder="cusDetails.phone_code" no-empty></sb-dropdown>
+				                    </div>
+			                    	<input class="new-tel" type="text" ng-model="cusDetails.phone" maxlength="15">
+			                    	<span class="change-tel" ng-click="changeCusTel(!changeTel, cusDetails.id, cusDetails.phone_code.name, cusDetails.phone)">保存</span>
+			                    </div> 
+			    			</div>
+				    		<div class="creat-cusmes">
+				    			<font class="muted">*</font>
+				    			<span>姓名</span>
+				    			<div ng-if="changeDetails" class="area-box">{{cusDetails.name}}</div>
+				    			<input ng-if="!changeDetails" type="text" ng-model='cusDetails.name'>
+				    		</div>
+				    	</div>
+				    	<div class="space_mes">
+				    		<p class="s_m_title2">客户资料</p>
+				    		<div class="cus-picture">
+			                    <img class="evt-c-img" ng-src="{{images.download_link}}" ng-if="images.download_link">
+			                    <sb-image-with-fallback ng-if="!images.download_link" default-url="/img/default.png" error-url="/img/default.png" class="sm-pic" url="{{cusDetails.avatar}}"></sb-image-with-fallback>
+				                <p ng-if="!changeDetails">
+				                	<span></span><span>更改</span>
+				                	<input type="file" nv-file-select uploader="customerImageUploader">
+				                </p>
+				    		</div>
+				    		<div class="creat-two">
+				    			<div class="creat-cusmes cus-mes">
+					    			<span>邮箱</span>
+					    			<span ng-if="changeDetails">{{cusDetails.email}}</span>
+					    			<input ng-if="!changeDetails" type="text" ng-model='cusDetails.email'>
+					    		</div>
+					    		<div class="creat-cusmes cus-mes">
+					    			<span>性别</span>
+					    			<span ng-if="changeDetails">{{cusDetails.sex}}</span>
+									<span class="select-radio" ng-if="!changeDetails">
+	                                    <span ng-click="switchLeaseeType('男')"  ng-class="{on: filterOption.lessee_type === '男'}"></span>&nbsp;男&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+	                                    <span ng-click="switchLeaseeType('女')" ng-class="{on: filterOption.lessee_type === '女'}"></span>&nbsp;女
+	                                </span>
+					    		</div>
+				    		</div>
+				    		<div class="creat-two">
+				    			<div class="creat-cusmes cus-mes">
+					    			<span>国籍</span>
+					    			<span ng-if="changeDetails">{{cusDetails.nationality}}</span>
+					    			<input ng-if="!changeDetails" type="text" ng-model='cusDetails.nationality'>
+					    		</div>
+					    		<div class="creat-cusmes cus-mes">
+					    			<span>证件</span>
+					    			<span ng-if="changeDetails">{{cusDetails.id_type}}&nbsp;{{cusDetails.id_number}}</span>
+					    			<div ng-if="!changeDetails" class="id-select">
+				                        <sb-dropdown select="filterOption.type" options="idType" placeholder="placeholder.idtype" no-empty></sb-dropdown>
+				                    </div>
+					    			<input ng-if="!changeDetails" type="text" ng-model='cusDetails.id_number'>
+					    		</div>
+				    		</div>
+				    		<div class="creat-two">
+				    			<div class="creat-cusmes cus-mes">
+					    			<span>语言</span>
+					    			<span ng-if="changeDetails">{{cusDetails.language}}</span>
+					    			<input ng-if="!changeDetails" type="text" ng-model='cusDetails.language'>
+					    		</div>
+					    		<div class="creat-cusmes cus-mes">
+					    			<span>生日</span>
+					    			<span ng-if="changeDetails">{{cusDetails.birthday}}</span>
+					    			<input ng-if="!changeDetails" type="text" ng-model="cusDetails.birthday" data-date-format="yyyy-MM-dd" data-autoclose="1" bs-datepicker>
+		                            <span ng-if="!changeDetails"><i class="fa fa-calendar"></i></span>
+					    		</div>
+				    		</div>
+				    		<div class="creat-two">
+				    			<div class="creat-cusmes cus-mes">
+					    			<span>公司</span>
+					    			<span ng-if="changeDetails">{{cusDetails.company_name}}</span>
+					    			<input ng-if="!changeDetails" type="text" ng-model='cusDetails.company_name'>
+					    		</div>
+					    		<div class="creat-cusmes cus-mes">
+					    			<span>职位</span>
+					    			<span ng-if="changeDetails">{{cusDetails.position}}</span>
+					    			<input ng-if="!changeDetails" type="text" ng-model='cusDetails.position'>
+					    		</div>
+				    		</div>
+				    		<div class="creat-cusmes cus-mask">
+				    			<span>备注</span>
+				    			<span ng-if="changeDetails">{{cusDetails.comment}}</span>
+				    			<input ng-if="!changeDetails" type="text" ng-model='cusDetails.comment'>
+				    		</div>
+				    	</div>
+				    </div>
+			    	<div class="reate_btn clearfix">
+			    		 <span class="r-save-btn fl" ng-if="(changeDetails) && (currentAdmin.permissionMap[PERMISSION_KEY] === 2)" ng-click="changeCusDetails(!changeDetails)">编辑</span>
+			    		 <span class="r-save-btn fl" ng-if="!changeDetails" ng-click="changeCusDetails(!changeDetails, $hide, cusDetails.id)">保存</span>
+			    		 <span class="r-btn fl" ng-if="!changeDetails" ng-click="changeCusDetails(!changeDetails, $hide)">取消</span>
+			    		 <span class="r-btn fr" ng-click="transactionRecord($hide, cusDetails.id)">交易记录</span>
+			    		 <span class="r-btn fr" ng-if="currentAdmin.permissionMap[PERMISSION_KEY] === 2" ng-click="changeGroups(cusDetails)">编辑所在用户组</span>
+			    	</div>
+				</div>
+            </div>
+        </div>
+    </div>
+</div>

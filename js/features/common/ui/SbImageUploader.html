@@ -1,0 +1,9 @@
+<div>
+  <input type="file" accept="image/*">
+  <input ng-model="url" type="hidden"></textarea>
+  <sb-image-with-fallback url="{{url}}"
+                          default-url="{{defaultUrl}}"
+                          error-url="{{errorUrl}}">
+  </sb-image-with-fallback>
+  <p class="instruction" ng-transclude></p>
+</div>

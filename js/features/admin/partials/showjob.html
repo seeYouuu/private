@@ -1,0 +1,47 @@
+<div>
+	<ul class="job-list" ng-repeat="per in permissionItem.permission_mappings"  ng-if="popoverType === 'job'">
+		<li>
+			{{::per.permission.name}}
+			<p ng-if="per.op_level == 1">查看</p>
+			<p ng-if="per.op_level == 2">编辑</p>
+			<p ng-if="per.op_level == 3">冻结</p>
+		</li>
+	</ul>
+	<!-- <ul class="job-list" ng-if="popoverType === 'admin'">
+		<li ng-repeat="posi in adminItem.positionDetail" ng-if="selectedMenu.key != 'all'">
+			{{posi.position.name}}
+			<p>
+			上级：
+			<span ng-if="posi.position.parent_position">{{posi.position.parent_position.name}}</span>
+			<span ng-if="!posi.position.parent_position">无</span>
+			</p>
+		</li>
+		<li ng-repeat="posi in adminItem.position" ng-if="selectedMenu.key == 'all'">
+			{{::posi.name}}
+			<p>
+			上级：
+			<span ng-if="posi.parent_position">{{::posi.parent_position.name}}</span>
+			<span ng-if="!posi.parent_position">无</span>
+			</p>
+		</li>
+	</ul> -->
+	<ul class="job-list" ng-if="popoverType === 'admin'">
+		<li ng-repeat="position in adminItem.positionDetail track by $index">
+			<!-- {{item.position.name}}
+			<p><span class="p-name">{{item.building.name}}</span></p> -->
+			<span ng-if="selectedMenu.key != 'all'">{{position.position.name}}</span>
+			<span ng-if="selectedMenu.key == 'all'">{{position[0].position.name}}</span>
+			<p ng-repeat="building in position" ng-if="building.building && selectedMenu.key == 'all'">{{building.building.name}}</p>
+			<p ng-repeat="building in position" ng-if="!building.building && selectedMenu.key == 'all'">平台管理员</p>
+		</li>
+	</ul>
+	<ul class="job-list" ng-if="popoverType === 'building_position'">
+		<li ng-repeat="bind in adminItem.bindFormated track by $index">
+			<!-- {{item.building.name}} -->
+			<!-- <p><span class="p-name" ng-repeat="position in item">{{position.position}}</span></p> -->
+			<!-- <p><span class="p-name">{{item.position.name}}</span></p> -->
+			<span ng-if="selectedMenu.key != 'all'">{{bind[0].building.name}}</span>
+			<p><span ng-repeat="position in bind">{{position.position.name}}<i> | </i></span></p>
+		</li>
+	</ul>
+</div>

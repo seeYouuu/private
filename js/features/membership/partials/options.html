@@ -1,0 +1,44 @@
+<div class="group-options" ng-if="optionType == 'editCard-list'">
+    <div class="mid-div no-borderb">
+        <div ng-if="currentAdmin.permissionMap[PERMISSION_KEY] == 2"  ng-click="seePage('editCard', membershipItem)">会员卡设置</div>
+        <div ng-if="currentAdmin.permissionMap[PERMISSION_KEY] == 2"  ng-click="seePage('copyCard', membershipItem)">复制</div>
+        <div ng-if="membershipItem.visible && membershipItem.specification.length > 0 && currentAdmin.permissionMap[PERMISSION_KEY] == 2" ng-click="seeModal('confirm-invisible', $hide)">下架</div>
+        <div ng-if="!membershipItem.visible && membershipItem.specification.length > 0 && currentAdmin.permissionMap[PERMISSION_KEY] == 2" ng-click="seeModal('confirm-visible', $hide)">上架</div>
+    </div>
+</div>
+
+<div class="group-options" ng-if="optionType == 'editCard-detail'">
+    <div class="mid-div no-borderb">
+        <div ng-if="currentAdmin.permissionMap[PERMISSION_KEY] == 2" ng-click="seePage('editCard', membershipItem)">会员卡设置</div>
+        <div ng-if="currentAdmin.permissionMap[PERMISSION_CARD_SALES_KEY] == 2" ng-click="seePage('salesRule', membershipItem)">售卖设置</div>
+        <div ng-if="currentAdmin.permissionMap[PERMISSION_KEY] == 2" ng-click="seePage('copyCard', membershipItem)">复制</div>
+        <div ng-if="membershipItem.visible && membershipItem.specification.length > 0 && currentAdmin.permissionMap[PERMISSION_KEY] == 2" ng-click="seeModal('confirm-invisible', $hide)">下架</div>
+        <div ng-if="!membershipItem.visible && membershipItem.specification.length > 0 && currentAdmin.permissionMap[PERMISSION_KEY] == 2" ng-click="seeModal('confirm-visible', $hide)">上架</div>
+    </div>
+</div>
+
+<div ng-if="optionType == 'price'">
+	<ul class="price-pop">
+		<li ng-repeat="item in membershipItem.specification">
+			<div class="pr-l"><span>{{item.specification}}</span></div>
+			<div class="pr-r">
+				<div><span class="r-num">{{item.price | currency: ''}}</span>元</div>
+				<div><span class="g-num">有效期{{item.valid_period}}个月</span></div>
+			</div>
+		</li>
+	</ul>
+</div>
+
+<div ng-if="optionType == 'building'">
+	<ul class="job-list">
+		<li ng-repeat="item in membershipItem.door_desc">
+			<span>{{item.building_name}}</span>
+			<p ng-repeat="door in item.doors">{{door.name}}</p>
+		</li>
+	</ul>
+</div>
+
+<div ng-if="optionType == 'desc'">
+	<div class="desc-pop" ng-bind-html="membershipItem.description"></div>
+</div>
+

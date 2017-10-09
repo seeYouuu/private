@@ -1,0 +1,20 @@
+<div class="popover" tabindex="-1" style="min-width: 300px;">
+  <div class="arrow"></div>
+  <h3 class="popover-title" ng-bind-html="title" ng-show="title"></h3>
+  <div class="popover-content">
+    <div class="content-fluid">
+      <div class="row">
+        <div class="col-sm-3"
+             ng-repeat="room in rule.suitable_area.rooms">
+             
+          <div class="room-cell"
+               data-trigger="hover" 
+               data-placement="top" 
+               data-type="info" 
+               data-title="{{room}}" bs-tooltip>{{room}}</div>
+             
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

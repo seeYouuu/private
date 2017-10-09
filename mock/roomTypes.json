@@ -1,0 +1,30 @@
+[
+    {
+        "id": 1,
+        "name": "office",
+        "description": "独立办公室",
+        "unit": "month",
+        "unitDesc": "月"
+    },
+    {
+        "id": 2,
+        "name": "meeting",
+        "description": "会议室",
+        "unit": "hour",
+        "unitDesc": "小时"
+    },
+    {
+        "id": 3,
+        "name": "flexible",
+        "description": "不可选工位",
+        "unit": "day",
+        "unitDesc": "天"
+    },
+    {
+        "id": 4,
+        "name": "fixed",
+        "description": "可选工位",
+        "unit": "day",
+        "unitDesc": "天"
+    }
+]

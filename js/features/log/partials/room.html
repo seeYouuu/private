@@ -1,0 +1,79 @@
+<div  class="modal gallery-upload-progress-modal" role="dialog">
+    <div class="modal-dialog log-popup">
+        <div class="modal-content log-radius">
+            <div class="modal-header log-header" ng-show="title">
+                <h4><span ng-bind="title"></span></h4>
+            </div>
+            <div class="modal-body log-body">
+                <div class="log-content">
+				    <!-- 商品 -->
+			        <div class="mbox">
+			            <div class="mtitle">{{logItem.log_object_json.city.name}}，{{logItem.log_object_json.building.name}}，{{logItem.log_object_json.name}}</div>
+			            <ul class="room_lsit log-list">
+			                <li>
+			                    <span class="item_label">房间图片：</span>
+			                    <div class="add_slide">
+			                        <div>
+			                            <img style="width: 100%;height: 100%;" ng-src="{{logItem.log_object_json.attachment[0].attachment_id.content}}" ng-if="!defaultImg">
+			                            <img style="width: 100%;height: 100%;" ng-src="{{defaultImg.attachment_id.content}}" ng-if="defaultImg">
+			                        </div>
+			                        <ul class="addImg">
+			                            <li ng-repeat="item in logItem.log_object_json.attachment" ng-class="{check: item.first}" ng-click="setDefault(item)">
+			                                <img ng-src="{{item.attachment_id.content}}">
+			                            </li>
+			                        </ul>
+			                    </div>
+			                </li>
+			                <li>
+			                    <span class="item_label">城市：</span>
+			                    <p class="word" ng-bind="logItem.log_object_json.city.name"></p>
+			                </li>
+			                <li>
+			                    <span class="item_label">社区：</span>
+			                    <p class="word" ng-bind="logItem.log_object_json.building.name"></p>
+			                </li>
+			                <li>
+			                    <span class="item_label">门禁：</span>
+			                    <p class="word" ng-bind="item.name" ng-repeat="item in logItem.log_object_json.door_control" style="padding-right: 5px;"></p>
+			                </li>
+			                <li>
+			                    <span class="item_label">空间类型：</span>
+			                    <p class="word" ng-bind="roomTypeDesc[logItem.log_object_json.type]"></p>
+			                    
+			                </li>
+			            </ul>
+
+			            <div class="mtitle mid">
+			                基本属性
+			            </div>
+
+			            <ul class="room_lsit log-list">
+			                <li ng-if="logItem.log_object_json.type==='fixed'">
+			                    <span class="item_label">座位号：</span>
+			                    <p class="num word">
+			                        <span ng-bind="item.seat_number" ng-repeat="item in logItem.log_object_json.fixed" style="padding-right: 5px;"></span> 
+			                    </p>
+			                </li>
+			                <li>
+			                    <span class="item_label">面积：</span>
+			                    <p class="word">{{logItem.log_object_json.area}}m<sup>2</sup></p>
+			                </li>
+			                <li>
+			                    <span class="item_label">工位数（容纳人数）：</span>
+			                    <p class="word" ng-bind="logItem.log_object_json.allowed_people"></p>
+			                </li>
+			                <li ng-if="logItem.log_object_json.type === 'meeting' || logItem.log_object_json.type === 'studio'">
+			                    <span class="item_label">每日开放时间段：</span>
+			                    <p class="num word">{{logItem.log_object_json.meeting[0].start_hour | date: 'HH:mm'}} 至 {{logItem.log_object_json.meeting[0].end_hour | date: 'HH:mm'}}</p>
+			                </li>
+			                <li>
+			                    <span class="item_label">基本办公用品：</span>
+			                    <p class="word" ng-bind="logItem.log_object_json.supplies"></p>
+			                </li>
+			            </ul>
+			        </div>
+				</div>
+            </div>
+        </div>
+    </div>
+</div>

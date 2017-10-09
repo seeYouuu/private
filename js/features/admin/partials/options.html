@@ -1,0 +1,71 @@
+<div class="group-options" ng-if="operationType == 'edit-admin'">
+    <!-- <p ng-class="{'b-tottom': selectedMenu.key == 'all'}">管理员操作<span class="x" ng-click="$hide()">×</span></p> -->
+    <div class="mid-div" ng-class="{'no-borderb': !((adminItem.is_super_admin && currentAdmin.user.is_super_admin) || !adminItem.is_super_admin)}">
+        <!-- <div ng-if="selectedMenu.key != 'platform'">
+            <p ng-click="addItem('move',$hide)">添加到其他社区</p>
+        </div>
+        <div ng-if="selectedMenu && selectedMenu.selected && (currentAdmin.user.is_super_admin )">
+            <p ng-click="deleteAdminPosition($hide)">从该板块移除管理员</p>
+        </div> -->
+        <div ng-click="operateOneAdmin('update', $hide)">编辑管理员职位</div>
+        <div ng-if="selectedPosition && selectedPosition.selected && (currentAdmin.user.is_super_admin || (!currentAdmin.user.is_super_admin && !selectedPosition.position.is_super_admin))">
+            <p ng-click="deleteAdminPosition($hide)">从职位块移除管理员</p>
+        </div>
+    </div>
+    <p class="del-item" ng-click="deleteAdminFromPlatform($hide)" ng-if="(adminItem.is_super_admin && currentAdmin.user.is_super_admin) || !adminItem.is_super_admin">删除管理员</p>
+</div>
+
+<div class="group-options" ng-if="operationType == 'edit-job'">
+    <!-- <p>职位操作<span class="x" ng-click="$hide()">×</span></p> -->
+    <div class="mid-div" ng-class="{'clear-b': positionItem.is_super_admin}">
+        <div ng-if="!positionItem.is_super_admin" ng-click="togglePage('edit-job', 'edit')">
+            <p>编辑该职位</p>
+        </div>
+        <div ng-click="changePosition(positionItem.id, 'up')">
+            <p>上移</p>
+        </div>
+        <div ng-click="changePosition(positionItem.id, 'down')">
+            <p>下移</p>
+        </div>
+    </div>
+    <p class="del-item" ng-click="deletePosition(positionItem.id, $hide)" ng-if="!positionItem.is_super_admin">删除该职位</p>
+</div>
+
+<div class="group-options" ng-if="operationType == 'filter'">
+    <!-- <p>筛选职位<span class="x" ng-click="$hide()">×</span></p> -->
+    <div class="filter-box">
+        <div class="f-title">职位</div>
+        <div class="f-con">
+            <span class="f-item" ng-repeat="item in filterPositions" ng-bind="item.name" ng-click="selectFilter(item)" ng-class="{on: item.filterSelected}"></span>
+        </div>
+    </div>
+    <div class="f-bottom">
+        <span ng-click="selectAllFilter()">全选</span>
+        <span>|</span>
+        <span ng-click="clearAllFitler()">清空</span>
+    </div>
+</div>
+
+<div class="group-options" ng-if="operationType == 'occupation'">
+    <div class="mid-div occu-div">
+        <div>
+            <p>编辑该职位</p>
+        </div>
+        <div>
+            <p>上移</p>
+        </div>
+        <div>
+            <p>下移</p>
+        </div>
+    </div>
+    <p class="add-item">添加职位</p>
+</div>
+
+<div class="group-options" ng-if="operationType == 'building'">
+    <p>选择添加管理员<span class="x" ng-click="$hide()">x</span></p>
+    <div class="mid-div no-borderb">
+        <div ng-repeat="item in adminMenu" ng-if="item.key != 'all' && item.key != 'super'" ng-click="addItem('admin',$hide ,item)">
+            <p>{{item.name}}</p>
+        </div>
+    </div>
+</div>

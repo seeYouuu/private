@@ -1,0 +1,128 @@
+<div class="modal" role="dialog">
+    <div class="modal-dialog modal-center modal-reate leas-bill">
+        <div class="modal-content group-add">
+            <div class="modal-body clearfix">
+            	<div class="reate_clues">
+			    	<div class="reate_header clearfix">
+			    		<p class="clearfix">
+			    			<span><span>合同租赁</span>&gt;<span>租赁账单</span>&gt;<span>{{selectedBill.serial_number}}</span></span>
+			    			<span ng-click="$hide()"></span>
+			    			<span ng-click="billPrint()"></span>
+			    			<span ng-click="billPrint()"></span>
+			    		</p>
+				    		<span>状态<span class="q_mark">i</span></span>
+				    </div>
+				    <div class="reate_nav">
+				    	<div class="bill-detial">
+				    		<p>
+					    		<strong>租赁人：</strong><span>{{customerOption.name}}</span><i></i>
+					    		<strong>手机：</strong><span>{{customerOption.phone}}</span>
+					    		<strong>邮箱：</strong><span>{{customerOption.email}}</span>
+					    		<strong>会员卡号：</strong><span></span>
+					    	</p>
+					    	<div class="re-bill">
+					    		<div class="space-b-box">
+			                        <div class="line-width r-b-top">
+			                            <div class="line-item per36 t-left">
+			                                合同号 : {{selectedBill.lease.serial_number}}
+			                            </div>
+			                            <div class="line-item per28">
+			                                账单
+			                            </div>
+			                            <div class="line-item per14">
+			                                账单时间段
+			                            </div>
+			                            <div class="line-item per14">
+			                                账单金额
+			                            </div>
+			                        </div>
+			                        <div class="line-width r-b-bottom">
+			                            <div class="line-item per36 t-left">
+			                                <div class="item-con">
+			                                    <div class="p-w-t">
+			                                        <div class="p-p">
+			                                        	<img ng-src="{{selectedBill.lease.product.room.attachment}}">
+			                                        </div>
+			                                        <div class="p-t">
+			                                            <div class="p-t-top hover">
+			                                                {{selectedBill.lease.product.room.city}}, {{selectedBill.lease.product.room.building.name}}, {{selectedBill.lease.product.room.number}}, {{selectedBill.lease.product.room.name}}
+			                                            </div>
+			                                            <div class="p-t-bot">
+			                                                <span class="detail-tag ora">长</span>
+			                                                <span>{{roomTypeDesc[selectedBill.lease.product.room.type].description}}</span>
+			                                            </div>
+			                                        </div>
+			                                    </div>
+			                                </div>
+			                            </div>
+			                            <div class="line-item per28">
+			                                <div class="item-con">
+			                                    <div class="icon-one">{{selectedBill.name}}</div>
+			                                    <div>{{selectedBill.description}}</div>
+			                                </div>
+			                            </div>
+			                            <div class="line-item per14">
+			                                <div class="item-con">
+			                                    <span>{{selectedBill.start_date | date: 'yyyy-MM-dd'}}<br/>-<br>{{selectedBill.end_date | date: 'yyyy-MM-dd'}}</span>
+			                                </div>
+			                            </div>
+			                            <div class="line-item per14">
+			                                <div class="item-con">
+			                                	<span class="icon-price">{{selectedBill.amount}}元</span><br><a href="#">更改价格</a>
+			                                </div>
+			                            </div>
+			                        </div>
+			                    </div>
+					    	</div>
+				    	</div>
+				    	<p class="react-price">
+				    		<span class="r-p-detail">
+				    			<strong>推送时间</strong><span>{{selectedBill.send_date | date: 'yyyy-MM-dd HH:mm'}}由<em>{{billSender.name}}</em>推送</span><br>
+				    			<strong>付款渠道</strong><span>{{selectedBill.customization.pay_channel}}</span><br>
+				    			<strong ng-if="selectedBill.payment_date">付款时间</strong><span>{{selectedBill.payment_date | date: 'yyyy-MM-dd HH:mm'}}</span>
+				    		</span>
+				    		<span class="font-set">应付款</span>
+				    		<span class="font-set">{{selectedBill.revised_amount}}元</span>
+				    	</p>
+				    	<div class="reate_note">
+				    		<p class="clearfix">
+				    			<span>备注（{{billRemarks.length}}条）</span>
+				    			<span>展开备注<i class="down_arr"></i></span>	
+				    		</p>
+				    		<!-- <div class="clearfix">
+                                <div>
+                                    <span class="r_note"></span>
+                                    <div class="r_n_detail">
+                                        <span>由Guanliyun转为报价：Y156132156432145646</span>
+                                        <span>2016-09-16 18:13</span>
+                                        <p></p>
+                                    </div>
+                                </div>
+                                <div>
+                                    <span></span>
+                                    <div class="r_n_detail">
+                                        <span>XXX新增了备注</span>
+                                        <span>2016-09-16 18:13</span>
+                                        <p>内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容</p>
+                                    </div>
+                                </div>
+                                <div>
+                                    <span></span>
+                                    <div class="r_n_detail">
+                                        <span>XXX新增了备注</span>
+                                        <span>2016-09-16 18:13</span>
+                                        <p>内容</p>
+                                    </div>
+                                </div>
+                            </div> -->
+				    	</div>
+				    </div>
+			    	<div class="reate_btn clearfix">
+			    		<span class="r-save-btn fl" ng-if="selectedBill.status === 'pending'" ng-click="pushSingleBill()">推送账单</span>
+			    		<span class="r-save-btn fl" ng-if="selectedBill.status === 'verify'">确认收款</span>
+			    	</div>
+				</div>
+            </div>
+        </div>
+    </div>
+</div>

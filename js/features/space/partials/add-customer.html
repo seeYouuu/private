@@ -1,0 +1,59 @@
+<div class="modal" role="dialog">
+    <div class="modal-dialog modal-center">
+        <div class="modal-content group-add">
+            <div class="modal-body clearfix">
+				<div>
+					<div class="add-header">
+						<span>设置客服</span><span class="grey-tip">(客服必须为管理员)</span>
+					</div>
+					<div class="add-content">
+						<div class="add-down customer-b">
+							<div class="add-left">
+								<p class="add-cat">已有管理员</p>
+								<div class="left-box">
+									<div class="search-box">
+										<input type="text" ng-model="search.name">
+									</div>
+									<div class="info-box">
+										<p class="e-tip" ng-if="search.name && visibleCount == 0">该账号目前不是管理员，不能添加为客服。</p>
+										<div class="a-info" ng-repeat="item in addAdminList | filter: search.name" ng-class="{checked: item.selectedAdd}">
+											<image-with-fallback url="{{item.user.avatar}}" default-url="../img/head.png"></image-with-fallback>
+											<span class="a-name">
+												<p ng-bind="item.user.name"></p>
+												<p ng-bind="item.user.phone"></p>
+											</span>
+											<span class="add-i" ng-click="selectAddAdmin(item)" ng-if="!item.selectedAdd">添加</span>
+											<span class="add-i cancel" ng-click="cancelSelectAdmin(item)" ng-if="item.selectedAdd">取消</span>
+										</div>
+									</div>
+								</div>
+							</div>
+							<div class="add-right">
+								<p class="add-cat">已选择的管理员</p>
+								<div class="right-box res-box">
+									<div class="res-item" ng-repeat="admin in search.admins">
+										<div class="res-info longer">
+											<image-with-fallback url="{{admin.user.avatar}}" default-url="../img/head.png"></image-with-fallback>
+											<div class="info-box">
+												<p class="i-name" ng-bind="admin.user.name"></p>
+												<p ng-bind="admin.user.phone" class="grey-num"></p>
+											</div>
+										</div>
+										<div class="res-del" ng-click="cancelSelectAdmin(admin)">
+											×
+										</div>
+									</div>
+								</div>
+							</div>
+						</div>
+					</div>
+
+					<div class="add-foot center">
+						<div class="add-save cancel" ng-click="$hide()">取消</div>
+						<div class="add-save" ng-click="addCustomerForCommunity($hide)" ng-class="{'disabled': loading}">确定</div>
+					</div>
+				</div>
+            </div>
+        </div>
+    </div>
+</div>

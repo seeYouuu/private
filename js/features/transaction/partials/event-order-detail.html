@@ -1,0 +1,139 @@
+<div class="sandBox_content">
+    <div class="tra-content">
+		<div class="detail-page">
+			<div class="detail-head">
+				<span class="detail-tag" ng-class="{red: eventOrderDetail.status == 'unpaid' || eventOrderDetail.status == 'pending',green: eventOrderDetail.status == 'completed' || eventOrderDetail.status == 'paid',grey: eventOrderDetail.status != 'paid' && eventOrderDetail.status != 'unpaid' && eventOrderDetail.status != 'completed' && eventOrderDetail.status != 'pending'}">{{eventOrderDetail.status.toUpperCase() | translate}}</span>
+				<span>订单号：{{eventOrderDetail.order_number}}</span>
+				<span class="head-tip">(创合开票)</span>
+			</div>
+			<div class="detail-mid">
+				<div class="d-m-top">
+					<div class="d-t-item">
+						<span class="item-cat">租赁人 :</span>
+						<span>{{userOptions[eventOrderDetail.user_id].name}}</span>
+					</div>
+					<div class="d-t-item">
+						<span class="item-cat">手机 :</span>
+						<span>{{userOptions[eventOrderDetail.user_id].phone}}</span>
+					</div>
+					<div class="d-t-item">
+						<span class="item-cat">邮箱 :</span>
+						<span>{{userOptions[eventOrderDetail.user_id].email}}</span>
+					</div>
+					<!-- <div class="d-t-item">
+						<span class="item-cat">会员卡号 :</span>
+						<span>{{userOptions[eventOrderDetail.user_id].cardNo}}</span>
+					</div> -->
+				</div>
+				<div class="space-b-box">
+                    <div class="b-title tit-top">
+                        <div class="line-width info-tit">
+                            <div class="line-item per55 t-left">
+                                活动
+                            </div>
+                            <div class="line-item per15">
+                                活动时间
+                            </div>
+                            <div class="line-item per15">
+                                活动地点
+                            </div>
+                            <div class="line-item per15">
+                                发起公司
+                            </div>
+                        </div>
+                    </div>
+                    <div class="line-width">
+                        <div class="line-item per55 t-left">
+                            <div class="item-con">
+                                <div class="p-w-t">
+                                    <div class="p-p">
+                                        <img ng-src="{{eventOrderDetail.event.attachments[0].content}}">
+                                    </div>
+                                    <div class="p-t">
+                                        <div class="p-t-top black">
+                                            {{eventOrderDetail.event.name}}
+                                        </div>
+                                        <div class="p-t-bot grey" trigger='hover' data-placement="bottom-left" data-content-template="js/features/transaction/partials/popover.html" data-auto-close="1" bs-popover>
+                                            <div class="text-con">{{eventOrderDetail.event.description}}</div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="line-item per15">
+                            <div class="item-con">
+	                            <div trigger='hover' data-placement="bottom-left" data-content-template="js/features/transaction/partials/descPopover.html" data-auto-close="1" bs-popover>
+	                                <div>{{eventOrderDetail.minDate}}</div><div ng-if="eventOrderDetail.minDate != eventOrderDetail.maxDate">-</div>
+	                                <div ng-if="eventOrderDetail.minDate != eventOrderDetail.maxDate">{{eventOrderDetail.maxDate}}</div>
+	                            </div>
+                            </div>
+                        </div>
+                        <div class="line-item per15">
+                            <div class="item-con">
+                                <div>{{eventOrderDetail.event.address}}</div>
+                            </div>
+                        </div>
+                        <div class="line-item per15">
+                            <div class="item-con">
+                                <div>{{eventOrderDetail.event.publish_company}}</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+				
+			</div>
+			<div class="detail-bot">
+				<div class="d-b-left">
+					<div class="d-left-line">
+						<span class="line-cat">创建时间</span>
+						<span>{{eventOrderDetail.creation_date | date: 'yyyy-MM-dd HH:mm'}}</span>
+					</div>
+					<div class="d-left-line" ng-if="eventOrderDetail.pay_channel">
+						<span class="line-cat">付款渠道</span>
+						<span class="detail-tag" ng-class="{account: eventOrderDetail.pay_channel == 'account',blue: eventOrderDetail.pay_channel == 'alipay',green: eventOrderDetail.pay_channel == 'wx'}">{{eventOrderDetail.pay_channel | translate}}</span>
+					</div>
+					<div class="d-left-line" ng-if="eventOrderDetail.payment_date">
+						<span class="line-cat">付款时间</span>
+						<span>{{eventOrderDetail.payment_date | date: 'yyyy-MM-dd HH:mm'}}</span>
+					</div>
+					<!-- <div class="d-left-line">
+						<span class="line-cat">取消时间</span>
+						<span>2016-09-16  18:13</span>
+					</div>
+					<div class="d-left-line">
+						<span class="line-cat">退款时间</span>
+						<span>2016-09-16  18:13</span>
+					</div> -->
+				</div>
+				<div class="d-b-right">
+					<div class="d-right-line">
+						<div class="d-r-left">
+							价格模板
+						</div>
+						<div class="d-r-right">
+							无优惠
+						</div>
+					</div>
+					<div class="d-right-line red-th">
+						<div class="d-r-left">
+							<span ng-if="eventOrderDetail.status != 'unpaid'">实付款</span>
+							<span ng-if="eventOrderDetail.status == 'unpaid'">应付款</span>
+						</div>
+						<div class="d-r-right">
+							{{eventOrderDetail.price}} 元
+						</div>
+					</div>
+					<!-- <div class="d-right-line">
+						<div class="d-r-left">
+							已退款
+						</div>
+						<div class="d-r-right">
+							540.00 元
+						</div>
+					</div> -->
+
+				</div>
+			</div>
+		</div>
+    </div>
+</div>

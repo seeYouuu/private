@@ -1,0 +1,242 @@
+<div class="sandBox_content">
+    <div class="tra-content">
+		<div class="detail-page">
+			<div class="detail-head">
+				<span class="detail-tag green" ng-class="{'green': spaceItem.status == 'completed'||spaceItem.status == 'paid', 'red': spaceItem.status == 'unpaid'}" ng-if="spaceItem.status != 'cancelled'">{{spaceItem.status.toUpperCase() | translate}}</span>
+				<span class="detail-tag grey" ng-if="spaceItem.status == 'cancelled' && !spaceItem.refunded && !spaceItem.need_to_refund">已取消</span>
+				<span class="detail-tag grey" ng-if="spaceItem.status == 'cancelled' && spaceItem.refunded">已退款</span>
+				<span class="detail-tag red" ng-if="spaceItem.status == 'cancelled' && spaceItem.need_to_refund">待退款</span>
+				<span>订单号：{{spaceItem.order_number}}</span>
+				<span class="head-tip" ng-if="!spaceItem.sales_invoice && spaceItem.pay_channel != 'account'">(创合开票)</span>
+				<span class="head-tip" ng-if="spaceItem.sales_invoice && spaceItem.pay_channel != 'account'">({{spaceItem.product.room.building.company.name}}开票)</span>
+				<span class="head-right link-txt" ng-click="seeRemarkDialog()">备注 <span class="grey-num">({{remarkList.length}})</span></span>
+			</div>
+			<div class="detail-mid">
+				<div class="d-m-top">
+					<div class="d-t-item">
+						<span class="item-cat">租赁人 :</span>
+						<span>{{userOptions[spaceItem.user_id].name}}</span>
+					</div>
+					<div class="d-t-item">
+						<span class="item-cat">手机 :</span>
+						<span>{{userOptions[spaceItem.user_id].phone}}</span>
+					</div>
+					<div class="d-t-item">
+						<span class="item-cat">邮箱 :</span>
+						<span>{{userOptions[spaceItem.user_id].email}}</span>
+					</div>
+					<div class="d-t-item">
+						<span class="item-cat">会员卡号 :</span>
+						<span>{{userOptions[spaceItem.user_id].card_no}}</span>
+					</div>
+				</div>
+				<div class="d-m-top" ng-if="spaceItem.payment_user_id && spaceItem.payment_user_id != spaceItem.user_id">
+					<div class="d-t-item">
+						<span class="item-cat">付款人 :</span>
+						<span>{{userOptions[spaceItem.payment_user_id].name}}</span>
+						<span class="detail-tag d-ora">代</span>
+					</div>
+					<div class="d-t-item">
+						<span class="item-cat">手机 :</span>
+						<span>{{userOptions[spaceItem.payment_user_id].phone}}</span>
+					</div>
+					<div class="d-t-item">
+						<span class="item-cat">邮箱 :</span>
+						<span>{{userOptions[spaceItem.payment_user_id].email}}</span>
+					</div>
+					<div class="d-t-item">
+						<span class="item-cat">会员卡号 :</span>
+						<span>{{userOptions[spaceItem.payment_user_id].card_no}}</span>
+					</div>
+				</div>
+				<div class="space-b-box">
+                    <div class="b-title tit-top">
+                        <div class="line-width info-tit">
+                            <div class="line-item per55 t-left">
+                                空间
+                            </div>
+                            <div class="line-item per15">
+                                单价
+                            </div>
+                            <div class="line-item per15">
+                                数量
+                            </div>
+                            <div class="line-item per15">
+                                总价
+                            </div>
+                        </div>
+                    </div>
+                    <div class="line-width">
+                        <div class="line-item per55 t-left">
+                            <div class="item-con">
+                                <div class="p-w-t">
+                                    <div class="p-p">
+                                        <img ng-src="{{spaceItem.product_info.room.attachment[0].attachment_id.content}}">
+                                    </div>
+                                    <div class="p-t">
+                                        <div class="p-t-top">
+                                            {{spaceItem.product_info.room.city.name}}, {{spaceItem.product_info.room.building.name}}, {{spaceItem.product_info.room.number}}, {{spaceItem.product_info.room.name}}
+                                        </div>
+                                        <div class="p-t-bot">
+                                            <span class="detail-tag red" ng-if="spaceItem.product.room.type !== 'longterm'">秒</span>
+                                            <span class="detail-tag ora" ng-if="spaceItem.product.room.type === 'longterm'">长</span>
+                                            <span>{{roomTypeDesc[spaceItem.product.room.type].description}}</span>
+                                            <span class="detail-tag green" ng-if="spaceItem.appointed">指</span>
+                                            <span ng-if="spaceItem.appointed" ng-bind="userOptions[spaceItem.appointed].name"></span>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="line-item per15">
+                            <div class="item-con">
+                                <!-- <div>{{::spaceItem.product_info.base_price | currency: '￥':2 }}/{{unitDesc[spaceItem.product_info.unit_price]}}</div> -->
+                                <div ng-if="spaceItem.product_info.room.type != 'fixed' && spaceItem.product_info.base_price">{{::spaceItem.product_info.base_price | currency: '￥':2 }}/{{unitDesc[spaceItem.product_info.unit_price]}}</div>
+                                <div ng-if="spaceItem.product_info.room.type == 'fixed' && spaceItem.product_info.base_price">{{::spaceItem.product_info.room.seat.base_price | currency: '￥':2 }}/{{unitDesc[spaceItem.product_info.unit_price]}}</div>
+
+                                <div ng-if="spaceItem.product_info.room.type_tag != 'dedicated_desk' && !spaceItem.product_info.base_price">{{::spaceItem.product_info.order.base_price | currency: '￥':2 }}/{{unitDesc[spaceItem.product_info.order.unit_price]}}</div>
+                                <div ng-if="spaceItem.product_info.room.type_tag == 'dedicated_desk' && !spaceItem.product_info.base_price">{{::spaceItem.product_info.room.seat.base_price | currency: '￥':2 }}/{{unitDesc[spaceItem.product_info.order.unit_price]}}</div>
+                            </div>
+                        </div>
+                        <div class="line-item per15">
+                            <div class="item-con">
+                                <span ng-if="spaceItem.product_info.unit_price === 'hour'">{{spaceItem.start_date | date: 'yyyy-MM-dd'}}<br/>({{spaceItem.start_date | date: 'HH:mm'}} - {{spaceItem.end_date | date: 'HH:mm'}})</span>
+                                <span ng-if="spaceItem.product_info.unit_price !== 'hour'">{{spaceItem.start_date | date: 'yyyy-MM-dd'}}<br/>{{'TO' | translate}}<br/>{{spaceItem.end_date | date: 'yyyy-MM-dd'}}</span>
+                            </div>
+                        </div>
+                        <div class="line-item per15">
+                            <div class="item-con">
+                                <div>{{spaceItem.discount_price | currency: '￥':2 }}</div>
+                                <div ng-if="spaceItem.status === 'unpaid' && (currentAdmin.user.is_super_admin || currentAdmin.spaceOrderMap[PERMISSION_SPACE_KEY + spaceItem.product.room.building.id] === 2)"><span class="link-txt" ng-click="seePopup('orderAmount')">更改价格</span></div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="user-area">
+                    	<div class="user-wrapper">
+                    		<div class="u-box" ng-repeat="item in spaceItem.invited_people" ng-if="spaceItem.invited_people.length > 0">
+								<img ng-src="{{userOptions[item.user_id].avatar}}" class="u-ava">
+								<div class="u-nick">{{userOptions[item.user_id].name}}</div>
+								<div class="u-info">
+									<span>{{userOptions[item.user_id].phone}}</span>
+									<span>{{userOptions[item.user_id].email}}</span>
+								</div>
+							</div>
+							<div class="u-box" ng-if="spaceItem.appointed">
+								<img ng-src="{{userOptions[spaceItem.appointed].avatar}}" class="u-ava">
+								<div class="u-nick">{{userOptions[spaceItem.appointed].name}}</div>
+								<div class="u-info">
+									<span>{{userOptions[spaceItem.appointed].phone}}</span>
+									<span>{{userOptions[spaceItem.appointed].email}}</span>
+								</div>
+							</div>
+                    	</div>
+                    </div>
+                </div>
+				<div class="order_info no-bt" ng-if="spaceItem.pay_channel === 'offline' && spaceItem.transfer[0].transfer_attachments.length > 0">
+	                <div class="offline">
+	                    <ul>
+	                        <li>
+	                            <span>账户名称：</span>
+	                            {{spaceItem.transfer[0].account_name}}
+	                        </li>
+	                        <li>
+	                            <span>银行账号：</span>
+	                            {{spaceItem.transfer[0].account_no}}
+	                        </li>
+	                    </ul>
+	                    <div class="off-pic">
+	                        <span class="pic-tit">汇款凭证:</span>
+	                        <div class="pic">
+	                            <img class="s-pic" ng-click="showOriginImage(spaceItem.transfer[0].transfer_attachments[0].content)" ng-src="{{spaceItem.transfer[0].transfer_attachments[0].content}}" img-fix-orientation="spaceItem.transfer[0].transfer_attachments[0].content">
+	                        </div>
+	                    </div>
+	                </div>
+	            </div>
+			</div>
+			<div class="detail-bot">
+				<div class="d-b-left">
+					<div class="d-left-line">
+						<span class="line-cat">创建时间</span>
+						<span class="line-cat">{{spaceItem.creation_date | date: 'yyyy-MM-dd HH:mm'}}</span>
+						<span ng-if="spaceItem.type">由
+							<span class="d-r-name">{{userOptions[spaceItem.admin_id].name}}</span>
+							<span ng-if="spaceItem.type == 'preorder'">推送空间订单</span>
+							<span ng-if="spaceItem.type == 'reserve'">设置内部占用</span>创建
+						</span>
+					</div>
+					<div class="d-left-line">
+						<span class="line-cat">下单方式</span>
+						<span ng-if="!spaceItem.type">{{'SELF_ORDER' | translate}}</span>
+                        <span ng-if="spaceItem.type">{{spaceItem.type | translate}}</span>
+					</div>
+					<div class="d-left-line" ng-if="spaceItem.pay_channel">
+						<span class="line-cat">付款渠道</span>
+						<span class="detail-tag widder t-shadow" ng-class="{'wechat': spaceItem.pay_channel == 'wx','account': spaceItem.pay_channel == 'account','offline': spaceItem.pay_channel == 'offline','alipay': spaceItem.pay_channel == 'alipay' || spaceItem.pay_channel == 'upacp','we-off': spaceItem.pay_channel == 'wx_pub'}">{{spaceItem.pay_channel | translate}}</span>
+					</div>
+					<div class="d-left-line" ng-if="spaceItem.payment_date">
+						<span class="line-cat">付款时间</span>
+						<span>{{spaceItem.payment_date | date: 'yyyy-MM-dd HH:mm'}}</span>
+					</div>
+					<div class="d-left-line" ng-if="spaceItem.cancelled_date">
+						<span class="line-cat">取消时间</span>
+						<span>{{spaceItem.cancelled_date | date: 'yyyy-MM-dd HH:mm'}}</span>
+					</div>
+					<div class="d-left-line" ng-if="spaceItem.refund_processed_date">
+						<span class="line-cat">退款时间</span>
+						<span>{{spaceItem.refund_processed_date | date: 'yyyy-MM-dd HH:mm'}}</span>
+					</div>
+					<div class="d-left-line" ng-if="spaceItem.status === 'completed'">
+						<span class="line-cat">结束时间</span>
+						<span>{{spaceItem.end_date | date: 'yyyy-MM-dd HH:mm'}}</span>
+					</div>
+					<div class="d-left-line" ng-if="spaceItem.refunded">
+						<span class="line-cat">退款渠道</span>
+						<span ng-if="!spaceItem.refund_to">原路退回</span>
+						<span ng-if="spaceItem.refund_to">退款到余额</span>
+					</div>
+				</div>
+				<div class="d-b-right">
+					<div class="d-right-line" ng-if="spaceItem.edit_comment">
+						<div class="d-r-op grey-f">
+							<span class="d-r-name">{{userOptions[spaceItem.edit_admin_id].name}}</span>
+							<span>将订单金额改为{{spaceItem.discount_price | currency: ''}}元</span>
+						</div>
+						<div class="d-r-left">
+							更改备注
+						</div>
+						<div class="d-r-right grey-f">
+							{{spaceItem.edit_comment}}
+						</div>
+					</div>
+					<div class="d-right-line">
+						<div class="d-r-left">
+							价格模板
+						</div>
+						<div class="d-r-right">
+							无优惠
+						</div>
+					</div>
+					<div class="d-right-line red-th">
+						<div class="d-r-left">
+							<span ng-if="spaceItem.status == 'paid' || spaceItem.status == 'completed' || spaceItem.refund_processed || spaceItem.need_to_refund || spaceItem.refunded || spaceItem.transfer.length > 0 && spaceItem.transfer[0].transfer_status == 'paid'">实付款</span>
+							<span ng-if="spaceItem.status != 'paid' && spaceItem.status != 'completed' &&  !spaceItem.refund_processed && !spaceItem.need_to_refund && !spaceItem.refunded && spaceItem.transfer.length == 0">应付款</span>
+						</div>
+						<div class="d-r-right">
+							{{spaceItem.discount_price | currency: '￥':2 }}
+						</div>
+					</div>
+					<div class="d-right-line" ng-if="spaceItem.status == 'cancelled' && spaceItem.refunded">
+						<div class="d-r-left">
+							已退款
+						</div>
+						<div class="d-r-right">
+							{{spaceItem.discount_price | currency: '￥':2 }}
+						</div>
+					</div>
+
+				</div>
+			</div>
+		</div>
+    </div>
+</div>

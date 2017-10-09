@@ -1,0 +1,38 @@
+<div class="pop-content h-content max195">
+	<div class="pop-body">
+		<ul class="tip_ul" ng-if="tipType == 'tip_a'">
+			<li><span class="bold-dot">·</span><span class="bold-f">可提现金额：</span>目前可以申请提出的已结算款项（若有未结算的服务费账单，可提现金额将小于您的账户余额）</li>
+			<li><span class="bold-dot">·</span><span class="bold-f">账户余额：</span>所有订单的营业收入（包含秒租订单、活动订单及长租账单等）</li>
+			<li><span class="bold-dot">·</span><span class="bold-f">未结算服务费：</span>需支付的服务费用，支付成功后将释放同等金额的提现额度（每产生一笔长租账单将生成一笔服务费用）</li>
+		</ul>
+		<ul class="tip_ul" ng-if="tipType == 'tip_b'">
+			<li><span class="bold-dot">·</span><span class="bold-f">收入总计：</span>反映当下时间节点所有订单的收款情况</li>
+			<li><span class="bold-dot">·</span><span class="bold-f">账单：</span>反映目前需支付的服务费账单</li>
+		</ul>
+		<ul class="tip_ul" ng-if="tipType == 'tip_c'">
+			<li><span class="bold-dot">·</span><span class="bold-f">长租服务费账单：</span>需支付的服务费账单金额</li>
+			<li><span class="bold-dot">·</span><span class="bold-f">支付账单：</span>需支付所欠费的服务费账单后，提现额度才将释放，方可提现</li>
+			<li><span class="bold-dot">·</span><span class="bold-f">查看历史账单：</span>可供查询的历史账单明细</li>
+		</ul>
+		<ul class="tip_ul" ng-if="tipType == 'tip_d'">
+			<li><span class="bold-dot">·</span><span class="bold-f">月结账单：</span>秒租订单及活动订单每月按月结算实际收入，显示金额为目前已结算的金额</li>
+			<li><span class="bold-dot">·</span><span class="bold-f">开票结算：</span>已结算的月结账单，需开票给服务方后，结算金额才将记入账户余额，方可提现</li>
+			<li><span class="bold-dot">·</span><span class="bold-f">查看历史结算：</span>可供查询的历史结算明细</li>
+		</ul>
+		<ul class="tip_ul" ng-if="tipType == 'tip_e'">
+			<li><span class="bold-dot">·</span><span class="bold-f">查看财务汇总：</span>查询所有收支明细</li>
+			<li><span class="bold-dot">·</span><span class="bold-f">查看提现记录：</span>查询所有提现记录明细</li>
+		</ul>
+		<ul class="tip_ul" ng-if="tipType == 'tip_f'">
+			<li><span class="bold-dot">·</span><span class="bold-f">处理开票申请：</span>可处理各客户待开发票的申请（一般为长租账单的收入）</li>
+			<li><span class="bold-dot">·</span><span class="bold-f">查看开票记录：</span>可查询已开发票的记录</li>
+		</ul>
+		<ul class="tip_ul" ng-if="tipType == 'tip_g'">
+			<li><span class="bold-dot">·</span><span class="bold-f">线下支付审核：</span>显示有待审核的付款</li>
+			<li><span class="bold-dot">·</span><span class="bold-f">审核支付汇款：</span>客户直接通过银行转账至公司账户的收入，需审核由客户自行上传的汇款凭证，以便确认其付款</li>
+		</ul>
+		<ul class="tip_ul" ng-if="tipType == 'tip_h'">
+			<li><span class="bold-dot">·</span><span class="bold-f">查看企业账户：</span>用户需编辑自己公司的基本信息（包含公司户名、银行账户、开户行、开票信息等，以便线上的结算及开票的申请）</li>
+		</ul>
+	</div>
+</div>

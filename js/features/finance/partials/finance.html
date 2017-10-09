@@ -1,0 +1,196 @@
+<div class="group_detail" ng-if="pageType === 'finance'">
+	<div class="group">
+		<div class="group-left no-padding">
+			<div class="left-header">
+				账户钱包
+				<span class="q-mark" trigger="hover" ng-mouseenter="setTipType('tip_a')" data-placement="bottom-left" data-content-template="js/features/finance/partials/tips.html" bs-popover>?</span>
+			</div>
+			<div class="job-container thinner">
+				<div class="m-amount" ng-if="currentAdmin.permissionMap[PERMISSION_WITHDRAWAL_KEY]">
+					<div class="m-amount-left">
+						<div class="m-tip">可提现金额</div>
+						<div>{{latestWalletCounts.withdrawable_amount | number: 2}}<span class="yuan">元</span></div>
+					</div>
+					<div class="primary-btn" ng-if="currentAdmin.permissionMap[PERMISSION_WITHDRAWAL_KEY] === 2" ng-click="seePopup('enchashment')">立即提现</div>
+				</div>
+				<div class="fin-block">
+					<!-- <div class="fin-line" ng-if="currentAdmin.permissionMap[PERMISSION_WITHDRAWAL_KEY]">
+						<span>可提现金额</span>
+						<span class="right-txt">{{latestWalletCounts.withdrawable_amount | number: 2}} 元</span>
+					</div>
+					<div class="fin-line" ng-if="currentAdmin.permissionMap[PERMISSION_LONGTERM_BILL_KEY]">
+						<span>服务费滞留</span>
+						<span class="right-txt">{{latestWalletCounts.bill_amount | number: 2}} 元</span>
+					</div>
+					<div class="fin-line" ng-if="currentAdmin.permissionMap[PERMISSION_MONTHLY_BILL_KEY]">
+						<span>未结算金额</span>
+						<span class="right-txt">{{latestWalletCounts.short_rent_invoice_amount | number: 2}} 元</span>
+					</div> -->
+					<div class="fin-line" ng-if="currentAdmin.permissionMap[PERMISSION_MONTHLY_BILL_KEY]">
+						<span>账户余额</span>
+						<span class="right-txt">{{latestWalletCounts.total_amount | number: 2}} 元</span>
+					</div>
+					<div class="fin-line" ng-if="currentAdmin.permissionMap[PERMISSION_MONTHLY_BILL_KEY]">
+						<span>未结算服务费</span>
+						<span class="right-txt"><i class="red-f">({{latestWalletCounts.bill_amount | number: 2}})</i> 元</span>
+					</div>
+				</div>
+				<div class="fin-block no_border" ng-if="currentAdmin.permissionMap[PERMISSION_FINANCE_KEY]">
+					<div class="max-fin-line">
+						<span>当月收支</span>
+						<span class="q-mark" trigger="hover" ng-mouseenter="setTipType('tip_b')" data-placement="bottom-left" data-content-template="js/features/finance/partials/tips.html" bs-popover>?</span>
+						<span class="right-txt">{{currentSummary.current_month}}月</span>
+					</div>
+					<div class="b-fin-line">
+						<span>收入总计</span>
+						<span class="right-txt blue-txt">{{currentSummary.total_income | number: 2}}<span class="black-txt"> 元</span></span>
+					</div>
+					<div class="fin-line">
+						<span>秒租收入</span>
+						<span class="right-txt">{{currentSummary.short_rent_balance | number: 2}} 元</span>
+					</div>
+					<div class="fin-line">
+						<span>长租收入</span>
+						<span class="right-txt">{{currentSummary.long_rent_balance | number: 2}} 元</span>
+					</div>
+					<div class="fin-line">
+						<span>活动收入</span>
+						<span class="right-txt">{{currentSummary.event_order_balance | number: 2}} 元</span>
+					</div>
+					<div class="fin-line">
+						<span>会员收入</span>
+						<span class="right-txt">{{currentSummary.membership_order_balance | number: 2}} 元</span>
+					</div>
+				</div>
+				<div class="fin-block" ng-if="currentAdmin.permissionMap[PERMISSION_FINANCE_KEY]">
+					<div class="b-fin-line">
+						<span>账单</span>
+						<span class="right-txt blue-txt">{{currentSummary.total_service_bill | number: 2}}<span class="black-txt"> 元</span></span>
+					</div>
+					<div class="fin-line" ng-if="currentAdmin.permissionMap[PERMISSION_LONGTERM_BILL_KEY]">
+						<span>服务费账单</span>
+						<span class="right-txt">{{currentSummary.long_rent_service_bill | number: 2}} 元</span>
+					</div>
+				</div>
+			</div>
+		</div>
+		<div class="group-right no-bg fin-right">
+			<div class="fin-line">
+				<div class="fin-item" ng-if="currentAdmin.permissionMap[PERMISSION_LONGTERM_BILL_KEY]">
+					<div class="fin-box">
+						<div class="f-i-head">
+							<div class="head-info">
+								<div class="head-tit">长租服务费账单</div>
+								<div class="head-des">金额: <span class="red-txt" ng-if="latestFinanceCounts.long_rent_amount != underfined">({{latestFinanceCounts.long_rent_amount | number: 2}})</span></div>
+							</div>
+							<span class="head-icon"></span>
+							<span class="q-mark" trigger="hover" ng-mouseenter="setTipType('tip_c')" data-placement="bottom-right" data-content-template="js/features/finance/partials/tips.html" bs-popover>?</span>
+						</div>
+						<div class="f-i-con">
+							<ul class="con-options">
+								<li class="con-option" ng-click="seeList('longRent')">支付账单</li>
+								<li class="con-option" ng-click="seeList('longRentHistory')">查看历史账单</li>
+							</ul>
+						</div>
+					</div>
+				</div>
+				<div class="fin-item" ng-if="currentAdmin.permissionMap[PERMISSION_MONTHLY_BILL_KEY]">
+					<div class="fin-box">
+						<div class="f-i-head">
+							<div class="head-info">
+								<div class="head-tit">月结账单</div>
+								<div class="head-des">金额: <span class="blue-txt">{{latestFinanceCounts.short_rent_amount | number: 2}}</span></div>
+							</div>
+							<span class="head-icon clock"></span>
+							<span class="q-mark" trigger="hover" ng-mouseenter="setTipType('tip_d')" data-placement="bottom-right" data-content-template="js/features/finance/partials/tips.html" bs-popover>?</span>
+						</div>
+						<div class="f-i-con">
+							<ul class="con-options">
+								<li class="con-option" ng-click="seeList('secondRent')">开票结算</li>
+								<li class="con-option" ng-click="seeList('secondRentHistory')">查看历史结算</li>
+							</ul>
+						</div>
+					</div>
+				</div>
+				<div class="fin-item" ng-if="currentAdmin.permissionMap[PERMISSION_WITHDRAWAL_KEY] || currentAdmin.permissionMap[PERMISSION_FINANCE_KEY]">
+					<div class="fin-box">
+						<div class="f-i-head">
+							<div class="head-info whole">
+								<div class="head-tit">账务汇总（月结）</div>
+							</div>
+							<span class="head-icon dollar"></span>
+							<span class="q-mark" trigger="hover" ng-mouseenter="setTipType('tip_e')" data-placement="bottom-right" data-content-template="js/features/finance/partials/tips.html" bs-popover>?</span>
+						</div>
+						<div class="f-i-con">
+							<ul class="con-options">
+								<li class="con-option" ng-click="seeList('financeSummary')" ng-if="currentAdmin.permissionMap[PERMISSION_FINANCE_KEY]">查看账务汇总</li>
+								<li class="con-option" ng-click="seeList('withdrawalRecord')" ng-if="currentAdmin.permissionMap[PERMISSION_WITHDRAWAL_KEY]">查看提现记录</li>
+							</ul>
+						</div>
+					</div>
+				</div>
+				<div class="fin-item" ng-if="currentAdmin.permissionMap[PERMISSION_INVOICE_KEY]">
+					<div class="fin-box">
+						<div class="f-i-head">
+							<div class="head-info">
+								<div class="head-tit">用户开票申请</div>
+								<div class="head-des">待处理申请: <span class="blue-txt">{{latestFinanceCounts.user_invoice_count}} 笔</span></div>
+							</div>
+							<span class="head-icon invoice"></span>
+							<span class="q-mark" trigger="hover" ng-mouseenter="setTipType('tip_f')" data-placement="bottom-right" data-content-template="js/features/finance/partials/tips.html" bs-popover>?</span>
+						</div>
+						<div class="f-i-con">
+							<ul class="con-options">
+								<li class="con-option" ng-click="seeList('invoice')">处理开票申请</li>
+								<li class="con-option" ng-click="seeList('invoice', 'completed')">查看开票记录</li>
+							</ul>
+						</div>
+						
+					</div>
+				</div>
+				<div class="fin-item" ng-if="currentAdmin.permissionMap[PERMISSION_AUDIT_KEY]">
+					<div class="fin-box">
+						<div class="f-i-head">
+							<div class="head-info">
+								<div class="head-tit">线下支付审核</div>
+								<div class="head-des">待处理申请: <span class="blue-txt">{{latestFinanceCounts.offline_verify_count}} 笔</span></div>
+							</div>
+							<span class="head-icon verify"></span>
+							<span class="q-mark" trigger="hover" ng-mouseenter="setTipType('tip_g')" data-placement="bottom-right" data-content-template="js/features/finance/partials/tips.html" bs-popover>?</span>
+						</div>
+						<div class="f-i-con">
+							<ul class="con-options">
+								<li class="con-option" ng-click="seeList('salesOffline')">审核支付汇款</li>
+							</ul>
+						</div>
+					</div>
+				</div>
+				<div class="fin-item" ng-if="currentAdmin.permissionMap[PERMISSION_ACCOUNT_KEY]">
+					<div class="fin-box">
+						<div class="f-i-head">
+							<div class="head-info">
+								<div class="head-tit">企业账户管理</div>
+								<div class="head-des">{{accountInfo.sales_company_name}}</div>
+							</div>
+							<span class="head-icon manage"></span>
+							<span class="q-mark" trigger="hover" ng-mouseenter="setTipType('tip_h')" data-placement="bottom-right" data-content-template="js/features/finance/partials/tips.html" bs-popover>?</span>
+						</div>
+						<div class="f-i-con">
+							<ul class="con-options">
+								<li class="con-option" ng-click="seeList('companyAccount')">查看企业账户</li>
+							</ul>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>
+
+<ng-include src="'/js/features/finance/partials/invoice.html'" ng-if="pageType === 'invoice'"></ng-include>
+<ng-include src="'/js/features/finance/partials/sales-offline.html'" ng-if="pageType === 'salesOffline' || pageType === 'salesOffline_billDetail'"></ng-include>
+<ng-include src="'/js/features/finance/partials/invoiceDetail.html'" ng-if="pageType === 'invoiceDetail'"></ng-include>
+<ng-include src="'/js/features/finance/partials/companyAccount.html'" ng-if="pageType === 'companyAccount'"></ng-include>
+<ng-include src="'/js/features/finance/partials/longRent.html'" ng-if="pageType === 'longRent' || pageType === 'longRentHistory' || pageType === 'payLongRentBill' || pageType == 'payLongRentBillSucceed' || pageType == 'serviceBillDetail'"></ng-include>
+<ng-include src="'/js/features/finance/partials/secondRent.html'" ng-if="pageType === 'secondRent' || pageType === 'secondRentHistory' || pageType === 'secondRentInvoice' || pageType == 'secondRentInvoiced' || pageType == 'secondRentInvoiceDetail'"></ng-include>
+<ng-include src="'/js/features/finance/partials/financeSummary.html'" ng-if="pageType === 'financeSummary' || pageType === 'withdrawalRecord'"></ng-include>

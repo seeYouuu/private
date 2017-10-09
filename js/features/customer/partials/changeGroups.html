@@ -1,0 +1,29 @@
+<div class="modal" role="dialog">
+    <div class="modal-dialog modal-center modal-reate">
+        <div class="modal-content group-add">
+            <div class="modal-body clearfix">
+            	<div class="com-dialog">
+                    <div class="dia-box box-f">
+                        <div class="dia-line">
+                            <div><span class="tit-f">请选择将该客户添加到的客户组：</span></div>
+                        </div>
+                        <div class="dia-line pb55">
+                            <div class="u-g-box">
+                                <div class="g-line" ng-repeat="item in createdGroups" ng-click="item.selected = !item.selected;">
+                                    <span class="cri-o" ng-class="{'on': item.selected}"><span class="cri-i"></span></span>
+                                    <span>{{item.name}}</span>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="dia-bot l-bot">
+                            <div class="dia-btns">
+                                <div class="long-btn" ng-click="addUserToGroup($hide)">确定</div>
+                                <div class="long-btn reverse" ng-click="$hide()">取消</div>
+                            </div>   
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

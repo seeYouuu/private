@@ -1,0 +1,118 @@
+<div class="sandBox_content">
+    <div class="tra-content">
+		<div class="detail-page">
+			<div class="detail-head">
+				<span class="detail-tag green">已完成</span>
+				<span>订单号：{{memberShipItem.order_number}}</span>
+				<span class="head-tip">(创合开票)</span>
+			</div>
+			<div class="detail-mid">
+				<div class="d-m-top">
+					<div class="d-t-item">
+						<span class="item-cat">购买者 :</span>
+						<span>{{userOptions[memberShipItem.user].name}}</span>
+					</div>
+					<div class="d-t-item">
+						<span class="item-cat">手机 :</span>
+						<span>{{userOptions[memberShipItem.user].phone}}</span>
+					</div>
+					<div class="d-t-item">
+						<span class="item-cat">邮箱 :</span>
+						<span>{{userOptions[memberShipItem.user].email}}</span>
+					</div>
+					<!-- <div class="d-t-item">
+						<span class="item-cat">会员卡号 :</span>
+						<span>{{spaceItem.user_info.user_card_no}}</span>
+					</div> -->
+				</div>
+				<div class="space-b-box">
+                    <div class="b-title tit-top">
+                        <div class="line-width info-tit">
+                            <div class="line-item per40 t-left">
+                               会员卡
+                            </div>
+                            <div class="line-item per20">
+                                单价
+                            </div>
+                            <div class="line-item per20">
+                                有效期
+                            </div>
+                            <div class="line-item per20">
+                                总价
+                            </div>
+                        </div>
+                    </div>
+                    <div class="line-width">
+                        <div class="line-item per40 t-left">
+                            <div class="item-con">
+                                <div class="p-w-t">
+                                    <div class="p-p">
+                                        <img ng-src="{{memberShipItem.card.background}}">
+                                    </div>
+                                    <div class="p-t">
+                                        <div class="p-t-top black hover c-align">
+                                            {{memberShipItem.card.name}}
+                                        </div>
+                                        <!-- <div class="p-t-bot grey">
+                                            <div class="text-con">{{memberShipItem.specification}}</div>
+                                        </div> -->
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="line-item per20">
+                            <div class="item-con">
+                                <div>{{::memberShipItem.price | currency: '￥':2 }}</div>
+                            </div>
+                        </div>
+                        <div class="line-item per20">
+                            <div class="item-con">
+                                <div ng-if="memberShipItem.valid_period">{{::memberShipItem.valid_period}}个月</div>
+                            </div>
+                        </div>
+                        <div class="line-item per20">
+                            <div class="item-con">
+                                <div>{{::memberShipItem.price | currency: '￥':2 }}</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+			</div>
+			<div class="detail-bot">
+				<div class="d-b-left">
+					<div class="d-left-line">
+						<span class="line-cat">创建时间</span>
+						<span class="line-cat">{{memberShipItem.creation_date | date: 'yyyy-MM-dd HH:mm'}}</span>
+						<span ng-if="memberShipItem.type">由
+							<span class="d-r-name">{{userOptions[memberShipItem.user].name}}</span>
+						</span>
+					</div>
+					<div class="d-left-line">
+						<span class="line-cat">下单方式</span>
+						<span ng-if="!spaceItem.type">{{'SELF_ORDER' | translate}}</span>
+                        <span ng-if="spaceItem.type">{{memberShipItem.type | translate}}</span>
+					</div>
+					<div class="d-left-line" ng-if="memberShipItem.pay_channel">
+						<span class="line-cat">付款渠道</span>
+						<span class="detail-tag widder t-shadow" ng-class="{'wechat': memberShipItem.pay_channel == 'wx','account': memberShipItem.pay_channel == 'account', 'alipay': memberShipItem.pay_channel == 'alipay' || memberShipItem.pay_channel == 'upacp','we-off': memberShipItem.pay_channel == 'wx_pub'}">{{memberShipItem.pay_channel | translate}}</span>
+					</div>
+					<div class="d-left-line" ng-if="memberShipItem.payment_date">
+						<span class="line-cat">付款时间</span>
+						<span>{{memberShipItem.payment_date | date: 'yyyy-MM-dd HH:mm'}}</span>
+					</div>
+				</div>
+				<div class="d-b-right">
+					<div class="d-right-line red-th">
+						<div class="d-r-left">
+							<span>实付款</span>
+						</div>
+						<div class="d-r-right">
+							{{memberShipItem.price | currency: '￥':2 }}
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+    </div>
+</div>

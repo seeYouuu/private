@@ -1,0 +1,75 @@
+<div class="group_detail" ng-if="pageType === 'list'">
+    <div class="group">
+        <div class="group-right ml0">
+            <div class="right-head clearfix">
+                <div class="r-h-left">
+                    <div class="r-title"><span class="r-name">会员卡列表</span></div>
+                </div>
+                <div class="r-h-right">
+                    <span class="b-span" ng-if="currentAdmin.permissionMap[PERMISSION_KEY] == 2" ng-click="seePage('createCard')"><i class="n-icon ic-add"></i>创建会员卡</span>
+                </div>
+            </div>
+            <div class="right-content h-p">
+                <div class="line-width info-tit" ng-if="membershipList.length > 0">
+                    <div class="line-item per32 t-left">
+                        会员组
+                    </div>
+                    <div class="line-item per28">
+                        应用社区（门禁）
+                    </div>
+                    <div class="line-item per25">
+                        售卖规则
+                    </div>
+                    <div class="line-item per15">
+                        操作
+                    </div>
+                </div>
+                <div class="com-room-line" ng-repeat="item in membershipList">
+                    <div class="com-f per32">
+                        <div class="p-wrap" ng-class="{'green': item.visible && item.specification.length > 0, 'red': !item.visible && item.specification.length > 0, 'grey': item.specification.length == 0}">
+                            <img class="p-pic" ng-src="{{item.background}}">
+                        </div>
+                        <div class="room-tit">
+                            <p trigger='hover' ng-mouseover="seePopover('desc', item)" ng-click="seePage('detail', item)" data-placement="bottom-left" data-content-template="js/features/membership/partials/options.html" data-animation="am-fade" data-auto-close="1" bs-popover>{{item.name}}</p>
+                        </div>
+                    </div>
+                    <div class="com-t per28">
+                        <div class="t-wrap">
+                            <p class="inline" trigger='hover' ng-mouseover="seePopover('building', item)" data-placement="bottom" data-content-template="js/features/membership/partials/options.html" data-animation="am-fade" data-auto-close="1" bs-popover>{{item.door_desc[0].building_name}}</p>
+                            <span class="grey-num" ng-if="item.door_desc.length > 1">...({{item.door_desc.length}})</span>
+                        </div>
+                    </div>
+                    <div class="com-s per25">
+                        <div class="s-wrap">
+                            <div>
+                                <div ng-click="seePopover('price', item)" data-placement="bottom" data-content-template="js/features/membership/partials/options.html" data-animation="am-fade" data-auto-close="1" bs-popover>
+                                    <div ng-if="item.priceDesc"><span class="red-num">{{item.priceDesc}}</span>元<i class="arr grey-arr arr-down"></i></div>
+                                    <div ng-if="item.periodDesc"><span class="grey-num">有效期{{item.periodDesc}}</span></div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="com-t per15">
+                        <div class="t-wrap">
+                            <div class="t-link" ng-if="currentAdmin.permissionMap[PERMISSION_CARD_SALES_KEY] == 2" ng-click="seePage('salesRule', item)">售卖设置</div>
+                            <div class="t-drop"
+                                ng-if="currentAdmin.permissionMap[PERMISSION_KEY] == 2"
+                                ng-click="seePopover('editCard-list', item)" 
+                                data-placement="bottom-right" 
+                                data-content-template="js/features/membership/partials/options.html" 
+                                data-animation="am-fade" data-auto-close="1" bs-popover>
+                                <span class="hover-op">操作<i class="arr grey-arr arr-down"></i></span>
+                            </div>
+                        </div>
+                        
+                    </div>
+                </div>
+                <div class="nodata" ng-if="membershipList.length <= 0">暂无会员卡信息</div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<ng-include src="'/js/features/membership/partials/createCard.html'" ng-if="pageType == 'createCard' || pageType == 'editCard' || pageType == 'copyCard'"></ng-include>
+<ng-include src="'/js/features/membership/partials/salesRule.html'" ng-if="pageType == 'salesRule'"></ng-include>
+<ng-include src="'/js/features/membership/partials/cardDetail.html'" ng-if="pageType == 'detail'"></ng-include>

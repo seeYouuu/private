@@ -1,0 +1,421 @@
+<div class="modal" role="dialog">
+    <div class="modal-dialog modal-center modal-reate">
+        <div class="modal-content group-add">
+            <div class="modal-body clearfix">
+                <div class="reate_clues" ng-if="operateFlag === 'add' || operateFlag === 'detail' || operateFlag === 'update'">
+                    <div class="reate_header clearfix">
+                        <p class="clearfix">
+                            <span ng-if="operateFlag === 'detail'"><span>合同租赁</span>&gt;<span>租赁合同</span>&gt;<span>{{contractItem.serial_number}}</span></span>
+                            <span ng-if="operateFlag === 'update'"><span>合同租赁</span>&gt;<span>编辑合同</span>&gt;<span>{{contractItem.serial_number}}</span></span>
+                            <span ng-if="operateFlag === 'add'"><span>合同租赁</span>&gt;<span>创建租赁合同</span></span>
+                            <span ng-click="$hide()"></span>
+                            <span class="ic_print" ng-click="showPrint()" ng-if="operateFlag === 'detail'"></span>
+                            <span class="ic_email" ng-click="showPrint()" ng-if="operateFlag === 'detail'"></span>
+                        </p>
+                        <span ng-if="(operateFlag === 'detail' || operateFlag === 'update') && !statusLogs[contractItem.id]">{{statusDesc[contractItem.status]}}</span>
+                        <span ng-if="(operateFlag === 'detail' || operateFlag === 'update') && statusLogs[contractItem.id].length > 0" class="s-des" trigger='hover' data-placement="bottom-left" data-content-template="js/features/contract/partials/options.html" data-animation="am-fade" data-auto-close="1" bs-popover>{{statusDesc[contractItem.status]}}</span>
+                    </div>
+                    <div class="reate_nav" ng-if="operateFlag === 'add' || operateFlag === 'update'">
+                        <div class="space_mes">
+                            <p class="s_m_title">空间信息<span class="q_mark">?</span></p>
+                            <div class="s_m_term">
+                                <span>项目名称：</span>
+                                <angular-complete class="mid_long" placeholder="placeholder.building" selectdata="selectedSearchData.building" searchparams="search.building" responsedata="searchReponse.building" change="searchBuilding()"></angular-complete>
+                                <span class="search"></span>
+                            </div>
+                            <div class="s_m_term">
+                                <span>项目地址：</span>
+                                <span>{{selectedSearchData.building.address}}</span>
+                            </div>
+                            <div class="s_m_term">
+                                <span>房屋名称：</span>
+                                <angular-complete class="mid_long" placeholder="placeholder.space" selectdata="selectedSearchData.space" searchparams="search.space" responsedata="searchReponse.space" name="room_name" change="searchSpace()"></angular-complete>
+                                <span class="search"></span>
+                            </div>
+                            <div class="s_m_term">
+                                <span>图片：</span>
+                                <img class="sm-pic" ng-src="{{selectedSearchData.space.content}}">
+                            </div>
+                            <div class="s_m_term">
+                                <span>房屋面积：</span>
+                                <span>{{selectedSearchData.space.area}}-M<sup>2</sup></span>
+                            </div>
+                            <div class="s_m_term">
+                                <span>房屋最大容纳人数：</span>
+                                <span>{{selectedSearchData.space.allowed_people}}-人</span>
+                            </div>
+                        </div>
+                        <div class="reate_mes">
+                            <p class="s_m_title1">出租方信息</p>
+                            <div class="s_m_term">
+                                <span>出租方名称：</span>
+                                <input type="text" ng-model="agreementOption.lessor_name">
+                            </div>
+                            <div class="s_m_term">
+                                <span>出租方地址：</span>
+                                <input type="text" ng-model="agreementOption.lessor_address">
+                            </div>
+                            <div class="s_m_term">
+                                <span>出租方联系人：</span>
+                                <input type="text" ng-model="agreementOption.lessor_contact">
+                            </div>
+                            <div class="s_m_term">
+                                <span>出租方电话：</span>
+                                <input type="text" ng-model="agreementOption.lessor_phone">
+                            </div>
+                            <div class="s_m_term">
+                                <span>出租方邮箱：</span>
+                                <input type="text" ng-model="agreementOption.lessor_email">
+                            </div>
+                        </div>
+                        <div class="reate_mes">
+                            <p class="s_m_title">承租方信息<span class="q_mark">?</span></p>
+                            <div class="s_m_term">
+                                <span></span>
+                                <span class="select-radio">
+                                    <span ng-click="switchLeaseeType('personal')"  ng-class="{on: agreementOption.lessee_type === 'personal'}"></span>&nbsp;个人承租&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                                    <span ng-click="switchLeaseeType('enterprise')" ng-class="{on: agreementOption.lessee_type === 'enterprise'}"></span>&nbsp;企业承租
+                                </span>
+                            </div>
+                            <div class="s_m_term" ng-if="agreementOption.lessee_type === 'enterprise'">
+                                <span><font class="muted">*</font>承租企业：</span>
+                                <angular-complete class="mid_long" placeholder="placeholder.company" selectdata="selectedSearchData.enterprise" searchparams="search.enterprise" responsedata="searchReponse.enterprise" change="searchEnterprise()"></angular-complete>
+                                <span class="search"></span>
+                            </div>
+                            <div class="s_m_term">
+                                <span><font class="muted">*</font>承租方联系人：</span>
+                                <auto-complete class="mid_long" selectdata="selectedSearchData.customer" searchparams="search.customer" responsedata="searchReponse.customer" change="searchCustomer()"></auto-complete>
+                                <span class="search"></span>
+                            </div>
+                        </div>
+                        <div class="lease_mes">
+                            <p class="s_m_title">租赁信息<span class="q_mark">?</span></p>
+                            <div class="s_m_term">
+                                <span>租赁起租日期：</span>
+                                <div class="date_input">
+                                    <input type="text" ng-model="agreementOption.start_date" data-date-format="yyyy-MM-dd" data-autoclose="1" data-min-date="today" data-max-date="agreementOption.end_date" bs-datepicker>
+                                    <span><i class="fa fa-calendar"></i></span>
+                                </div>
+                            </div>
+                            <div class="s_m_term">
+                                <span>租赁结束日期：</span>
+                                <div class="date_input">
+                                    <input type="text" ng-model="agreementOption.end_date" data-date-format="yyyy-MM-dd" data-autoclose="1" data-min-date="agreementOption.start_date" bs-datepicker>
+                                    <span><i class="fa fa-calendar"></i></span>
+                                </div>
+                            </div>
+                            <div class="s_m_term">
+                                <span>月租金：</span>
+                                <input type="text" ng-model="agreementOption.monthly_rent">&nbsp;元／月
+                            </div>
+                            <div class="s_m_term">
+                                <span>合同总租金：</span>
+                                <input type="text" ng-model="agreementOption.total_rent">&nbsp;元
+                            </div>
+                            <div class="s_m_term">
+                                <span>租赁押金：</span>
+                                <input type="text" ng-model="agreementOption.deposit">&nbsp;元
+                            </div>
+                            <div class="s_m_term">
+                                <span>租金包含：</span>
+                                <div class="rent-cat clearfix checkboxes">
+                                    <div class="rent-item" ng-repeat="item in supplementaryList" ng-class="{on: item.selected}" ng-if="item.type === 'rent'">
+                                        <div class="check" ng-click="item.selected = !item.selected;"></div>
+                                        <span ng-bind="item.name"></span>
+                                        <span class="grey-f" ng-if="item.name_en == 'Other'">(请在补充条款中备注)</span>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="s_m_term">
+                                <span>税金包含：</span>
+                                <div class="rent-cat clearfix checkboxes">
+                                    <div class="rent-item" ng-repeat="item in supplementaryList" ng-class="{on: item.selected}" ng-if="item.type === 'tax'">
+                                        <div class="check" ng-click="item.selected = !item.selected;"></div>
+                                        <span ng-bind="item.name"></span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="lease_mes">
+                            <p class="s_m_title">其它信息<span class="q_mark">?</span></p>
+                            <div class="s_m_term other">
+                                <span>房屋使用用途：</span>
+                                <textarea ng-model="agreementOption.purpose" placeholder="请具体描述在该合同下房屋的使用用途" class="textarea"></textarea>
+                            </div>
+                            <div class="s_m_term other">
+                                <span>其它费用说明：</span>
+                                <textarea ng-model="agreementOption.other_expenses" placeholder="请具体描述除合同固定费用以外可能发生的费用说明" class="textarea"></textarea>
+                            </div>
+                            <div class="s_m_term other">
+                                <span>补充条款：</span>
+                                <textarea ng-model="agreementOption.supplementary_terms" placeholder="请描述除合同外其它条款" class="textarea"></textarea>
+                            </div>
+                        </div>
+                        <div class="lease_contr">
+                            <p class="s_m_title2">合同账单<span class="detail-tag red">推</span></p>
+                            <div class="f-left">
+                                <div class="t-line"><div class="check" ng-click="agreementOption.is_auto = !agreementOption.is_auto" ng-class="{'checked': agreementOption.is_auto}"></div><span>自动推送账单</span><span class="grey-num">( 开启后，您仍然可以手动推送账单)</span></div>
+                                <div class="t-line"><span class="tip-item" ng-class="{'disabled': !agreementOption.is_auto}">每条账单 将在"账单起始日" 前 <input type="number" class="ip-tx" ng-model="agreementOption.plan_day"> 天 自动推送。</span></div>     
+                            </div>
+                            <table cellpadding="0" cellspacing="0" width="95%" border="0" class="bill-table bill-table1">
+                                <tr>
+                                    <th class="th" width="18%">账单名称</th>
+                                    <th class="th" width="18%">账单起始日</th>
+                                    <th class="th" width="18%">账单结束日</th>
+                                    <th class="th" width="18%">账单描述</th>
+                                    <th class="th" width="14%">租金</th>
+                                    <th class="th th_last" width="14%">操作</th>
+                                </tr>
+                                <tr ng-repeat="bill in agreementBills">
+                                    <td class="td">
+                                        <input type="text" ng-model="bill.name" ng-if="bill.status !== 'unpaid' &&  bill.status !== 'paid' && bill.status != 'cancelled' && bill.status != 'verify'">
+                                        <span ng-bind="bill.name" ng-if="bill.status === 'unpaid' ||  bill.status === 'paid' || bill.status === 'cancelled' || bill.status === 'verify'"></span>
+                                    </td>
+                                    <td class="td">
+                                        <input type="text" ng-model="bill.start_date" data-max-date="{{bill.end_date}}" ng-if="bill.status !== 'unpaid' &&  bill.status !== 'paid' && bill.status != 'cancelled' && bill.status != 'verify'" data-date-format="yyyy-MM-dd" data-autoclose="1" placement="top" bs-datepicker>
+                                            <span ng-if="bill.status === 'unpaid' ||  bill.status === 'paid' || bill.status === 'cancelled' || bill.status === 'verify'">{{bill.start_date | date: 'yyyy-MM-dd'}}</span>
+                                    </td>
+                                    <td class="td">
+                                        <input type="text" ng-model="bill.end_date" data-min-date="{{bill.start_date}}" ng-if="bill.status !== 'unpaid' &&  bill.status !== 'paid' && bill.status != 'cancelled' && bill.status != 'verify'" data-date-format="yyyy-MM-dd" data-autoclose="1" placement="top" bs-datepicker>
+                                        <span ng-if="bill.status === 'unpaid' ||  bill.status === 'paid' || bill.status === 'cancelled' || bill.status === 'verify'">{{bill.end_date | date: 'yyyy-MM-dd'}}</span>
+                                    </td>
+                                    <td class="td">
+                                        <input type="text" ng-model="bill.description" ng-if="bill.status !== 'unpaid' &&  bill.status !== 'paid' && bill.status != 'cancelled' && bill.status != 'verify'">
+                                        <span ng-if="bill.status === 'unpaid' ||  bill.status === 'paid' || bill.status === 'cancelled' || bill.status === 'verify'">{{bill.description}}</span>
+                                    </td>
+                                    <td class="td">
+                                        <input class="num-input" type="number" ng-model="bill.amount" ng-if="bill.status !== 'unpaid' &&  bill.status !== 'paid' && bill.status != 'cancelled' && bill.status != 'verify'">
+                                            <span ng-if="bill.status === 'unpaid' ||  bill.status === 'paid' || bill.status === 'cancelled' || bill.status === 'verify'">{{bill.amount}}</span>
+                                    </td>
+                                    <td class="td td_last">
+                                        <span class="link-txt" ng-click="deleteBill($index)" ng-if="!bill.id && bill.status !== 'unpaid' &&  bill.status !== 'paid' && bill.status != 'cancelled' && bill.status != 'verify'">删除</span>
+                                        <span class="link-txt" ng-click="deleteBill($index)" ng-if="bill.id && bill.status !== 'unpaid' &&  bill.status !== 'paid' && bill.status != 'cancelled' && bill.status != 'verify' && (currentAdmin.user.is_super_admin || currentAdmin.leasesMap[PERMISSION_LEASES_KEY + appointmentData.product.room.building.id] === 2)">删除</span>
+                                    </td>
+                                </tr>
+                            </table>
+                            <span class="add-bill" ng-click="addBill()">添加账单</span>
+                        </div>
+                        <div class="reate_note" ng-if="operateFlag ==='update'">
+                            <p class="clearfix">
+                                <span>备注（{{contractRemarks.length}}条）</span>
+                                <span ng-click="toggleRemark()">展开备注<i class="down_arr"></i></span>
+                            </p>
+                            <div class="clearfix" ng-if="remarkListFlag">
+                                <div ng-repeat="remark in  contractRemarks track by $index">
+                                    <span ng-class="{'r_note': remark.is_auto}"></span>
+                                    <div class="r_n_detail" ng-if="remark.is_auto" ng-class="{last: $index == clueRemarks.length}">
+                                        <span>由{{remark.username}} {{remark.remarks}}</span>
+                                        <span>{{remark.creation_date | date: 'yyyy-MM-dd HH:mm'}}</span>
+                                        <p></p>
+                                    </div>
+                                    <div class="r_n_detail" ng-if="!remark.is_auto" ng-class="{last: $index == clueRemarks.length - 1}">
+                                        <span>{{remark.username}} 新增了备注</span>
+                                        <span>{{remark.creation_date | date: 'yyyy-MM-dd HH:mm'}}</span>
+                                        <p>{{remark.remarks}}</p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="reate_nav" ng-if="operateFlag ==='detail'">
+                        <div class="space_mes">
+                            <p class="s_m_title">空间信息<span class="q_mark">?</span></p>
+                            <div class="s_m_term">
+                                <span>项目名称：</span>
+                                <span>{{contractItem.product.room.building.name}}</span>
+                            </div>
+                            <div class="s_m_term">
+                                <span>项目地址：</span>
+                                <span>{{contractItem.product.room.building.address}}</span>
+                            </div>
+                            <div class="s_m_term">
+                                <span>房屋名称：</span>
+                                <span>{{contractItem.product.room.name}}</span>
+                            </div>
+                            <div class="s_m_term">
+                                <span>图片：</span>
+                                <img class="sm-pic" ng-src="{{contractItem.product.room.attachment}}">
+                            </div>
+                            <div class="s_m_term">
+                                <span>房屋面积：</span>
+                                <span>{{contractItem.product.room.area}}M<sup>2</sup></span>
+                            </div>
+                            <div class="s_m_term">
+                                <span>房屋最大容纳人数：</span>
+                                <span>{{contractItem.product.room.allowed_people}}人</span>
+                            </div>
+                        </div>
+                        <div class="reate_mes">
+                            <p class="s_m_title1">
+                                <font class="muted">*</font>出租方信息</p>
+                            <div class="s_m_term">
+                                <span>出租方名称：</span>
+                                <span>{{contractItem.lessor_name}}</span>
+                            </div>
+                            <div class="s_m_term">
+                                <span>出租方地址：</span>
+                                <span>{{contractItem.lessor_address}}</span>
+                            </div>
+                            <div class="s_m_term">
+                                <span>出租方联系人：</span>
+                                <span>{{contractItem.lessor_contact}}</span>
+                            </div>
+                            <div class="s_m_term">
+                                <span>出租方电话：</span>
+                                <span>{{contractItem.lessor_phone}}</span>
+                            </div>
+                            <div class="s_m_term">
+                                <span>出租方邮箱：</span>
+                                <span>{{contractItem.lessor_email}}</span>
+                            </div>
+                        </div>
+                        <div class="reate_mes">
+                            <p class="s_m_title">承租方信息<span class="q_mark">?</span></p>
+                            <div class="s_m_term">
+                                <span>承租方名称：</span>
+                                <span ng-if="contractItem.lessee_type === 'personal'">个人承租</span>
+                                <span ng-if="contractItem.lessee_type === 'enterprise'">企业承租</span>
+                            </div>
+                            <div class="s_m_term" ng-if="contractItem.lessee_type === 'enterprise'">
+                                <span>承租方名称：</span>
+                                <span>{{enterpriseItem.name}}</span>
+                            </div>
+                            <div class="s_m_term">
+                                <span><font class="muted">*</font>承租方联系人：</span>
+                                <div class="user-mes">
+                                    <img src="../img/head.png">
+                                    <span>{{customerItem.name}}</span>
+                                    <span>{{customerItem.phone}}</span>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="lease_mes">
+                            <p class="s_m_title">租赁信息<span class="q_mark">?</span></p>
+                            <div class="s_m_term s-m-ready">
+                                <span>租赁起始日期：</span>
+                                <span>{{contractItem.start_date | date: 'yyyy-MM-dd'}}</span>
+                            </div>
+                            <div class="s_m_term s-m-ready">
+                                <span>租赁结束日期：</span>
+                                <span>{{contractItem.end_date | date: 'yyyy-MM-dd'}}</span>
+                            </div>
+                            <div class="s_m_term s-m-ready">
+                                <span>月租金：</span>
+                                <span ng-if="contractItem.monthly_rent">{{contractItem.monthly_rent}}元</span>
+                            </div>
+                            <div class="s_m_term s-m-ready">
+                                <span>合同总租金<span class="q_mark qq_mark">?</span>：</span>
+                                <span ng-if="contractItem.total_rent">{{contractItem.total_rent}}元</span>
+                            </div>
+                            <div class="s_m_term s-m-ready">
+                                <span>租赁押金：</span>
+                                <span ng-if="contractItem.deposit">{{contractItem.deposit}}元</span>
+                            </div>
+                            <div class="s_m_term s-m-ready">
+                                <span>租金包含：</span>
+                                <span>{{contractItem.leaseRentType}}</span>
+                            </div>
+                            <div class="s_m_term s-m-ready">
+                                <span>税金包含：</span>
+                                <span>{{contractItem.leaseTaxType}}</span>
+                            </div>
+                        </div>
+                        <div class="lease_mes">
+                            <p class="s_m_title">其他信息<span class="q_mark">?</span></p>
+                            <div class="s_m_term s-m-ready other">
+                                <span>房屋使用用途：</span>
+                                <span>{{contractItem.purpose}}</span>
+                            </div>
+                            <div class="s_m_term s-m-ready other">
+                                <span>其他费用说明：</span>
+                                <span>{{contractItem.other_expenses}}</span>
+                            </div>
+                            <div class="s_m_term s-m-ready other">
+                                <span>补充条款：</span>
+                                <span>{{contractItem.supplementary_terms}}</span>
+                            </div>
+                        </div>
+                        <div class="lease_contr">
+                            <p class="s_m_title2">合同账单<span class="detail-tag red">推</span><span class="batch_push" ng-if="operateFlag ==='detail' && contractItem.status === 'performing'" ng-click="seePopup('bathPush')">批量推送</span></p>
+                            <table cellpadding="0" cellspacing="0" width="92%" border="0" class="bill-table bill-table1">
+                                <tr>
+                                    <th class="th" width="16%">账单名称</th>
+                                    <th class="th" width="18%">账单起始日</th>
+                                    <th class="th" width="18%">账单结束日</th>
+                                    <th class="th" width="25%">账单描述</th>
+                                    <th class="th" width="16%">租金</th>
+                                    <th class="th th_last" width="12%">操作</th>
+                                </tr>
+                                <tr ng-repeat="bill in contractItem.bills">
+                                    <td class="td">
+                                        <span class="b-check" ng-class="{on: bill.selected}" ng-if="contractItem.status === 'performing' && bill.status === 'pending'" ng-click="selectedBill(bill)"></span>
+                                        {{bill.name}}
+                                    </td>
+                                    <td class="td">{{bill.start_date | date: 'yyyy-MM-dd'}}</td>
+                                    <td class="td">{{bill.end_date | date: 'yyyy-MM-dd'}}</td>
+                                    <td class="td">{{bill.description}}</td>
+                                    <td class="td">{{bill.amount | number: '2'}}元</td>
+                                    <td class="td td_last">
+                                        <span ng-if="bill.status && bill.status !== 'pending'">{{bill.status.toUpperCase() | translate}}</span>
+                                        <span ng-if="bill.status && bill.status === 'pending' && contractItem.status !== 'performing'">未推送</span>
+                                        <span class="link-txt" ng-click="seePopup('singlePush', bill)" ng-if="contractItem.status === 'performing' && bill.status === 'pending' && currentAdmin.permissionMap[PERMISSION_KEY] === 2">推送</span>
+                                    </td>
+                                </tr>
+                            </table>
+                        </div>
+                        <div class="reate_note">
+                            <p class="clearfix">
+                                <span>备注（{{contractRemarks.length}}条）</span>
+                                <span ng-click="toggleRemark()">展开备注<i class="down_arr"></i></span>
+                            </p>
+                            <div class="clearfix" ng-if="remarkListFlag">
+                                <div ng-repeat="remark in  contractRemarks track by $index">
+                                    <span ng-class="{'r_note': remark.is_auto}"></span>
+                                    <div class="r_n_detail" ng-if="remark.is_auto" ng-class="{last: $index == clueRemarks.length}">
+                                        <span>由{{remark.username}} {{remark.remarks}}</span>
+                                        <span>{{remark.creation_date | date: 'yyyy-MM-dd HH:mm'}}</span>
+                                        <p></p>
+                                    </div>
+                                    <div class="r_n_detail" ng-if="!remark.is_auto" ng-class="{last: $index == clueRemarks.length - 1}">
+                                        <span>{{remark.username}} 新增了备注</span>
+                                        <span>{{remark.creation_date | date: 'yyyy-MM-dd HH:mm'}}</span>
+                                        <p>{{remark.remarks}}</p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="reate_btn clearfix" ng-if="!remarkFlag">
+                        <span class="r-save-btn fl" ng-if="operateFlag === 'add' && currentAdmin.permissionMap[PERMISSION_KEY] === 2" ng-click="saveContract('drafting', $hide)">保存合同</span>
+                        <span class="r-save-btn fl" ng-if="operateFlag === 'update' && currentAdmin.permissionMap[PERMISSION_KEY] === 2" ng-click="updateContract($hide)">保存合同</span>
+                        <span class="r-save-btn fl" ng-if="currentAdmin.permissionMap[PERMISSION_KEY] === 2 && operateFlag ==='detail' && (contractItem.status === 'performing' || contractItem.status === 'drafting')" ng-click="showUpdate()">编辑合同</span>
+                        <span class="r-btn fl" ng-click="seePopup('pushOther')" ng-if="operateFlag ==='detail' && contractItem.status === 'performing' && currentAdmin.permissionMap[PERMISSION_KEY] === 2">推送其他账单</span>
+                        <span class="r-btn fl" ng-click="showLeasesConfirm('performing', $hide)" ng-if="operateFlag ==='detail' && contractItem.status === 'drafting' && currentAdmin.permissionMap[PERMISSION_KEY] === 2">生效合同</span>
+                        <span class="r-btn fl" ng-click="showLeasesConfirm('closed', $hide)" ng-if="currentAdmin.permissionMap[PERMISSION_KEY] === 2 && operateFlag ==='detail' && contractItem.status === 'drafting'">作废合同</span>
+                        <span class="r-btn fl" ng-click="showLeasesConfirm('terminated', $hide)" ng-if="currentAdmin.permissionMap[PERMISSION_KEY] === 2 && operateFlag ==='detail' && contractItem.status === 'performing'">终止合同</span>
+                        <span class="r-btn fl" ng-click="showLeasesConfirm('end', $hide)" ng-if="currentAdmin.permissionMap[PERMISSION_KEY] === 2 && operateFlag ==='detail' &&contractItem.status === 'matured'">结束合同</span>
+                        <span class="r-btn fl" ng-click="showRemark()" ng-if="operateFlag ==='detail' && contractItem.status !== 'closed' && currentAdmin.permissionMap[PERMISSION_KEY] === 2">备注</span>
+                    </div>
+                    <div class="add-remarks" ng-if="remarkFlag">
+                        <div class="m-content">
+                            <input type="text" ng-model="contract.remark"><span ng-click="addRemark()" ng-if="currentAdmin.permissionMap[PERMISSION_KEY] === 2">提交</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="reate_clues" ng-if="operateFlag === 'pdf'">
+                    <div class="reate_header clearfix r-send">
+                        <p class="clearfix">
+                            <span>邮件分享</span>
+                            <span ng-click="$hide()"></span>
+                        </p>
+                    </div>
+                    <div class="reate-print">
+                        <img src="../img/u2034.png">
+                        <p>已将您的合同 {{contractItem.serial_number}} 转为PDF，您可以以附件的形式分享该合同<br>点击下方按钮下载PDF</p>
+                        <button class="red" ng-click="exportPDF($hide)">点击下载PDF</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

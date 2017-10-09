@@ -1,0 +1,70 @@
+/**** frame layout***/
+.sandBox_main{
+	min-width: 1024px;
+}
+.topBar{
+	min-width: 1024px;
+}
+.sideBar{
+	width: 130px;
+	border: none;
+}
+.sandBox_bd{
+	padding: 60px 0 0 130px;
+}
+.sideBar .shrink{
+	margin-right: 0;
+}
+.sandBox_content{
+	padding-bottom: 0;
+}
+.sideBar ul li{
+	// text-align: center;
+	text-indent: 0;
+	// height: 80px;
+	// line-height: 60px;
+	// padding: 10px;
+	border: none;
+}
+.sideBar ul li.active{
+	border: none;
+	background-color: #bf2556;
+}
+.sideBar ul li a{
+	height: auto;
+	cursor: pointer;
+}
+.sideBar ul li a i{
+	position: relative;
+	display: inline-block;
+	top: 0;
+	left: 0;
+}
+/**** frame end***/
+/***** admin start****/
+.group-left,.group-right{
+	// min-height: 650px;
+}
+.group-left input{
+	border: 1px solid #CCCCCC;
+	border-radius: 4px;
+}
+/***** admin end****/
+
+@media screen{
+    @media(min-width:1224px){
+        .group-right .fin-line .fin-item{
+        	width: 25%;
+        }
+    }
+    @media(min-width:1680px){
+        .group-right .fin-line .fin-item{
+        	width: 16.6%;
+        }
+    }
+    @media(max-width:1366px) {
+        .gallery-upload-progress-modal .log-popup .log-body {
+            max-height: 450px;
+        }
+    }
+}

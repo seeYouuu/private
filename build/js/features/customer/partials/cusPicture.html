@@ -1,0 +1,23 @@
+<div class="modal" role="dialog">
+    <div class="modal-dialog modal-center small-s">
+        <div class="modal-content group-add">
+            <div class="modal-body clearfix">
+                <div class="com-dialog">
+                    <div class="dialog-head static">
+                        <div class="head-wra">
+                            <span>选择图片展示区域</span>
+                        </div>
+                    </div>
+                    <div class="crop-container">
+                        <div ng-jcrop="selectedCropImgUrl" ng-jcrop-config-name="activityConfig" selection="obj.coords" thumbnail="obj.thumbnail"></div>
+                    </div>
+                    <div class="com-bottom">
+                        <div class="f-left" ng-click="saveMessageImage($hide)">确 定</div>
+                        <div class="f-right" ng-click="$hide()">取消</div>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </div>
+</div>

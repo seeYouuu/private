@@ -1,0 +1,499 @@
+<div class="sandBox_content" ng-if="pageType == 'secondRent'">
+    <div class="tra-content">
+    	<div class="t-f-box">
+    		<div class="t-f-line">
+    			<div class="t-f-left">
+                    <span class="t-f-left">生成日期</span>
+    			</div>
+    			<div class="t-f-right">
+                    <div class="t-f-half t-f-s">
+                        <div class="date_input">
+                            <input type="text" ng-model="shortRentOptions.create_start" data-max-date="{{shortRentOptions.create_end}}" data-date-format="yyyy-MM-dd"  data-autoclose="1" bs-datepicker>
+                            <span><i class="fa fa-calendar"></i></span>
+                        </div>
+                        <span>-</span>
+                        <div class="date_input">
+                            <input type="text" ng-model="shortRentOptions.create_end" data-min-date="{{shortRentOptions.create_start}}" data-date-format="yyyy-MM-dd"  data-autoclose="1" bs-datepicker>
+                            <span><i class="fa fa-calendar"></i></span>
+                        </div>
+                    </div>
+                    <div class="t-f-half t-f-s">
+                        <span class="t-f-left">金额范围</span>
+                        <div class="date_input bigger">
+                            <input type="number" ng-model="shortRentOptions.amount_start" ng-keyup="$event.keyCode === 13 && searchList()">
+                        </div>
+                        <span>-</span>
+                        <div class="date_input bigger">
+                            <input type="number" ng-model="shortRentOptions.amount_end" ng-keyup="$event.keyCode === 13 && searchList()">
+                        </div>
+                    </div>
+    			</div>
+    		</div>
+    		<div class="t-f-line">
+    			<div class="t-f-left">
+    				状态
+    			</div>
+    			<div class="t-f-right">
+    				<div class="t-f-half t-f-b">
+                        <div class="drop-wra">
+                            <sb-dropdown select="shortRentOptions.statusObj" placeholder="placeholder.all" options="filterStatus" flexible="true"></sb-dropdown>
+                        </div>
+                    </div>
+    			</div>
+    		</div>
+    		<div class="t-btn-wra">
+    			<div class="t-search-btn" ng-click="searchList()">
+					搜索
+				</div>
+				<span class="clear-btn" ng-click="clearSearchFilters()">清空</span>
+    		</div>
+    	</div>
+
+        <div class="mid-block">
+            <div class="mid-left">
+                <span class="link-txt" ng-click="seeList('secondRentHistory')">查看历史结算记录</span>
+            </div>
+            <div class="mid-right">
+                <div class="mid-des">
+                    <div>已选发票总额: <span class="red-f">{{selectedShortRentInvoicesAmount | currency: '':2}}</span></div>
+                    <div class="mid-grey">(可结算发票总额：{{secondInvoiceTotalAccount | number: 2}} 元)</div>
+                </div>
+                <span class="primary-btn" ng-if="currentAdmin.permissionMap[PERMISSION_MONTHLY_BILL_KEY] === 2" ng-click="seeSecondRentInvoice()">开票结算</span>
+            </div>
+        </div>
+
+    	<div class="lists-area">
+            <div class="line-width tit-line no-mb">
+                <div class="line-item per27 t-left">
+                    <input type="checkbox" class="check" ng-click="checkAll()" ng-model="booleans.listAllChecked">
+                    月结发票
+                </div>
+                <div class="line-item per38">
+                    金额
+                </div>
+                <div class="line-item per20">
+                    状态
+                </div>
+                <div class="line-item per15">
+                    结算日期
+                </div>
+            </div>
+
+            <div class="line-width" ng-repeat="item in shortRentInvoices">
+            <!-- <div class="line-width"> -->
+                <div class="line-item per27 t-left">
+                    <div class="item-con">
+                        <input type="checkbox" class="check" ng-class="{disabled: item.status != 'incomplete'}" ng-model="item.checked" ng-click="listChecked()">
+                        秒租月结发票-{{item.creation_date | date: 'yyyyMM'}}
+                    </div>
+                </div>
+                <div class="line-item per38">
+                    <div class="item-con">
+                        <span class="red-f">{{item.amount}}</span> 元
+                    </div>
+                </div>
+                <div class="line-item per20">
+                    <div class="item-con">
+                        <span ng-if="item.status == 'incomplete'">未结算</span>
+                        <span ng-if="item.status == 'pending'">待确认</span>
+                        <span ng-if="item.status == 'completed'">已结算</span>
+                    </div>
+                </div>
+                <div class="line-item per15">
+                    <div class="item-con">
+                        {{item.creation_date | date: 'yyyy-MM-dd'}}
+                    </div>
+                </div>
+            </div>
+            <pagination option="pageOptions" on-page="goPage(index)"></pagination>
+        </div>
+
+    </div>
+</div>
+
+<div class="sandBox_content" ng-if="pageType == 'secondRentHistory'">
+    <div class="tra-content">
+        <div class="lists-area">
+            <div class="line-width tit-line no-mb">
+                <div class="line-item per20">
+                    申请结算时间
+                </div>
+                <div class="line-item per20">
+                    结算金额
+                </div>
+                <div class="line-item per20">
+                    发票编号
+                </div>
+                <div class="line-item per20">
+                    状态
+                </div>
+                <div class="line-item per20">
+                    操作
+                </div>
+            </div>
+
+            <div class="line-width" ng-repeat="item in shortRentInvoiceApplications">
+                <div class="line-item per20">
+                    <div class="item-con">
+                        {{item.creation_date | date: 'yyyy-MM-dd'}}
+                    </div>
+                </div>
+                <div class="line-item per20">
+                    <div class="item-con">
+                        <div>
+                            <span class="red-f">{{item.amount | currency: '':2}}</span> 元
+                        </div>
+                    </div>
+                </div>
+                <div class="line-item per20">
+                    <div class="item-con">
+                        {{item.invoice_no}}
+                    </div>
+                </div>
+                <div class="line-item per20">
+                    <div class="item-con">
+                        <div class="detail-tag ora" ng-if="item.status == 'pending'">待确认</div>
+                        <div class="detail-tag grey" ng-if="item.status == 'revoked'">已退回</div>
+                        <div class="detail-tag green" ng-if="item.status == 'confirmed'">已确认</div>
+                    </div>
+                </div>
+                <div class="line-item per20">
+                    <div class="item-con">
+                        <div>
+                            <span class="link-txt" ng-click="seeSecondRentInvoiceDetail(item)" ng-if="item.status == 'revoked' && currentAdmin.permissionMap[PERMISSION_MONTHLY_BILL_KEY] === 2">重新提交</span>
+                        </div>
+                        <div>
+                            <span class="link-txt" ng-click="secondRentInvoiceDetail(item)">查看详情</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+        <pagination option="pageOptions" on-page="goPage(index)"></pagination>
+
+    </div>
+</div>
+
+<div class="sandBox_content" ng-if="pageType == 'secondRentInvoice'">
+    <div class="tra-content page-height">
+        <div class="detail-page page-height pt69">
+            <div class="detail-head fixed huge-font">开票结算</div>
+            <div class="detail-scroller">
+                <div class="infos-page">
+                    <div class="infos-item">
+                        <div class="item-cat">
+                            创合开票信息
+                            <div class="cat-tip">
+                                请您按照下方开票信息开票
+                            </div>
+                        </div>
+                        <div class="item-con font12">
+                            <div class="squre-item width378">
+                                <div class="line-width">
+                                    <div class="line-item per38 t-left">
+                                        公司抬头
+                                    </div>
+                                    <div class="line-item per62 t-left">{{sandboxInfo.title}}</div>
+                                </div>
+                                <div class="line-width">
+                                    <div class="line-item per38 t-left">
+                                        开票类型
+                                    </div>
+                                    <div class="line-item per62 t-left">{{sandboxInfo.type}}</div>
+                                </div>
+                                <div class="line-width">
+                                    <div class="line-item per38 t-left">
+                                        开票科目
+                                    </div>
+                                    <div class="line-item per62 t-left">{{sandboxInfo.category}}</div>
+                                </div>
+                                <div class="line-width">
+                                    <div class="line-item per38 t-left">
+                                        纳税人识别号
+                                    </div>
+                                    <div class="line-item per62 t-left">{{sandboxInfo.taxpayer_id}}</div>
+                                </div>
+                                <div class="line-width">
+                                    <div class="line-item per38 t-left">
+                                        银行名称
+                                    </div>
+                                    <div class="line-item per62 t-left">{{sandboxInfo.bank_name}}</div>
+                                </div>
+                                <div class="line-width">
+                                    <div class="line-item per38 t-left">
+                                        银行账号
+                                    </div>
+                                    <div class="line-item per62 t-left">{{sandboxInfo.bank_account}}</div>
+                                </div>
+                                <div class="line-width">
+                                    <div class="line-item per38 t-left">
+                                        地址、电话
+                                    </div>
+                                    <div class="line-item per62 t-left">{{sandboxInfo.company_info}}</div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="infos-item">
+                        <div class="item-cat">
+                            发票编号及金额<span class="red-f">*</span>
+                            <div class="cat-tip">
+                                请您填写您开具发票的发票编号，如果要填写多个发票请用“，”隔开
+                            </div>
+                        </div>
+                        <div class="item-con">
+                            <input type="text" class="bill-amount" placeholder="请输入您开具发票的发票编号" ng-model="shortRentModels.invoiceNo">
+                            <div class="grey-f">本次开票总金额: <span class="red-f">{{selectedShortRentInvoicesAmount | currency: '':2}} 元</span> (共<span class="red-f">{{selectedShortRentInvoices.length}}</span>条) <span class="arr-stick" ng-class="{up: openBox}"></span><span class="blue-f" ng-click="toggleBox()" ng-if="!openBox">展开</span><span class="blue-f" ng-click="toggleBox()" ng-if="openBox">收起</span>
+                            </div>
+                            <div class="lists-area" ng-if="openBox" ng-class="{unfold: openBox}">
+                                <div class="line-width" ng-repeat="item in selectedShortRentInvoices">
+                                <!-- <div class="line-width"> -->
+                                    <div class="line-item per15 t-left">
+                                        <div class="item-con">
+                                            {{item.creation_date | date: 'yyyy-MM-dd'}}
+                                        </div>
+                                    </div>
+                                    <div class="line-item per38">
+                                        <div class="item-con">
+                                            <span class="red-f">{{item.amount}}</span> 元
+                                        </div>
+                                    </div>
+                                    <div class="line-item per32">
+                                        <div class="item-con">
+                                            <span ng-if="item.status == 'incomplete'">未结算</span>
+                                            <!-- <span ng-if="item.status == 'pending'">待确认</span> -->
+                                            <!-- <span ng-if="item.status == 'paid'">已结算</span> -->
+                                        </div>
+                                    </div>
+                                    <div class="line-item per15">
+                                        <div class="item-con">
+                                            {{item.modification_date | date: 'yyyy-MM-dd'}}
+                                        </div>
+                                    </div>
+                                </div>
+                                <!-- <div class="line-width">
+                                    <div class="line-item per15 t-left">
+                                        <div class="item-con">
+                                            2016-05-03
+                                        </div>
+                                    </div>
+                                    <div class="line-item per38">
+                                        <div class="item-con">
+                                            <span class="red-f">1,000.00</span> 元
+                                        </div>
+                                    </div>
+                                    <div class="line-item per32">
+                                        <div class="item-con">
+                                            未结算
+                                        </div>
+                                    </div>
+                                    <div class="line-item per15">
+                                        <div class="item-con">
+                                            2016-05-03
+                                        </div>
+                                    </div>
+                                </div> -->
+                            </div>
+                        </div>
+                    </div>
+                    <div class="infos-item">
+                        <div class="item-cat">
+                            寄送发票地址
+                            <div class="cat-tip">
+                                请您将开具好的发票寄送到以下地址
+                            </div>
+                        </div>
+                        <div class="item-con font12">
+                            <div class="line-width">
+                                <div class="line-item per50 t-left">
+                                    <span class="line-left">收件人姓名</span><span class="line-right">{{sandboxInfo.receiver}}</span>
+                                </div>
+                                <div class="line-item per50 t-left">
+                                    <span class="line-left">收件地址</span><span class="line-right">{{sandboxInfo.address}}</span>
+                                </div>
+                            </div>
+                            <div class="line-width">
+                                <div class="line-item per50 t-left">
+                                    <span class="line-left">电话号码</span><span class="line-right">{{sandboxInfo.phone}}</span>
+                                </div>
+                                <div class="line-item per50 t-left">
+                                    <span class="line-left">邮编</span><span class="line-right">{{sandboxInfo.postal_code}}</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="infos-bot">
+                        <div class="primary-btn" ng-if="currentAdmin.permissionMap[PERMISSION_MONTHLY_BILL_KEY] === 2" ng-click="createShortRentInvoiceApplicetion()">确认邮寄发票</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="sandBox_content" ng-if="pageType == 'secondRentInvoiceDetail'">
+    <div class="tra-content page-height">
+        <div class="detail-page page-height pt69">
+            <div class="detail-head fixed huge-font">
+                <div class="detail-tag ora" ng-if="shortRentApplicationItem.status == 'pending'">待确认</div>
+                <div class="detail-tag grey" ng-if="shortRentApplicationItem.status == 'revoked'">已撤销</div>
+                <div class="detail-tag green" ng-if="shortRentApplicationItem.status == 'confirmed'">已确认</div>
+                秒租结算记录
+            </div>
+            <div class="detail-scroller">
+                <div class="infos-page">
+                    <div class="infos-item">
+                        <div class="item-cat">
+                            创合开票信息
+                        </div>
+                        <div class="item-con font12">
+                            <div class="squre-item width378">
+                                <div class="line-width">
+                                    <div class="line-item per38 t-left">
+                                        公司抬头
+                                    </div>
+                                    <div class="line-item per62 t-left">
+                                        {{shortRentApplicationItem.official_profile.title}}
+                                    </div>
+                                </div>
+                                <div class="line-width">
+                                    <div class="line-item per38 t-left">
+                                        开票类型
+                                    </div>
+                                    <div class="line-item per62 t-left">
+                                        {{shortRentApplicationItem.official_profile.type}}
+                                    </div>
+                                </div>
+                                <div class="line-width">
+                                    <div class="line-item per38 t-left">
+                                        开票科目
+                                    </div>
+                                    <div class="line-item per62 t-left">
+                                        {{shortRentApplicationItem.official_profile.category}}
+                                    </div>
+                                </div>
+                                <div class="line-width">
+                                    <div class="line-item per38 t-left">
+                                        纳税人识别号
+                                    </div>
+                                    <div class="line-item per62 t-left">
+                                        {{shortRentApplicationItem.official_profile.taxpayer_id}}
+                                    </div>
+                                </div>
+                                <div class="line-width">
+                                    <div class="line-item per38 t-left">
+                                        银行名称
+                                    </div>
+                                    <div class="line-item per62 t-left">
+                                        {{shortRentApplicationItem.official_profile.bank_name}}
+                                    </div>
+                                </div>
+                                <div class="line-width">
+                                    <div class="line-item per38 t-left">
+                                        银行账号
+                                    </div>
+                                    <div class="line-item per62 t-left">
+                                        {{shortRentApplicationItem.official_profile.bank_account}}
+                                    </div>
+                                </div>
+                                <div class="line-width">
+                                    <div class="line-item per38 t-left">
+                                        地址、电话
+                                    </div>
+                                    <div class="line-item per62 t-left">
+                                        {{shortRentApplicationItem.official_profile.company_info}}
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="infos-item">
+                        <div class="item-cat">
+                            发票编号及金额
+                        </div>
+                        <div class="item-con">
+                            <div class="grey-f">
+                                发票编号: <span class="red-f">{{shortRentApplicationItem.invoice_no}}</span>
+                            </div>
+                            <div class="grey-f">
+                                本次开票总金额: <span class="red-f">{{shortRentApplicationItem.amount | currency: '':2 }} 元</span> (共<span class="red-f">{{shortRentApplicationItem.invoices.length}}</span>条) <span class="arr-stick" ng-class="{up: openBox}"></span><span class="blue-f" ng-if="!openBox" ng-click="toggleBox()">展开</span><span class="blue-f" ng-if="openBox" ng-click="toggleBox()">收起</span>
+                            </div>
+                            <div class="lists-area" ng-if="openBox" ng-class="{unfold: openBox}">
+                                <div class="line-width" ng-repeat="item in selectedShortRentInvoices">
+                                    <div class="line-item per15 t-left">
+                                        <div class="item-con">
+                                            {{item.creation_date | date: 'yyyy-MM-dd'}}
+                                        </div>
+                                    </div>
+                                    <div class="line-item per38">
+                                        <div class="item-con">
+                                            <span class="red-f">{{item.amount | currency: '':2 }}</span> 元
+                                        </div>
+                                    </div>
+                                    <div class="line-item per32">
+                                        <div class="item-con">
+                                            未结算
+                                        </div>
+                                    </div>
+                                    <div class="line-item per15">
+                                        <div class="item-con">
+                                            {{item.modification_date | date: 'yyyy-MM-dd'}}
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="infos-item">
+                        <div class="item-cat">
+                            寄送发票地址
+                        </div>
+                        <div class="item-con font12">
+                            <div class="line-width">
+                                <div class="line-item per50 t-left">
+                                    <span class="line-left">收件人姓名</span><span class="line-right">{{shortRentApplicationItem.official_profile.company_info}}</span>
+                                </div>
+                                <div class="line-item per50 t-left">
+                                    <span class="line-left">收件地址</span><span class="line-right">{{shortRentApplicationItem.official_profile.address}}</span>
+                                </div>
+                            </div>
+                            <div class="line-width">
+                                <div class="line-item per50 t-left">
+                                    <span class="line-left">电话号码</span><span class="line-right">{{shortRentApplicationItem.official_profile.phone}}</span>
+                                </div>
+                                <div class="line-item per50 t-left">
+                                    <span class="line-left">邮编</span><span class="line-right">{{shortRentApplicationItem.official_profile.postal_code}}</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- <div class="infos-bot">
+                        <div class="primary-btn" ng-if="currentAdmin.permissionMap[PERMISSION_MONTHLY_BILL_KEY] === 2" ng-click="setShortRentInvoiceApplicationStatus('confirmed')">确认已收发票</div>
+                        <div class="primary-btn empty" ng-if="currentAdmin.permissionMap[PERMISSION_MONTHLY_BILL_KEY] === 2" ng-click="setShortRentInvoiceApplicationStatus('revoked')">拒绝发票</div>
+                    </div> -->
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="sandBox_content" ng-if="pageType == 'secondRentInvoiced'">
+    <div class="tra-content page-height">
+        <div class="detail-page page-height pt69">
+            <div class="detail-head fixed huge-font">开票结算</div>
+            <div class="detail-scroller">
+                <div class="step-suc">
+                    <div class="s-des">
+                        <img src="../img/reserve_ic.png" class="suc-icon">
+                        <span>开票结算已提交，请等待官方管理平台审核。</span>
+                    </div>
+                    <div class="suc-btn">
+                        <div class="btn-item" ng-click="secondRentInvoiceDetail()">查看开票结算详情</div>
+                        <div class="btn-item" ng-click="seeList('finance')">返回财务管理</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

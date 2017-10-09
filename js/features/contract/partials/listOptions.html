@@ -1,0 +1,4 @@
+<div class="option">
+	<p class="option_title">状态记录</p>
+	<p class="option_nav" ng-repeat="log in statusLogs[item.id]">{{log.creation_date | date: 'yyyy-MM-dd HH:mm'}} 由 <span>{{log.username}}</span> {{log.remarks}}</p>
+</div>

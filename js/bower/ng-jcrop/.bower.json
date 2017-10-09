@@ -1,0 +1,40 @@
+{
+  "name": "ng-jcrop",
+  "main": "ng-jcrop.js",
+  "version": "2.1.3",
+  "homepage": "https://github.com/andrefarzat/ng-jcrop",
+  "authors": [
+    "Andre Farzat <andrefarzat@gmail.com>"
+  ],
+  "description": "Angular directive to jCrop jQuery plugin",
+  "keywords": [
+    "angular",
+    "directive",
+    "jcrop",
+    "jquery",
+    "jquery-jcrop"
+  ],
+  "license": "GPL",
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "test",
+    "tests"
+  ],
+  "dependencies": {
+    "jquery": "*",
+    "angular": "*",
+    "jcrop": "~0.9.12",
+    "angular-mocks": "*"
+  },
+  "_release": "2.1.3",
+  "_resolution": {
+    "type": "version",
+    "tag": "2.1.3",
+    "commit": "079d59d41503b28c808e1ecbfecb3bfaf6e7e8f1"
+  },
+  "_source": "https://github.com/andrefarzat/ng-jcrop.git",
+  "_target": "~2.1.2",
+  "_originalSource": "ng-jcrop"
+}

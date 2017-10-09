@@ -1,0 +1,49 @@
+<div class="cover" ng-repeat="block in orders" ng-if="(type == 'month' || type == 'hour' || (type == 'day' && tab !== 'desk')) && tab !== 'membership_card'">
+    <div class="pink-block" ng-class="{coverStart: block.coverStart, coverEnd: block.coverEnd, disabled: block.disabled, preorders: block.type == 'preorder', reserves: block.type == 'reserve'}">
+        <div class="users" ng-class="{single: block.users.length == 1, couple: block.users.length > 1 && block.users.length <= 6, threesome: block.users.length > 6, over8: block.users.length > 6}">
+            <div class="user-box" ng-repeat="user in block.users">
+                <div class="head">
+                    <span ng-if="user.type == 'preorder'">后台推送空间订单</span>
+                    <span ng-if="user.type == 'reserve'">后台设置内部占用</span>
+                    <span ng-if="user.type != 'preorder' && user.type != 'reserve'">自主下单</span>
+                    <span class="detail-tag" ng-if="user.pay_channel" ng-class="{wechat: user.pay_channel == 'wx', account: user.pay_channel == 'account', offline: user.pay_channel == 'offline', alipay: user.pay_channel == 'alipay' || user.pay_channel == 'upacp', 'we-off': user.pay_channel == 'wx_pub'}">{{::user.pay_channel_des}}</span>
+                    <span class="detail-tag wechat" ng-if="!user.pay_channel">未付款</span>
+                    <span class="blue-txt" ng-click="cancelOrder(user.order_id)" ng-if="user.type == 'reserve' && !(user.status == 'completed' || user.status == 'paid')">取消设置内部占用</span>
+                    <span class="blue-txt" ng-click="cancelOrder(user.order_id)" ng-if="user.type != 'reserve' && !(user.status == 'completed' || user.status == 'paid')">取消订单</span>
+                </div>
+                <div class="info-box">
+                    <div class="user-name">{{::user.name}}</div>
+                    <div class="u-account">{{::user.account}}</div>
+                    <image-with-fallback class="u-ava" url="{{::user.avatar}}" default-url="../img/head.png"></image-with-fallback>
+                </div>
+            </div>
+        </div>
+        <div class="u-arr"></div>
+    </div>
+</div>
+
+<div class="pink-block" ng-repeat="block in room.uses">
+    <div class="users" ng-class="{single: block.users.length == 1, couple: block.users.length > 1 && block.users.length <= 6, threesome: block.users.length > 6, over8: block.users.length > 6}">
+        <div class="user-box" ng-repeat="user in block.users">
+            <div class="head">
+                    <span ng-if="user.type == 'preorder'">后台推送空间订单</span>
+                    <span ng-if="user.type == 'reserve'">后台设置内部占用</span>
+                    <span ng-if="user.type != 'preorder' && user.type != 'reserve'">自主下单</span>
+                    <span class="detail-tag" ng-if="user.pay_channel" ng-class="{wechat: user.pay_channel == 'wx', account: user.pay_channel == 'account', offline: user.pay_channel == 'offline', alipay: user.pay_channel == 'alipay' || user.pay_channel == 'upacp', 'we-off': user.pay_channel == 'wx_pub'}">{{::user.pay_channel_des}}</span>
+                    <span class="detail-tag wechat" ng-if="!user.pay_channel">未付款</span>
+                    <span class="blue-txt" ng-click="cancelOrder(user.order_id)" ng-if="user.type == 'reserve' && !(user.status == 'completed' || user.status == 'paid')">取消设置内部占用</span>
+                    <span class="blue-txt" ng-click="cancelOrder(user.order_id)" ng-if="user.type != 'reserve' && !(user.status == 'completed' || user.status == 'paid')">取消订单</span>
+                </div>
+            <div class="info-box">
+                <div class="user-name">{{::user.name}}</div>
+                <div class="u-account">{{::user.account}}</div>
+                <image-with-fallback class="u-ava" url="{{::user.avatar}}" default-url="../img/head.png"></image-with-fallback>
+            </div>
+        </div>
+    </div>
+    <div class="u-arr"></div>
+</div>
+
+<div class="pink-block no-border" ng-if="tab === 'membership_card'" ng-repeat="order in orders">
+    <div class="card-num" ng-if="order.count > 0">{{::order.count}}张</div>
+</div>

@@ -1,0 +1,168 @@
+/*style for meeting */
+.order_item{
+  // .popover.bottom{
+  //     left: -188px !important;
+  //   }
+  .popover{
+    position: absolute;
+    border:1px solid #ddd;
+    border-radius:2px;
+    z-index: 100;
+    .popover-content{
+      padding:0px;
+    }
+    .mcalendar{
+      margin:0px;
+      color:#e7e7e7;
+    }
+    .sm_calendar{
+      width: 388px;
+      height: 120px;
+      table{
+        overflow-y: hidden;
+        height: 84px;
+        &::-webkit-scrollbar{
+          height:10px;
+        }
+        &::-webkit-scrollbar-thumb{
+          background-color: #eee;
+          border-radius:5px;
+        }
+        th{
+         height: 20px;
+         line-height: 8px;
+         text-indent: 0px;
+         font-weight: 200;
+         text-align: center;
+         padding: 0px 1px;
+         color:#838383;
+         &.disabled{
+          color:#ddd;
+         }
+       }
+       tr{
+        td{
+          height: 64px;
+          padding: 0px;
+          &:nth-child(odd){
+            border-right-style: dashed;
+          }
+          &:nth-child(even){
+            border-left: none;
+          }
+        }
+        .selected{
+          border-style: solid !important;
+        }
+      }
+
+    }
+    .sm_calendar_head{
+      height: 34px;
+      border: none;
+    }
+    .sm_today{
+      margin-top: 5px;
+    } 
+    .sm_now{
+      color: #555;
+      float: right;
+      margin: 5px 0px;
+    }
+    .sm_direction{
+      margin: 5px 10px 0 0;
+    }
+
+  }
+}
+}
+
+/***************/
+/******  month calendar ******/
+.d_calendar{
+  width:348px;
+  text-align: center;
+  color:#666666;
+  .d_head{
+    height:52px;
+    line-height:52px;
+    background-color: #fbfbfb;
+    span{
+      display:inline-block;
+      float:left;
+      width:82px;
+      cursor:pointer;
+      &.date_b{
+        width:184px;
+      }
+    }
+  }
+  .d_box{
+    padding:10px 24px 10px 23px;
+    overflow:hidden;
+    span{
+      display:inline-block;
+      float:left;
+      width:43px;
+      height:28px;
+      line-height: 28px;
+      cursor:pointer;
+      margin: 2px 0px;
+    }
+    .d_week{
+      color:#666666;
+    }
+  }
+  .booked{
+    background: #eee;
+    color:#d8d8d8;
+    pointer-events: none;
+  }
+  .disable{
+    color:#d8d8d8;
+  }
+  .today{
+    background-color: #5BC0DE;
+    color: #fff;
+    border-radius: 3px;
+  }
+  .selected{
+    background-color: #286090;
+    color: #fff;
+    border-radius: 3px;
+  }
+
+}
+/******  month calendar ends ******/
+
+/********** bookInfo calendar for reserve dialog ***********/
+.out_input{
+  .popover.top{
+    margin: -16px;
+  }
+  .popover.bottom{
+    margin: 15px;
+  }
+  .popover{
+    .popover-content{
+      padding: 0px;
+      .d_calendar{
+        width:270px;
+        .d_head{
+          padding: 0px 10px;
+        }
+        .d_box{
+          padding: 5px 15px 5px 23px;
+          span{
+            width: 32px;
+            height: 20px;
+            line-height: 20px;
+          }
+        }
+      }
+    }
+  }
+}
+/***********************/
+
+

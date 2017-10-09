@@ -1,0 +1,49 @@
+<div class="group-right p-box">
+	<div class="right-head clearfix">
+		<div class="r-h-left p-h">
+			<div class="ph-name ph-dis">全部职位（{{positions.length}}）</div>
+			<div class="ph-t ph-dis">所配置板块</div>
+			<div class="ph-t ph-dis">权限</div>
+			<div class="ph-f ph-dis"><span class="b-span" ng-if="currentAdmin.permissionMap[PERMISSION_KEY] === 2" ng-click="togglePage('edit-job', 'create')">添加职位</span></div>
+		</div>
+	</div>
+	<div class="right-content">
+		<div class="right-item clearfix" ng-repeat="item in positions">
+			<div class="job-name">
+				<img class="g-img" ng-src="{{item.icon.url}}">
+				<span ng-bind="item.name"></span>
+			</div>
+			<div class="job-t">
+				<div class="p-wrapper w">
+					<div class="g-n-b">
+						<span ng-repeat="group in item.permission_groups">{{group.name}}</span>
+					</div>
+				</div>
+			</div>
+			<div class="job-t">
+				<div class="p-wrapper w" ng-if="item.permission_mappings.length > 0 && !item.is_super_admin">
+					<div class="p-box" ng-repeat="permission in item.power_mappings">
+						<p>{{permission.permission.name}}</p>
+						<p class="p-p">{{permission.op_des}}</p>
+					</div>
+					<div class="p-more" ng-if="item.permission_mappings.length > 3">
+						<p>... <span>（{{item.permission_mappings.length}}个权限)）</span></p>
+					</div>
+				</div>
+				<div ng-if="item.is_super_admin">
+					<div class="p-box c"><p>默认拥有所有权限</p></div>
+				</div>
+			</div>
+			<div class="job-f" ng-class="{died: item.is_super_admin}">
+				<p  ng-click="seeOptions('edit-job', item)"
+					ng-if="currentAdmin.permissionMap[PERMISSION_KEY] === 2"
+					data-placement="bottom-right"
+					data-content-template="js/features/admin/partials/options.html"
+					data-animation="am-fade"
+					data-auto-close="1"
+					bs-popover
+					>操作<i class="arr arr-down"></i></p>
+			</div>
+		</div>
+	</div>
+</div>

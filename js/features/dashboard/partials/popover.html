@@ -1,0 +1,22 @@
+<ul class="spec-con" ng-if="tabType === 'membership_card'">
+	<li ng-repeat="spec in selectedRoom.card.specification">
+		<div class="spec-line">
+			<span>{{spec.specification}}</span>
+			<span class="f-r"><i class="red-f">{{spec.price | number: 2}}</i> 元</span>
+		</div>
+		<div class="spec-time"><span>有效期{{spec.valid_period}}个月</span></div>
+	</li>
+</ul>
+
+<ul class="spec-con" ng-if="tabType !== 'membership_card'">
+	<li ng-repeat="set in selectedRoom.product.leasing_sets">
+		<div class="spec-line">
+			<span ng-if="set.unit_price === 'day'">日租</span>
+			<span ng-if="set.unit_price === 'hour'">时租</span>
+			<span ng-if="set.unit_price === 'week'">周租</span>
+			<span ng-if="set.unit_price === 'month'">月租</span>
+			<span class="f-r"><i class="red-f">{{set.base_price | number: 2}}</i> 元/<span ng-if="set.unit_price === 'day'">天</span><span ng-if="set.unit_price === 'hour'">时</span><span ng-if="set.unit_price === 'week'">周</span><span ng-if="set.unit_price === 'month'">月</span></span>
+		</div>
+		<div class="spec-time">{{set.amount}}<span ng-if="set.unit_price === 'day'">天</span><span ng-if="set.unit_price === 'hour'">小时</span><span ng-if="set.unit_price === 'week'">个周</span><span ng-if="set.unit_price === 'month'">个月</span>起租</div>
+	</li>
+</ul>

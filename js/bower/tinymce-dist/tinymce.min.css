@@ -1,0 +1,19 @@
+.mce-content-body span[data-mce-style*="background-color"] {
+    display: inline-block;
+}
+.mce-content-body p > img {
+    max-width: 100%;
+    height: 100%;
+}
+
+/*preview modal*/
+div[aria-label="Preview"].mce-floatpanel,
+div[aria-label="Preview"].mce-floatpanel .mce-window-body ,
+div[aria-label="Preview"].mce-floatpanel .mce-container-body ,
+div[aria-label="Preview"].mce-floatpanel .mce-foot {
+    width: 414px !important;
+}
+div[aria-label="Preview"].mce-floatpanel .mce-widget.mce-btn  {
+    left: auto !important;
+    right: 10px;
+}

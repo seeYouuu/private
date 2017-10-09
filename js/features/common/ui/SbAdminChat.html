@@ -1,0 +1,90 @@
+<div class="chat-box">
+	<div class="chat-left" ng-if="leftChatboxFlag && showChatboxFlag">
+		<div class="chat-head">
+			<span>{{selectedGroup.creator_name}}</span>
+			<span class="grey-f">来自{{selectedGroup.name}}</span>
+			<span class="close-c" ng-click="closeChatbox()">X</span>
+		</div>
+		<div class="c-content" id="chatPanel">
+			<div class="c-block" >
+				<!-- <div class="c-time">
+					<span class="c-time-txt">17-01-01</span>
+				</div> -->
+				<!-- <div class="c-line " ng-repeat="(key, value) in records[selectedGroup.id] | orderBy: 'time'" ng-class="{'c-t-left': value.user_id === selectedGroup.creatorId, 'c-t-right': value.user_id !== selectedGroup.creatorId}"> -->
+				<div class="c-line " ng-repeat="value in selectRecords" ng-class="{'c-t-left': value.user_id === selectedGroup.creatorId, 'c-t-right': value.user_id !== selectedGroup.creatorId}">
+					<div class="c-avator">
+						<image-with-fallback class="ava-pic" url="{{value.avatar}}" default-url="../img/head.png" ng-click="showUserInfo(value.user_id)"></image-with-fallback>
+					</div>
+					<div class="c-box">
+						<span ng-if="value.service === 'text'">{{value.body}}</span>
+						<img ng-if="value.service === 'FileShare'" ng-click="showOriginImage(value.body.url)" ng-src="{{value.body.url}}" >
+						<div ng-if="value.service === 'room_product'" class="chat_product" ng-click="openRoomDetail(value)">
+							<img ng-src="{{value.body.preview}}">
+							<div class="product_info">
+								<h6>{{value.body.name}}</h6>
+								<div>{{value.body.price}}</div>
+							</div>
+						</div>
+						<div class="c-arr"></div>
+					</div>
+					<!-- <div class="c-line-time" ng-if="!value.today">{{ value.recordDate| date: 'yyyy-MM-dd HH:mm'}}</div>
+					<div class="c-line-time" ng-if="value.today">{{ value.recordDate| date: 'HH:mm'}}</div> -->
+					<div class="c-line-time" ng-if="!value.today">{{ value.time| date: 'yyyy-MM-dd HH:mm'}}</div>
+					<div class="c-line-time" ng-if="value.today">{{ value.time| date: 'HH:mm'}}</div>
+				</div>
+			</div>
+		</div>
+		<div class="c-input-area">
+			<textarea class="c-text" ng-keyup="sendMsg($event)" cols="30" rows="10" ng-model="message.content" placeholder="按回车发送消息，按shift+回车换行"></textarea>
+			<span class="upload-chat-img" ng-click="uploaderChatImage()"></span>
+			<input id="chatImageUpload" type="file" nv-file-select uploader="chatImageUploader"/>
+		</div>
+	</div>
+	<div class="chat-right" ng-if="showChatboxFlag">
+		<div class="chat-head">
+			<span class="n-icon ic_msg on"></span>
+			<span>客服中心<font class="number" ng-if="chatGroups.length > 0"> ({{chatGroups.length}})</font></span>
+			<span class="close-c" ng-click="toggleChatbox()">一</span>
+		</div>
+		<div class="c-right-search">
+			<input type="text" class="u-search" placeholder="搜索用户名/手机号/邮箱" ng-model="search.search">
+			<span class="clear-input" ng-click="clearSearch()" ng-if="search.search">X</span>
+		</div>
+		<div class="c-r-users" ng-if="showChatboxFlag">
+			<div class="c-r-user" ng-click="openChatbox(group)" ng-repeat="group in chatGroups | filter: search.search">
+				<div class="c-u-avator">
+				<image-with-fallback class="ava-img" url="{{group.avatar}}" default-url="../img/head.png"></image-with-fallback>
+				</div>
+				<div class="c-u-info">
+					<div class="c-u-nick">{{group.creator_name}}</div>
+					<div class="c-u-com">来自{{group.name}}</div>
+				</div>
+				<div class="c-num" ng-if="group.count > 0"><span ng-if="group.count < 99">{{group.count}}</span><span ng-if="group.count > 99">···</span></div>
+			</div>
+		</div>
+	</div>
+	<div class="chat-right no-float" ng-if="showTotalFlag && totalCount > 0">
+		<div class="chat-head total-count">
+			<span class="msg" ng-if="totalCount > 0">{{totalCount}} 条新消息</span>
+			<span class="close-c" ng-click="closeTotalMsg()">x</span>
+		</div>
+		<div class="c-r-users msg-container">
+			<div class="c-r-user" ng-click="showChatbox(group)" ng-repeat="group in chatGroups" ng-if="group.count > 0">
+				<div class="c-u-avator">
+				<image-with-fallback class="ava-img" url="{{group.avatar}}" default-url="../img/head.png"></image-with-fallback>
+				</div>
+				<div class="c-u-info">
+					<div class="c-u-nick">{{group.creator_name}}</div>
+					<div class="c-u-com">来自{{group.name}}</div>
+				</div>
+				<div class="c-num" ng-if="group.count > 0"><span ng-if="group.count < 99">{{group.count}}</span><span ng-if="group.count > 99">···</span></div>
+			</div>
+		</div>
+	</div>
+	<div class="chat-right" ng-if="!showChatboxFlag" ng-class="{'top-border': showTotalFlag && totalCount > 0}">
+		<div class="chat-head pointable" ng-click="toggleChatbox()">
+			<span class="n-icon ic_msg on"></span>
+			<span>客服中心<font class="number" ng-if="chatGroups.length > 0"> ({{chatGroups.length}})</font></span>
+		</div>
+	</div>
+</div>

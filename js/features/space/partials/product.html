@@ -1,0 +1,217 @@
+<div class="group_detail add-room">
+    <div class="space-detail" ng-class="{'no-pt': newRoom == 'yes'}">
+        <div class="space-head" ng-if="newRoom != 'yes'">
+            <span class="head-des">
+                <span ng-if="productType == 'edit'">编辑</span>
+                <span ng-if="productType == 'create'">租赁设置</span>
+                <span class="blue-f">"{{editOptions.room.name}}"</span>
+            </span>
+        </div>
+        <div class="create-com space-con">
+            <div class="create-header" ng-if="newRoom == 'yes'">
+                <div class="step-suc">
+                    <div class="s-des">
+                        <img src="../img/reserve_ic.png" class="suc-icon">
+                        <span>空间已创建成功, 你可以继续完善以下 租赁设置   或   </span>
+                        <span class="reverse-btn" ng-click="backToList()">跳过租赁设置</span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="edit-s-box">
+                <div class="com-room-line">
+                    <div class="com-f">
+                        <div class="p-wrap" ng-class="{'grey': !productItem.id, 'green': productItem.id && productItem.visible, 'red': productItem.id && !productItem.visible}">
+                            <img ng-if="productType == 'edit'" class="p-pic" ng-src="{{productItem.room.attachment[0].attachment_id.content}}">
+                            <img ng-if="productType == 'create'" class="p-pic" ng-src="{{roomDetail.attachment[0].attachment_id.content}}">
+                        </div>
+                        <div class="room-tit" ng-if="productType == 'edit'">
+                            <span class="detail-tag red" ng-if="productItem.room.rent_type == 'seconds'">秒租</span>
+                            <span class="detail-tag ora" ng-if="productItem.room.rent_type == 'long'">长租</span>
+                            <span class="tit-des" ng-click="seeSpaceDetail()">{{productItem.room.name}}</span>
+                        </div>
+                        <div class="room-in" ng-if="productType == 'edit'">
+                            <span class="in-item">{{roomTypeObject[productItem.room.type].description}}</span>
+                            <span class="in-item"><span class="n-icon ic-cap"></span>{{productItem.room.area}}㎡</span>
+                            <span class="in-item"><span class="n-icon ic-people"></span>{{productItem.room.allowed_people}}</span>
+                        </div>
+                        <div class="room-tit" ng-if="productType == 'create'">
+                            <span class="detail-tag red" ng-if="roomDetail.rent_type == 'seconds'">秒租</span>
+                            <span class="detail-tag ora" ng-if="roomDetail.rent_type == 'long'">长租</span>
+                            <span class="tit-des" ng-click="seeSpaceDetail()">{{roomDetail.name}}</span>
+                        </div>
+                        <div class="room-in" ng-if="productType == 'create'">
+                            <span class="in-item">{{roomTypeObject[roomDetail.type].description}}</span>
+                            <span class="in-item"><span class="n-icon ic-cap"></span>{{roomDetail.area}}㎡</span>
+                            <span class="in-item"><span class="n-icon ic-people"></span>{{roomDetail.allowed_people}}</span>
+                        </div>
+                    </div>
+                    <div class="com-s">
+                        <div class="s-wrap" ng-if="productType == 'edit'">
+                            <div ng-if="productItem.room.type_tag != 'dedicated_desk'">
+                                <span ng-if="!productItem.rent_set || !productItem.rent_set.status">
+                                    <span class="red-num">{{productItem.leasing_sets[0].base_price}}</span>
+                                    <span class="grey-num">元/{{productItem.leasing_sets[0].unit_price.toUpperCase() | translate}}起</span>
+                                </span>
+                                <span ng-if="productItem.rent_set && productItem.rent_set.status">
+                                    <span class="red-num">{{productItem.rent_set.base_price}}</span>
+                                    <span class="grey-num">元/{{productItem.rent_set.unit_price.toUpperCase() | translate}}起</span>
+                                </span>
+                            </div>
+                            <div ng-if="productItem.room.type_tag == 'dedicated_desk'">
+                                <span class="red-num">{{productItem.base_price}}</span>
+                                <span>元 / {{productItem.leasing_sets[0].unit_price.toUpperCase() | translate}}</span>
+                            </div>
+                            <div ng-if="productItem && productItem.earliest_rent_date">
+                                起租日: {{productItem.earliest_rent_date | date: 'yyyy-MM-dd'}}
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <ul class="room_lsit">
+                    <li ng-if="currentRentType == 'desk' && productItem.room.type_tag != 'dedicated_desk'">
+                        <p class="s-name n-f">办公桌租赁设置</p>
+                        <span class="grey-num">您可以按照日组，周租，月租来租赁您的空间，同时可以针对不同规格设定起租量。请至少勾选并完整填写一种规格,其中月租为必选项.</span>
+                    </li>
+                    <li ng-if="currentRentType == 'meeting'">
+                        <p class="s-name n-f">会议室租赁设置</p>
+                        <span class="grey-num">您可以按照时租,日租来租赁您的空间，同时可以针对不同规格设定起租量。请至少勾选并完整填写一种规格,其中时租为必选项。</span>
+                    </li>
+                    <li ng-if="currentRentType == 'office'">
+                        <p class="s-name n-f">办公室租赁设置</p>
+                        <span class="grey-num">您可以按照秒租,长租来租赁您的空间，同时可以针对不同规格设定起租量。请至少勾选并完整填写一种规格。</span>
+                    </li>
+                    <li ng-if="currentRentType == 'others'">
+                        <p class="s-name n-f">其他租赁设置</p>
+                        <span class="grey-num">您可以按照时租,日租来租赁您的空间，同时可以针对不同规格设定起租量。请至少勾选并完整填写一种规格,其中时租为必选项。</span>
+                    </li>
+                    <li ng-if="editOptions.room.type_tag != 'dedicated_desk'" ng-repeat="item in leasingTypes">
+                        <div ng-if="item.unit_price != 'longterm'">
+                            <span class="item_label">
+                                <span class="check" ng-if="!(currentRentType == 'desk' && item.unit_price == 'month' || (currentRentType == 'meeting' || currentRentType == 'others') && item.unit_price == 'hour')" ng-class="{'checked': item.selected}" ng-click="item.selected = !item.selected;"></span>
+                                <font class="muted mRight10" ng-if="currentRentType == 'desk' && item.unit_price == 'month' || (currentRentType == 'meeting' || currentRentType == 'others') && item.unit_price == 'hour'">*</font>
+                            </span>
+                            <ul class="room_lsit inner-ul no-p-top">
+                                <li>
+                                    <span class="item_label lf-lab s-name">{{item.name}}</span>
+                                    <div class="limit-left" ng-class="{'disabled-item': !item.selected}">
+                                        <span>价格</span>
+                                        <div class="price-container">
+                                            <input type="number" step="0.01" min="0" class="default_text" ng-model="item.base_price">
+                                            <span class="r-unit">元</span>
+                                        </div>
+                                        <span class="grey">/ 1{{item.unit_price.toUpperCase() | translate}}</span>
+                                    </div>
+                                    <div class="limit-right" ng-class="{'disabled-item': !item.selected}">
+                                        <span class="min" ng-if="!(item.unit_price == 'day' && (currentRentType == 'meeting' || currentRentType == 'others'))">最少</span>
+                                        <span class="min" ng-if="item.unit_price == 'day' && (currentRentType == 'meeting' || currentRentType == 'others')">只可</span>
+                                        <div class="rent-limit" ng-class="{'disabled-item': item.unit_price != 'hour'}">
+                                            <sb-dropdown options="rentLimits" ng-if="item.unit_price == 'hour'" select="item.amount" flexible="true" no-empty></sb-dropdown>
+                                            <input type="number" ng-if="item.unit_price != 'hour'" step="0.01" min="0" class="default_text" ng-model="item.amount">
+                                        </div>
+                                        <span class="grey" ng-if="!(item.unit_price == 'day' && (currentRentType == 'meeting' || currentRentType == 'others'))">{{item.unit_price.toUpperCase() | translate}}起租</span>
+                                        <span class="grey" ng-if="item.unit_price == 'day' && (currentRentType == 'meeting' || currentRentType == 'others')">日租</span>
+                                    </div>
+                                </li>
+                            </ul>
+                        </div>
+                        <div ng-if="item.unit_price == 'longterm'">
+                            <span class="item_label tp-lab"><span class="check" ng-class="{'checked': item.selected}" ng-click="item.selected = !item.selected;"></span></span>
+                            <span class="s-name n-f s-p">{{item.name}}</span>
+                            <ul class="room_lsit inner-ul" ng-class="{'disabled': !item.selected}">
+                                <li>
+                                    <span class="item_label lf-lab">月租金</span>
+                                    <div class="li-left">
+                                        <input type="number" step="0.01" min="0" class="default_text" ng-model="editOptions.rent_set.base_price">
+                                        <span class="r-unit">元</span>
+                                    </div>
+                                    <div class="li-right">
+                                        <span class="right_label">/</span>
+                                        <sb-dropdown select="roomTypeObject[editOptions.room.type].units[0]" flexible="true" no-empty></sb-dropdown>
+                                    </div>
+                                    <span class="li-right-tail out-r-t">起</span>
+                                </li>
+                                <li>
+                                    <span class="item_label lf-lab">月租包含</span>
+                                    <div class="rent-cat">
+                                        <div class="rent-item" ng-repeat="item in supplementaryList" ng-class="{on: item.selected}">
+                                            <div class="check" ng-click="item.selected = !item.selected;"></div>
+                                            <span ng-bind="item.name"></span>
+                                        </div>
+                                    </div>
+                                </li>
+                                <li>
+                                    <span class="item_label lf-lab">租赁押金</span>
+                                    <input type="number" class="default_text" min="0" ng-model="editOptions.rent_set.deposit" style="padding-right: 22px;" ng-keydown="prevInput($event)">
+                                    <span class="input-unit inner-unit">元</span>
+                                </li>
+                                <li>
+                                    <span class="item_label lf-lab">最早起租日</span>
+                                    <input type="text" ng-model="editOptions.rent_set.earliest_rent_date" class="default_text" data-date-format="yyyy-MM-dd"  data-autoclose="1" bs-datepicker>
+                                    <span class="n-icon ic-cal input-unit inner-unit"></span>
+                                </li>
+                                <li>
+                                    <span class="item_label lf-lab">租赁须知</span>
+                                    <textarea ng-model="editOptions.rent_set.rental_info"></textarea>
+                                </li>
+                            </ul>
+                        </div> 
+                    </li>
+
+                    <li ng-if="editOptions.room.type_tag == 'dedicated_desk'">
+                        <span><span class="li-left"><font class="muted">*</font>工位租赁设置</span></span>
+                    </li>
+                    <li ng-if="editOptions.room.type_tag == 'dedicated_desk'" ng-repeat="item in editOptions.room.fixed">
+                        <span class="item_label">{{item.seat_number}}</span>
+                        <div class="li-left">
+                            <input type="number" step="0.01" min="0" class="default_text" ng-model="item.base_price">
+                            <span class="r-unit">元</span>
+                        </div>
+                        <div class="li-right">
+                            <span class="right_label">/</span>
+                            <sb-dropdown select="roomTypeObject[editOptions.room.type].units[0]" flexible="true" no-empty></sb-dropdown>
+                        </div>
+                    </li>
+                   
+                    <li ng-if="editOptions.room.type_tag != 'dedicated_desk' && !editOptions.rent_set">
+                        <span class="item_label">私人可见</span>
+                        <div class="user-box">
+                            <div class="u-left">
+                                用户
+                            </div>
+                            <div class="u-right">
+                                <input class="u-input" type="text" placeholder="请输入已注册创合用户的手机号" ng-model="editOptions.searchkey">
+                                <span class="u-add" ng-click="searchByPhone()">添加</span>
+                            </div>
+                        </div>
+                    </li>
+                    <li ng-if="editOptions.room.type_tag != 'dedicated_desk' && (!editOptions.rent_set || !editOptions.rent_set.status)">
+                        <div class="ad-box" ng-if="!editOptions.visible_user_id || editOptions.visible_user_id == 0">
+                            <div class="u-avtar">
+                                <img src="../img/head.png">
+                            </div>
+                            <div class="u-acc">
+                                <span>未添加</span>
+                            </div>
+                        </div>
+                        <div class="ad-box" ng-if="editOptions.visible_user_id && editOptions.visible_user_id != 0">
+                            <div class="u-avtar">
+                                <img ng-src="{{userOptions[editOptions.visible_user_id].avatar}}" default-url="../img/head.png">
+                            </div>
+                            <div class="u-acc">
+                                <p class="name">{{userOptions[editOptions.visible_user_id].name}}</p>
+                                <p>{{userOptions[editOptions.visible_user_id].phone}}</p>
+                            </div>
+                            <span class="close-ic"><a ng-click="deleteVisUser()">×</a></span>
+                        </div>
+                    </li>
+                </ul>
+                
+            </div>
+            <div class="edit-s-btn">
+                <div class="e-btn" ng-click="editProduct()" ng-if="currentAdmin.user.is_super_admin || currentAdmin.productMap[PERMISSION_PRODUCT_KEY + selectedCommunity.id] === 2">保存并上架</div>
+            </div>
+        </div>
+    </div>
+</div>

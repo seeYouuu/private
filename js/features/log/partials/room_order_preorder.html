@@ -1,0 +1,146 @@
+<div  class="modal gallery-upload-progress-modal" role="dialog">
+    <div class="modal-dialog log-popup">
+        <div class="modal-content log-radius">
+            <div class="modal-header log-header" ng-show="title">
+                <h4><span ng-bind="title"></span></h4>
+            </div>
+            <div class="modal-body log-body">
+                <div class="log-content">
+                
+				    <div class="mbox">
+				        <div class="mbd mPadding15">
+				            <div class="order_number">
+				                <h4>{{'ORDER_NO' | translate}}：{{logItem.log_object_json.order_number}}</h4>
+				                <p class="success" ng-if="logItem.log_object_json.status==='completed'">{{'TRAN_COMPLETE' | translate}}</p>
+				                <p class="alerm" ng-if="logItem.log_object_json.status==='cancelled' && logItem.log_object_json.payment_date">{{'TRAN_CANCEL' | translate}}<span>（ {{'ORDER_CANCEL_MSG1' | translate: translationData}}）</span></p>
+				                <p class="alerm" ng-if="logItem.log_object_json.status==='cancelled' && !logItem.log_object_json.payment_date">{{'TRAN_CANCEL' | translate}}<span>（ {{'ORDER_CANCEL_MSG2' | translate}}）</span></p>
+				            </div>
+				            
+				            <div class="order_info">
+				                <h5>{{'RENTER_INFO' | translate}}：</h5>
+				                <ul>
+				                    <li>
+				                        <span>{{'VIP_NAME' | translate}}：</span>
+				                        {{userOptions[logItem.log_object_json.user_id].name}}
+				                    </li>
+				                    <li>
+				                        <span>{{'VIP_ID' | translate}}：</span>
+				                        {{userOptions[logItem.log_object_json.user_id].id}}
+				                    </li>
+				                    <li>
+				                        <span>{{'EMAIL' | translate}}：</span>
+				                        {{userOptions[logItem.log_object_json.user_id].email}}
+				                    </li>
+				                    <li>
+				                        <span>{{'MOBILE' | translate}}：</span>
+				                        {{userOptions[logItem.log_object_json.user_id].phone}}
+				                    </li>
+				                    <li>
+				                        <span>{{'PAYWAY' | translate}}：</span>
+				                        {{logItem.log_object_json.pay_channel | translate}}
+				                    </li>
+				                </ul>
+				            </div>
+
+				            <div class="order_info">
+				                <h5>{{'ORDER_INFO' | translate}}：</h5>
+				                <ul>
+				                    <li>
+				                        <span>{{'CREATE_TIME' | translate}}：</span>
+				                        {{logItem.log_object_json.creation_date | date: 'yyyy/MM/dd HH:mm:ss'}}
+				                    </li>
+				                    <li>
+				                        <span>{{'PAYMENT_TIME' | translate}}：</span>
+				                        {{logItem.log_object_json.payment_date | date: 'yyyy/MM/dd HH:mm:ss'}}
+				                    </li>
+				                    <li ng-if="logItem.log_object_json.status === 'cancelled'">
+				                        <span>{{'CANCEL_TIME' | translate}}：</span>
+				                        {{logItem.log_object_json.cancelled_date | date: 'yyyy/MM/dd HH:mm:ss'}}
+				                    </li>
+				                    <li ng-if="logItem.log_object_json.product.unit_price === 'hour'">
+				                        <span>{{'RENTER_TIME' | translate}}：</span>
+				                        {{logItem.log_object_json.start_date | date: 'yyyy-MM-dd'}} ({{logItem.log_object_json.start_date | date: 'HH:mm'}} - {{logItem.log_object_json.end_date | date: 'HH:mm'}})
+				                    </li>
+				                    <li ng-if="logItem.log_object_json.product.unit_price !== 'hour'">
+				                        <span>{{'RENTER_TIME' | translate}}：</span>
+				                        {{logItem.log_object_json.start_date | date: 'yyyy/MM/dd'}} - {{logItem.log_object_json.end_date | date: 'yyyy/MM/dd'}}
+				                    </li>
+				                </ul>
+				            </div>
+				            
+				            <div class="order_item">
+				                <table cellspacing="0" cellpadding="0" border="0" width="100%">
+				                    <tr>
+				                        <th>{{'PRODUCT' | translate}}</th>
+				                        <th>{{'TYPE' | translate}}</th>
+				                        <th>{{'SEAT_NUMBER' | translate}}</th>
+				                        <th>{{'RENTER' | translate}}</th>
+				                        <th>{{'UNIT_PRICE' | translate}}</th>
+				                        <th>{{'AMOUNT' | translate}}</th>
+				                        <th>{{'ORIGINAL_PRICE' | translate}}</th>
+				                        <th>{{'ORDER_STATUS' | translate}}</th>
+				                    </tr>
+				                    <tr>
+				                        <td width="30%">
+				                            <img ng-src="{{logItem.log_object_json.product_info.room.attachment[0].attachment_id.content}}" alt="">
+				                            <p class="name">{{logItem.log_object_json.product_info.room.city.name}}，{{logItem.log_object_json.product_info.room.building.name}}，<span class="primary_f" ng-bind="logItem.log_object_json.product_info.room.number"></span>，{{logItem.log_object_json.product_info.room.name}}</p>
+				                        </td>
+				                        <td width="10%">
+				                            <span ng-bind="roomTypeDesc[logItem.log_object_json.product.room.type]"></span>
+				                        </td>
+				                        <td width="10%">{{logItem.log_object_json.product_info.seat_number}}</td>
+				                        <td width="10%">{{logItem.userOptions[logItem.log_object_json.user_id].name}}</td>
+				                        <td width="10%">{{logItem.log_object_json.product_info.base_price}}/{{unitDesc[logItem.log_object_json.unit_price]}}</td>
+				                        <td width="10%">
+				                            <span ng-if="logItem.log_object_json.product.unit_price === 'hour'">{{logItem.log_object_json.start_date | date: 'yyyy-MM-dd'}}<br/>({{logItem.log_object_json.start_date | date: 'HH:mm'}} - {{logItem.log_object_json.end_date | date: 'HH:mm'}})</span>
+				                            <span ng-if="logItem.log_object_json.product.unit_price !== 'hour'">{{logItem.log_object_json.start_date | date: 'yyyy/MM/dd'}} - {{logItem.log_object_json.end_date | date: 'yyyy/MM/dd'}}</span>
+				                        </td>
+				                        <td width="10%" class="primary_f" ng-bind="logItem.log_object_json.price"></td>
+				                        <td width="10%">
+				                            <span>{{statusDesc[logItem.log_object_json.status]}}</span>
+				                        </td>
+				                    </tr>
+				                </table>
+				            </div>
+				            
+				            <ul class="order_total">
+				                <li>
+				                    <em>{{'ORIGINAL_PRICE' | translate}}：</em>
+				                    <span><font>{{logItem.log_object_json.price | number: 2}}</font>{{'YUAN' | translate}}</span>
+				                </li>
+				                <li>
+				                    <em>{{'PRICE_RULE' | translate}}：</em>
+				                    <span ng-bind="logItem.log_object_json.rule_name"></span>
+				                </li>
+				                <li ng-if="logItem.log_object_json.status !== 'unpaid'">
+				                    <em>{{'AMOUNT_RECEIVED' | translate}}：</em> 
+				                    <span><font class="all">{{logItem.log_object_json.discount_price | number: 2}}</font>{{'YUAN' | translate}}</span>   
+				                </li>
+				            </ul>
+				            <div class="appointed_div" ng-if="logItem.log_object_json.product.room.type === 'office' || logItem.log_object_json.product.room.type === 'meeting'">
+				                <p ng-if="logItem.log_object_json.product.room.type === 'office'">受邀人：</p>
+				                <p ng-if="logItem.log_object_json.product.room.type === 'meeting'">指定人：</p>
+				                <div class="in_div" ng-if="logItem.log_object_json.product.room.type === 'office' && logItem.log_object_json.invited_people" ng-repeat="item in logItem.log_object_json.invited_people">
+				                    <span class="lf" sb-avatar avatar-id="item.user_id" avatar-type="person"></span>
+				                    <div class="n_div">
+				                        <span class="name_span" ng-bind="logItem.userOptions[item.user_id].name"></span><br>
+				                        <span ng-bind="logItem.userOptions[item.user_id].email || logItem.userOptions[item.user_id].phone"></span>
+				                    </div>
+				                </div>
+
+				                <div class="in_div" ng-if="logItem.log_object_json.product.room.type === 'meeting' && logItem.log_object_json.appointed">
+				                    <span class="lf" sb-avatar avatar-id="logItem.log_object_json.appointed" avatar-type="person"></span>
+				                    <div class="n_div">
+				                        <span class="name_span" ng-bind="logItem.userOptions[logItem.log_object_json.appointed].name"></span><br>
+				                        <span ng-bind="logItem.userOptions[logItem.log_object_json.appointed].email || logItem.userOptions[logItem.log_object_json.appointed].phone"></span>
+				                    </div>
+				                </div>
+				            </div>
+				        </div>
+				    </div>
+
+				</div>
+            </div>
+        </div>
+    </div>
+</div>

@@ -1,0 +1,11 @@
+<div class="input_select period new-drop" ng-class="{short: short, normal: normal, flexible: flexible}">
+	<span class="choose" ng-click="showDropdown()"><i class="down_arr"></i></span>
+	<p ng-bind="placeholder" ng-if="!select[name]" ng-click="showDropdown()" class="dropdown_name"></p>
+	<p ng-bind="select[name]" ng-if="select[name]" ng-click="showDropdown()" class="dropdown_name"></p>
+	<div ng-if="options.length > 0" class="time_down" ng-class="{show: showDrop, hide:!showDrop}">
+		<ul>
+			<li ng-if="noEmpty === false" ng-click="setSelectItem()">{{all}}</li>
+			<li ng-repeat="item in options" ng-click="setSelectItem(item)" title="{{item[name]}}">{{item[name]}}</li>
+		</ul>
+	</div>
+</div>

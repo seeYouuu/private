@@ -1,0 +1,45 @@
+<div  class="modal gallery-upload-progress-modal" role="dialog">
+    <div class="modal-dialog log-popup">
+        <div class="modal-content log-radius">
+            <div class="modal-header log-header" ng-show="title">
+                <h4><span ng-bind="title"></span></h4>
+            </div>
+            <div class="modal-body log-body">
+                <div class="log-content">
+                    <div class="mbox">
+                        <div class="mtitle">
+                            {{logItem.log_object_json.user.name}}
+                        </div>
+                        <ul class="room_lsit log-list">
+                            <li class="list_li">
+                                <span class="item_label">{{'ADMIN_ACCOUNT' | translate}}：</span>
+                                <p ng-bind="logItem.log_object_json.user.name"></p>
+                            </li>
+                        </ul>
+                        <ul class="room_lsit log-list">
+                            <li class="list_li">
+                                <span class="item_label">权限：</span>
+                                <p>
+                                    <div class="job-operate">
+                                        <div class="job-content">
+                                            <div class="repeat-wrapper">
+                                                <div class="repeat-item" ng-repeat="item in logItem.log_object_json.bind">
+                                                    <div class="item-header" ng-if="item.building_name.name">
+                                                        <span class="item-title" ng-bind="item.building_name.name"></span>
+                                                    </div>
+                                                    <div class="item-container">
+                                                        <span ng-bind="item.position_name"></span>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </p>
+                            </li>
+                        </ul>
+                    </div>
+				</div>
+            </div>
+        </div>
+    </div>
+</div>

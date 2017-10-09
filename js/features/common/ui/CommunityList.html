@@ -1,0 +1,25 @@
+<div class="group-options limit-height">
+	<span ng-if="platforms && platforms.length > 0">官方平台</span>
+    <ul class="s-company" ng-if="platforms && platforms.length > 0">
+        <li ng-repeat="item in platforms" ng-click="switchPlatform(item)">
+            <img src="../img/official.jpg">
+            {{item.sales_company_name}}
+        </li>
+    </ul>
+    <span ng-if="sales && sales.length > 0">销售方平台</span>
+    <ul class="s-company" ng-if="sales && sales.length > 0">
+        <li ng-repeat="item in sales" ng-click="switchPlatform(item)">
+            <img ng-if="salesInfo[item.sales_company_id]" ng-src="{{salesInfo[item.sales_company_id]}}">
+            <img ng-if="!salesInfo[item.sales_company_id]" src="img/sales.jpg">
+            {{item.sales_company_name}}
+        </li>
+    </ul>
+    <span ng-if="shops && shops.length > 0">店铺平台</span>
+    <ul class="s-company" ng-if="shops && shops.length > 0">
+        <li ng-repeat="item in shops" ng-click="switchPlatform(item)">
+            <img ng-if="shopInfo[item.sales_company_id]" ng-src="{{shopInfo[item.sales_company_id]}}">
+            <img ng-if="!shopInfo[item.sales_company_id]" src="img/shop.jpg">
+            {{item.sales_company_name}}
+        </li>
+    </ul>
+</div>

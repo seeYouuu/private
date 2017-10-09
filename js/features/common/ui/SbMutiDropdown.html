@@ -1,0 +1,11 @@
+<div class="input_select">
+    <span class="choose" ng-click="showDropdown()"><i class="down_arr"></i></span>    
+    <span class="item" ng-repeat="item in options" ng-if="item.select">{{item[name]}}<span ng-if="item.quantity > 0">（{{item.quantity}}）</span> <a ng-click="item.select = !item.select">×</a></span>
+    <div class="down" ng-class="{show: showDrop, hide:!showDrop}" ng-if="options.length > 0">
+        <ul>
+            <li ng-repeat="item in options">
+                <input type="checkbox" ng-model="item.select"><span class="name" ng-bind="item[name]"></span><input type="text" maxlength="3" ng-if="number" class="quantity" ng-model="item.quantity">
+            </li>
+        </ul>
+    </div>
+</div>

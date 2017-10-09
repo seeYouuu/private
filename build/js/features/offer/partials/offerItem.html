@@ -1,0 +1,454 @@
+<div class="modal" role="dialog">
+    <div class="modal-dialog modal-center modal-reate">
+        <div class="modal-content group-add">
+            <div class="modal-body clearfix">
+                <div class="reate_clues" ng-if="operateFlag === 'add' || operateFlag === 'update' || operateFlag === 'detail'">
+                    <div class="reate_header clearfix">
+                        <p class="clearfix">
+                            <span ng-if="operateFlag === 'detail'"><span>合同租赁</span>&gt;<span>租赁报价</span>&gt;<span>Y15987567876787S</span></span>
+                            <span ng-if="operateFlag === 'update'"><span>合同租赁</span>&gt;<span>编辑租赁报价</span>&gt;<span>Y15987567876787S</span></span>
+                            <span ng-if="operateFlag === 'add'"><span>合同租赁</span>&gt;<span>创建租赁报价</span></span>
+                            <span ng-click="$hide()"></span>
+                            <span ng-click="showPrint()" ng-if="operateFlag === 'detail'"></span>
+                            <span ng-click="showPrint()" ng-if="operateFlag === 'detail'"></span>
+                        </p>
+                        <span>来自用户申请<span class="q_mark">i</span></span>
+                    </div>
+                    <div class="reate_nav" ng-if="operateFlag === 'add'">
+                        <div class="space_mes">
+                            <p class="s_m_title">空间信息<span class="q_mark">?</span></p>
+                            <div class="s_m_term">
+                                <span>项目名称：</span>
+                                <angular-complete class="mid_long" selectdata="selectedSearchData.building" searchparams="search.building" responsedata="searchReponse.building" change="searchBuilding()"></angular-complete>
+                                <span class="search"></span>
+                            </div>
+                            <div class="s_m_term">
+                                <span>项目地址：</span>
+                                <span>{{selectedSearchData.building.address}}</span>
+                            </div>
+                            <div class="s_m_term">
+                                <span>房屋名称：</span>
+                                <angular-complete class="mid_long" selectdata="selectedSearchData.space" searchparams="search.space" responsedata="searchReponse.space" name="room_name" change="searchSpace()"></angular-complete>
+                                <span class="search"></span>
+                            </div>
+                            <div class="s_m_term">
+                                <span>图片：</span>
+                                <img class="sm-pic" ng-src="{{selectedSearchData.space.preview}}">
+                            </div>
+                            <div class="s_m_term">
+                                <span>房屋面积：</span>
+                                <span>{{selectedSearchData.space.area}}-M<sup>2</sup></span>
+                            </div>
+                            <div class="s_m_term">
+                                <span>房屋最大容纳人数：</span>
+                                <span>{{selectedSearchData.space.allowed_people}}-人</span>
+                            </div>
+                        </div>
+                        <div class="reate_mes">
+                            <p class="s_m_title"><font class="muted">*</font>出租方信息<span class="q_mark">?</span></p>
+                            <div class="s_m_term">
+                                <span>出租方名称：</span>
+                                <input type="text" ng-model="offerOption.lessor_name">
+                            </div>
+                            <div class="s_m_term">
+                                <span>出租方地址：</span>
+                                <input type="text" ng-model="offerOption.lessor_address">
+                            </div>
+                            <div class="s_m_term">
+                                <span>出租方联系人：</span>
+                                <input type="text" ng-model="offerOption.lessor_contact">
+                            </div>
+                            <div class="s_m_term">
+                                <span>出租方电话：</span>
+                                <input type="text" ng-model="offerOption.lessor_phone">
+                            </div>
+                            <div class="s_m_term">
+                                <span>出租方邮箱：</span>
+                                <input type="text" ng-model="offerOption.lessor_email">
+                            </div>
+                        </div>
+                        <div class="reate_mes">
+                            <p class="s_m_title">承租方信息<span class="q_mark">?</span></p>
+                            <div class="s_m_term">
+                                <span></span>
+                                <span class="select-radio">
+                                    <span ng-click="switchLeaseeType('personal')"  ng-class="{on: offerOption.lessee_type === 'personal'}"></span>&nbsp;个人承租&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                                    <span ng-click="switchLeaseeType('enterprise')" ng-class="{on: offerOption.lessee_type === 'enterprise'}"></span>&nbsp;企业承租
+                                </span>
+                            </div>
+                            <div class="s_m_term" ng-if="offerOption.lessee_type === 'enterprise'">
+                                <span><font class="muted">*</font>承租企业：</span>
+                                <input type="text" ng-model="offerOption.lessee_enterprise">
+                            </div>
+                            <div class="s_m_term">
+                                <span><font class="muted">*</font>承租方联系人：</span>
+                                <angular-complete class="mid_long" selectdata="selectedSearchData.customer" searchparams="search.customer" responsedata="searchReponse.customer" change="searchCustomer()"></angular-complete>
+                                <span class="search"></span>
+                            </div>
+                        </div>
+                        <div class="lease_mes">
+                            <p class="s_m_title">租赁信息<span class="q_mark">?</span></p>
+                            <div class="s_m_term">
+                                <span>租赁起租日期：</span>
+                                <div class="date_input">
+                                    <input type="text" ng-model="offerOption.start_date" data-date-format="yyyy-MM-dd" data-autoclose="1" data-min-date="today" data-max-date="offerOption.end_date" bs-datepicker>
+                                    <span><i class="fa fa-calendar"></i></span>
+                                </div>
+                            </div>
+                            <div class="s_m_term">
+                                <span>租赁结束日期：</span>
+                                <div class="date_input">
+                                    <input type="text" ng-model="offerOption.end_date" data-date-format="yyyy-MM-dd" data-autoclose="1" data-min-date="offerOption.start_date" bs-datepicker>
+                                    <span><i class="fa fa-calendar"></i></span>
+                                </div>
+                            </div>
+                            <div class="s_m_term">
+                                <span>月租金：</span>
+                                <input type="text" ng-model="offerOption.monthly_rent">&nbsp;元／月
+                            </div>
+                            <div class="s_m_term">
+                                <span>合同总租金：</span>
+                                <input type="text" ng-model="offerOption.total_rent">&nbsp;元
+                            </div>
+                            <div class="s_m_term">
+                                <span>租赁押金：</span>
+                                <input type="text" ng-model="offerOption.deposit">&nbsp;元
+                            </div>
+                            <div class="s_m_term">
+                                <span>租金包含：</span>
+                                <div class="rent-cat clearfix checkboxes">
+                                    <div class="rent-item" ng-repeat="item in supplementaryList" ng-class="{on: item.selected}" ng-if="item.type === 'rent'">
+                                        <div class="check" ng-click="item.selected = !item.selected;"></div>
+                                        <span ng-bind="item.name"></span>
+                                        <span class="grey-f" ng-if="item.name_en == 'Other'">(请在补充条款中备注)</span>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="s_m_term">
+                                <span>税金包含：</span>
+                                <div class="rent-cat clearfix checkboxes">
+                                    <div class="rent-item" ng-repeat="item in supplementaryList" ng-class="{on: item.selected}" ng-if="item.type === 'tax'">
+                                        <div class="check" ng-click="item.selected = !item.selected;"></div>
+                                        <span ng-bind="item.name"></span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="lease_mes">
+                            <p class="s_m_title">其它信息<span class="q_mark">?</span></p>
+                            <div class="s_m_term other">
+                                <span>房屋使用用途：</span>
+                                <textarea ng-model="offerOption.purpose" placeholder="请具体描述在该合同下房屋的使用用途" class="textarea"></textarea>
+                            </div>
+                            <div class="s_m_term other">
+                                <span>其它费用说明：</span>
+                                <textarea ng-model="offerOption.other_expenses" placeholder="请具体描述除合同固定费用以外可能发生的费用说明" class="textarea"></textarea>
+                            </div>
+                            <div class="s_m_term other">
+                                <span>补充条款：</span>
+                                <textarea ng-model="offerOption.supplementary_terms" placeholder="请描述除合同外其它条款" class="textarea"></textarea>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="reate_nav" ng-if="operateFlag === 'update'">
+                        <div class="space_mes">
+                            <p class="s_m_title">空间信息<span class="q_mark">?</span></p>
+                            <div class="s_m_term">
+                                <span>项目名称：</span>
+                                <angular-complete class="mid_long" selectdata="selectedSearchData.building" searchparams="search.building" responsedata="searchReponse.building" change="searchBuilding()"></angular-complete>
+                                <span class="search"></span>
+                            </div>
+                            <div class="s_m_term">
+                                <span>项目地址：</span>
+                                <span>{{selectedSearchData.building.address}}</span>
+                            </div>
+                            <div class="s_m_term">
+                                <span>房屋名称：</span>
+                                <angular-complete class="mid_long" selectdata="selectedSearchData.space" searchparams="search.space" responsedata="searchReponse.space" name="room_name" change="searchSpace()"></angular-complete>
+                                <span class="search"></span>
+                            </div>
+                            <div class="s_m_term">
+                                <span>图片：</span>
+                                <img class="sm-pic" ng-src="{{selectedSearchData.space.preview}}">
+                            </div>
+                            <div class="s_m_term">
+                                <span>房屋面积：</span>
+                                <span>{{selectedSearchData.space.area}}-M<sup>2</sup></span>
+                            </div>
+                            <div class="s_m_term">
+                                <span>房屋最大容纳人数：</span>
+                                <span>{{selectedSearchData.space.allowed_people}}-人</span>
+                            </div>
+                        </div>
+                        <div class="reate_mes">
+                            <p class="s_m_title"><font class="muted">*</font>出租方信息<span class="q_mark">?</span></p>
+                            <div class="s_m_term">
+                                <span>出租方名称：</span>
+                                <input type="text" ng-model="offerOption.lessor_name">
+                            </div>
+                            <div class="s_m_term">
+                                <span>出租方地址：</span>
+                                <input type="text" ng-model="offerOption.lessor_address">
+                            </div>
+                            <div class="s_m_term">
+                                <span>出租方联系人：</span>
+                                <input type="text" ng-model="offerOption.lessor_contact">
+                            </div>
+                            <div class="s_m_term">
+                                <span>出租方电话：</span>
+                                <input type="text" ng-model="offerOption.lessor_phone">
+                            </div>
+                            <div class="s_m_term">
+                                <span>出租方邮箱：</span>
+                                <input type="text" ng-model="offerOption.lessor_email">
+                            </div>
+                        </div>
+                        <div class="reate_mes">
+                            <p class="s_m_title">承租方信息<span class="q_mark">?</span></p>
+                            <div class="s_m_term">
+                                <span></span>
+                                <span class="select-radio">
+                                    <span ng-click="switchLeaseeType('personal')"  ng-class="{on: offerOption.lessee_type === 'personal'}"></span>&nbsp;个人承租&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                                    <span ng-click="switchLeaseeType('enterprise')" ng-class="{on: offerOption.lessee_type === 'enterprise'}"></span>&nbsp;企业承租
+                                </span>
+                            </div>
+                            <div class="s_m_term" ng-if="offerOption.lessee_type === 'enterprise'">
+                                <span><font class="muted">*</font>承租企业：</span>
+                                <input type="text" ng-model="offerOption.lessee_enterprise">
+                            </div>
+                            <div class="s_m_term">
+                                <span><font class="muted">*</font>承租方联系人：</span>
+                                <angular-complete class="mid_long" selectdata="selectedSearchData.customer" searchparams="search.customer" responsedata="searchReponse.customer" change="searchCustomer()"></angular-complete>
+                                <span class="search"></span>
+                            </div>
+                        </div>
+                        <div class="lease_mes">
+                            <p class="s_m_title">租赁信息<span class="q_mark">?</span></p>
+                            <div class="s_m_term">
+                                <span>租赁起租日期：</span>
+                                <div class="date_input">
+                                    <input type="text" ng-model="offerOption.start_date" data-date-format="yyyy-MM-dd" data-autoclose="1" data-min-date="today" data-max-date="offerOption.end_date" bs-datepicker>
+                                    <span><i class="fa fa-calendar"></i></span>
+                                </div>
+                            </div>
+                            <div class="s_m_term">
+                                <span>租赁结束日期：</span>
+                                <div class="date_input">
+                                    <input type="text" ng-model="offerOption.end_date" data-date-format="yyyy-MM-dd" data-autoclose="1" data-min-date="offerOption.start_date" bs-datepicker>
+                                    <span><i class="fa fa-calendar"></i></span>
+                                </div>
+                            </div>
+                            <div class="s_m_term">
+                                <span>月租金：</span>
+                                <input type="text" ng-model="offerOption.monthly_rent">&nbsp;元／月
+                            </div>
+                            <div class="s_m_term">
+                                <span>合同总租金：</span>
+                                <input type="text" ng-model="offerOption.total_rent">&nbsp;元
+                            </div>
+                            <div class="s_m_term">
+                                <span>租赁押金：</span>
+                                <input type="text" ng-model="offerOption.deposit">&nbsp;元
+                            </div>
+                            <div class="s_m_term">
+                                <span>租金包含：</span>
+                                <div class="rent-cat clearfix checkboxes">
+                                    <div class="rent-item" ng-repeat="item in supplementaryList" ng-class="{on: item.selected}" ng-if="item.type === 'rent'">
+                                        <div class="check" ng-click="item.selected = !item.selected;"></div>
+                                        <span ng-bind="item.name"></span>
+                                        <span class="grey-f" ng-if="item.name_en == 'Other'">(请在补充条款中备注)</span>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="s_m_term">
+                                <span>税金包含：</span>
+                                <div class="rent-cat clearfix checkboxes">
+                                    <div class="rent-item" ng-repeat="item in supplementaryList" ng-class="{on: item.selected}" ng-if="item.type === 'tax'">
+                                        <div class="check" ng-click="item.selected = !item.selected;"></div>
+                                        <span ng-bind="item.name"></span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="lease_mes">
+                            <p class="s_m_title">其它信息<span class="q_mark">?</span></p>
+                            <div class="s_m_term other">
+                                <span>房屋使用用途：</span>
+                                <textarea ng-model="offerOption.purpose" placeholder="请具体描述在该合同下房屋的使用用途" class="textarea"></textarea>
+                            </div>
+                            <div class="s_m_term other">
+                                <span>其它费用说明：</span>
+                                <textarea ng-model="offerOption.other_expenses" placeholder="请具体描述除合同固定费用以外可能发生的费用说明" class="textarea"></textarea>
+                            </div>
+                            <div class="s_m_term other">
+                                <span>补充条款：</span>
+                                <textarea ng-model="offerOption.supplementary_terms" placeholder="请描述除合同外其它条款" class="textarea"></textarea>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="reate_nav" ng-if="operateFlag === 'detail'">
+                        <div class="space_mes">
+                            <p class="s_m_title">空间信息<span class="q_mark">?</span></p>
+                            <div class="s_m_term">
+                                <span>项目名称：</span>
+                                <span>{{offerItem.building.name}}</span>
+                            </div>
+                            <div class="s_m_term">
+                                <span>项目地址：</span>
+                                <span>{{offerItem.building.address}}</span>
+                            </div>
+                            <div class="s_m_term">
+                                <span>房屋名称：</span>
+                                <span>{{selectedSearchData.space.name}}</span>
+                            </div>
+                            <div class="s_m_term">
+                                <span>图片：</span>
+                                <img class="sm-pic" ng-src="{{selectedSearchData.space.preview}}">
+                            </div>
+                            <div class="s_m_term">
+                                <span>房屋面积：</span>
+                                <span>{{selectedSearchData.space.area}}-M<sup>2</sup></span>
+                            </div>
+                            <div class="s_m_term">
+                                <span>房屋最大容纳人数：</span>
+                                <span>{{selectedSearchData.space.allowed_people}}-人</span>
+                            </div>
+                        </div>
+                        <div class="reate_mes">
+                            <p class="s_m_title1">
+                                <font class="muted">*</font>出租方信息</p>
+                            <div class="s_m_term">
+                                <span>出租方名称：</span>
+                                <span>{{offerItem.lessor_name}}</span>
+                            </div>
+                            <div class="s_m_term">
+                                <span>出租方地址：</span>
+                                <span>{{offerItem.lessor_address}}</span>
+                            </div>
+                            <div class="s_m_term">
+                                <span>出租方联系人：</span>
+                                <span>{{offerItem.lessor_contact}}</span>
+                            </div>
+                            <div class="s_m_term">
+                                <span>出租方电话：</span>
+                                <span>{{offerItem.lessor_phone}}</span>
+                            </div>
+                            <div class="s_m_term">
+                                <span>出租方邮箱：</span>
+                                <span>{{offerItem.lessor_email}}</span>
+                            </div>
+                        </div>
+                        <div class="reate_mes">
+                            <p class="s_m_title">承租方信息<span class="q_mark">?</span></p>
+                            <div class="s_m_term">
+                                <span>承租方名称：</span>
+                                <span ng-if="offerItem.lessee_type === 'personal'">个人承租</span>
+                                <span ng-if="offerItem.lessee_type === 'enterprise'">企业承租</span>
+                            </div>
+                            <div class="s_m_term" ng-if="offerItem.lessee_type === 'enterprise'">
+                                <span>承租方名称：</span>
+                                <span>{{offerItem.lessee_enterprise}}</span>
+                            </div>
+                            <div class="s_m_term">
+                                <span><font class="muted">*</font>承租方联系人：</span>
+                                <div class="user-mes">
+                                    <img src="../img/head.png">
+                                    <span>{{offerItem.customer.name}}</span>
+                                    <span>{{offerItem.customer.phone}}</span>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="lease_mes">
+                            <p class="s_m_title">租赁信息<span class="q_mark">?</span></p>
+                            <div class="s_m_term s-m-ready">
+                                <span>租赁起始日期：</span>
+                                <span>{{offerItem.start_date | date: 'yyyy-MM-dd'}}</span>
+                            </div>
+                            <div class="s_m_term s-m-ready">
+                                <span>租赁结束日期：</span>
+                                <span>{{offerItem.end_date | date: 'yyyy-MM-dd'}}</span>
+                            </div>
+                            <div class="s_m_term s-m-ready">
+                                <span>月租金：</span>
+                                <span ng-if="offerItem.monthly_rent">{{offerItem.monthly_rent}}元</span>
+                            </div>
+                            <div class="s_m_term s-m-ready">
+                                <span>合同总租金<span class="q_mark qq_mark">?</span>：</span>
+                                <span ng-if="offerItem.total_rent">{{offerItem.total_rent}}元</span>
+                            </div>
+                            <div class="s_m_term s-m-ready">
+                                <span>租赁押金：</span>
+                                <span ng-if="offerItem.deposit">{{offerItem.deposit}}元</span>
+                            </div>
+                            <div class="s_m_term s-m-ready">
+                                <span>租金包含：</span>
+                                <span>{{offerItem.leaseRentType}}</span>
+                            </div>
+                            <div class="s_m_term s-m-ready">
+                                <span>税金包含：</span>
+                                <span>{{offerItem.leaseTaxType}}</span>
+                            </div>
+                        </div>
+                        <div class="lease_mes">
+                            <p class="s_m_title">其他信息<span class="q_mark">?</span></p>
+                            <div class="s_m_term s-m-ready other">
+                                <span>房屋使用用途：</span>
+                                <span>{{offerItem.purpose}}</span>
+                            </div>
+                            <div class="s_m_term s-m-ready other">
+                                <span>其他费用说明：</span>
+                                <span>{{offerItem.other_expenses}}</span>
+                            </div>
+                            <div class="s_m_term s-m-ready other">
+                                <span>补充条款：</span>
+                                <span>{{offerItem.supplementary_terms}}</span>
+                            </div>
+                        </div>
+                        <div class="reate_note">
+                            <p class="clearfix">
+                                <span>备注（{{clueRemarks.length}}条）</span>
+                                <span ng-click="toggleRemark()">展开备注<i class="down_arr"></i></span>
+                            </p>
+                            <div class="clearfix" ng-if="remarkListFlag">
+                                <div ng-repeat="remark in  clueRemarks">
+                                    <span class="r_note"></span>
+                                    <div class="r_n_detail">
+                                        <span>由{{remark.username}} {{remark.remarks}}</span>
+                                        <span>{{remark.creation_date | date: 'yyyy-MM-dd HH:mm'}}</span>
+                                        <p></p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="reate_btn clearfix" ng-if="!remarkFlag">
+                    	<span class="r-save-btn" ng-if="operateFlag === 'add' && currentAdmin.permissionMap[PERMISSION_KEY] === 2" ng-click="saveOffer($hide)">保存报价</span>
+                        <span class="r-save-btn" ng-if="operateFlag === 'update' && currentAdmin.permissionMap[PERMISSION_KEY] === 2" ng-click="updateOffer($hide)">保存报价</span>
+                        <span class="r-save-btn" ng-click="showUpdate()" ng-if="operateFlag === 'detail' && offerItem.status === 'offer' && currentAdmin.permissionMap[PERMISSION_KEY] === 2">编辑报价</span>
+                        <span class="r-btn" ng-if="operateFlag === 'detail'">转为合同</span>
+                        <span class="r-btn" ng-if="operateFlag === 'detail' && offerItem.status === 'offer' && currentAdmin.permissionMap[PERMISSION_KEY] === 2" ng-click="closeOffer($hide)">作废报价</span>
+                        <span class="r-btn fr" ng-click="showRemark()" ng-if="currentAdmin.permissionMap[PERMISSION_KEY] === 2">备注</span>
+                    </div>
+                    <div class="add-remarks" ng-if="remarkFlag">
+                        <div class="m-content">
+                            <input type="text" ng-model="offer.remark"><span ng-click="addRemark()" ng-if="currentAdmin.permissionMap[PERMISSION_KEY] === 2">提交</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="reate_clues" ng-if="operateFlag === 'pdf'">
+                    <div class="reate_header clearfix r-send">
+                        <p class="clearfix">
+                            <span>邮件分享</span>
+                            <span ng-click="$hide()"></span>
+                        </p>
+                    </div>
+                    <div class="reate-print">
+                        <img src="../img/u2034.png">
+                        <p>已将您的报价 {{offerItem.serial_number}} 转为PDF，您可以以附件的形式分享该合同<br>点击下方按钮下载PDF</p>
+                        <button class="red" ng-click="exportPDF($hide)">点击下载PDF</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

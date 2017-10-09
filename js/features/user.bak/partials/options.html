@@ -1,0 +1,26 @@
+<div class="group-options" ng-if="optionType == 'editUser'">
+    <div class="mid-div no-borderb">
+        <div ng-click="seePage('detail')">用户详情</div>
+        <div ng-if="currentAdmin.permissionMap[PERMISSION_KEY] == 2" ng-click="seeModal('editGroupForUser', $hide)">编辑所在用户组</div>
+    </div>
+</div>
+
+<div class="group-options" ng-if="optionType == 'editUserGroup'">
+    <div class="mid-div" ng-class="{'no-borderb': groupItem.type == 'card'}">
+        <div ng-click="seePage('groupUser')">查看用户</div>
+        <div ng-if="groupItem.type != 'card' && currentAdmin.permissionMap[PERMISSION_KEY] == 2" ng-click="seeModal('updateGroup', $hide)">编辑用户组</div>
+    </div>
+    <p ng-if="groupItem.type != 'card' && currentAdmin.permissionMap[PERMISSION_KEY] == 2" class="del-item" ng-click="seeDelConfrim($hide)">删除用户组</p>
+</div>
+
+<div ng-if="optionType == 'group'">
+	<div class="g-item" ng-repeat="item in userItem.groups_desc"><span class="n-icon" ng-class="{'ic-vip': item.type != 'add', 'ic-group': item.type == 'add'}"></span><span>{{item.name}}</span></div>
+</div>
+
+<div ng-if="optionType == 'buildings'">
+	<ul class="job-list" ng-repeat="item in groupItem.building">
+		<li>
+			<span>{{item.name}}</span>
+		</li>
+	</ul>
+</div>

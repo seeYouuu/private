@@ -1,0 +1,71 @@
+ <div class="calendar_head">
+    <div class="direction">
+        <a ng-click="prev()" class="prev"><i class="icon ic_prev"></i></a>
+        <a ng-click="next()" class="next"><i class="icon ic_next"></i></a>
+    </div>
+    <a ng-click="today()" class="today">当月</a>
+    <a class="now">
+        {{date|date:'MMM yyyy'}}
+    </a>
+</div> 
+<table cellpadding="0" cellspacing="0" width="100%" border="0" class="month">
+    <tr>
+        <th ng-repeat="item in weekdays" ng-bind="item"></th>
+    </tr>
+    <tr ng-repeat="week in copyWeeks" ng-if="type==='fixed'  && bookDates.length > 0">
+        <td ng-repeat="day in week" ng-if="!day.hide" colspan="{{day.count}}">
+            <span class="day" ng-class="{past: date.getMonth() !== day.date.getMonth()}" ng-bind="day.date.getDate()" ng-if="!day.count || !day.flag"></span>
+            <div class="detail_prog end" style="background:#f2b862;" ng-class="{begin: day.user}" ng-if="day.flag">
+                <img ng-src="{{day.user.avatar}}" >{{day.user.name}}
+            </div>
+        </td>
+    </tr>
+
+    <tr ng-repeat="week in copyWeeks" ng-if="type==='flexible' && bookDates.length > 0">
+        <td ng-repeat="day in week">
+            <span class="day" ng-class="{past: date.getMonth() !== day.date.getMonth()}" ng-bind="day.date.getDate()"></span>
+            <div class="used" ng-if="day.count > 0">
+                <p style="height:{{day.count*100/allow}}%"></p>
+                <div class="stDown hour">
+                    <div class="stContent">
+                        <div class="u_title"><span class="tit">租用人</span><span class="float_r"></span></div>
+                        <div class="u-box mg10" ng-repeat="item in day.users">
+                            <img class="u-ava" ng-src="{{item.avatar}}">
+                            <div class="u-nick">{{item.name}}</div>
+                            <div class="u-info">
+                                <span>{{item.phone}}</span>
+                                <span>{{item.email}}</span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="stContent">
+                        <div class="u_title t" ng-if="day.invited_people.length > 0"><span class="tit">受邀人</span></div>
+                        <div class="u_title t" ng-if="day.appointed_user"><span class="tit">指定人</span></div>
+                        <div class="u-box mg10" ng-repeat="user in day.invited_people" ng-if="day.invited_people.length > 0">
+                            <img class="u-ava" ng-src="{{user.avatar}}">
+                            <div class="u-nick">{{user.name}}</div>
+                            <div class="u-info">
+                                <span>{{user.phone}}</span>
+                                <span>{{user.email}}</span>
+                            </div>
+                        </div>
+                        <div class="u-box mg10" ng-if="day.appointed_user">
+                            <img class="u-ava" ng-src="{{day.appointed_user.avatar}}">
+                            <div class="u-nick">{{day.appointed_user.name}}</div>
+                            <div class="u-info">
+                                <span>{{day.appointed_user.phone}}</span>
+                                <span>{{day.appointed_user.email}}</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </td>
+    </tr>
+
+    <tr ng-repeat="week in weeks" ng-if="bookDates.length === 0">
+        <td ng-repeat="day in week">
+            <span class="day" ng-class="{past: date.getMonth() !== day.getMonth()}" ng-bind="day.getDate()"></span>
+        </td>
+    </tr>
+</table> 

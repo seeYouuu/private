@@ -1,0 +1,16 @@
+<div class="modal gallery-upload-progress-modal" role="dialog">
+    <div class="modal-dialog modal-conf">
+        <div class="modal-content">
+        	<div class="modal-header bg-color">
+                <h4 class="lf_title"><span>系统提示</span><span class="close" ng-click="$hide()">×</span></h4>
+            </div>
+            <div class="modal-body">
+				是否确认将管理员从平台删除，删除后此账户将无法登陆。
+            </div>
+            <div class="modal-footer confirm-f"> 
+            	<input type="text" ng-model="confirm.key" placeholder="请输入“delete”以确认">               
+            	<button type="button" class="btn btn-danger" ng-click="confirmDelete($hide)">确认删除</button>            
+            </div>
+        </div>
+    </div>
+</div>

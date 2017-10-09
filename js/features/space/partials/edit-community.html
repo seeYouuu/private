@@ -1,0 +1,261 @@
+<!-- create community -->
+<div class="group_detail">
+    <div class="create-com">
+        <div class="create-header">
+            <div class="header-center">
+                <div class="header-item" ng-repeat="item in stepBoxs">
+                    <div class="item-line" ng-if="item.step > 1">
+                        <div class="line-box">
+                            <div class="scale-line" ng-class="{on: item.step <= current.step, off: item.step >= current.step && item.step <= originStep && current.prev}"></div>
+                        </div>
+                    </div>
+                    <div class="item-squ" ng-click="moveStep(item.step)">
+                        <div class="squ-ball" ng-class="{on: item.step <= current.step}">
+                            {{item.step}}
+                        </div>
+                        <div class="squ-des" ng-class="{on: item.step <= current.step}">
+                            {{item.des}}
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="header-save" ng-click="updateBuilding()" ng-if="currentAdmin.buildingMap[PERMISSION_UPDATE_COMMUNITY_KEY + selectedCommunity.id] === 2 || currentAdmin.user.is_super_admin"">保存</div>
+        </div>
+        <div class="create-bot">
+            <div class="bot-con">
+                <div class="step2" ng-if="current.step === 1">
+                    <div class="block">
+                        <ul class="room_lsit">
+                            <li>
+                                <span class="item_label"><font class="muted">*</font>社区logo</span>
+                                <div class="add-logo" ng-class="{'cg': form.logoImage.length > 0}">
+                                    <img ng-if="form.logoImage.length === 0" src="img/square.png" ng-click="showDialog('add-logo-pic')">
+                                    <img ng-if="form.logoImage.length > 0" ng-src="{{form.logoImage[0].download_link}}" ng-click="showDialog('add-logo-pic')">
+                                    <p class="cge-p" ng-if="form.logoImage[0].download_link" ng-click="showDialog('add-logo-pic')">点击更换</p>
+                                </div>
+                                <div class="logo-btm">
+                                    <span>社区logo将显示在创合App的社区列表</span>
+                                </div>
+                                <div class="bt-tip"><small translate translate-values="{width: logoGallery.width, height: logoGallery.height}">IMAGE_RULE</small></div>
+                            </li>
+                            <li class="divider-li">
+                                <p></p>
+                            </li>
+                            <li>
+                                <span class="item_label">社区封面</span>
+                                <div class="c-pic-des">社区图片将显示在创合APP的社区详情页面, 向用户展示你的社区环境好的社区图片将更吸引更多用户租用你的社区的空间.</div>
+                                <div class="add_slide">
+                                    <ul class="addImg three">
+                                        <li >
+                                            <img src="img/rectangle.png" ng-click="showDialog('add-main-pic')">
+                                        </li>
+                                        <li ng-repeat="item in gallery.building">
+                                            <img ng-src="{{item.content}}">
+                                            <span class="del" ng-click="deleteItem(gallery.building, $index)">✖</span>
+                                        </li>
+                                    </ul>
+                                </div>
+                                <div class="bt-tip"><small translate translate-values="{width: roomGallery.width, height: roomGallery.height}">IMAGE_RULE</small></div>
+                            </li>
+                            <li>
+                                <span class="item_label"><font class="muted">*</font>社区名称</span>
+                                <input type="text" class="default_text" ng-model="communityOptions.name">
+                            </li>
+                            <li>
+                                <span class="item_label"><font class="muted">*</font>物业类型</span>
+                                 <sb-dropdown select="filterOptions.property" name="description" options="propertyTypes" no-empty></sb-dropdown>
+                            </li>
+                            <li>
+                                <span class="item_label"><font class="muted">*</font>社区客服电话</span>
+                                <input type="text" class="default_text" ng-model="communityOptions.building_company.phone">
+                            </li>
+                            <li>
+                                <span class="item_label"><font class="muted">*</font>社区具体地址</span>
+                                <input type="text" class="default_text" ng-model="communityOptions.address">
+                            </li>
+                            <li>
+                                <span class="item_label">邮编</span>
+                                <input type="text" class="default_text" ng-model="communityOptions.postal_code">
+                            </li>
+                            <li class="divider-li">
+                                <p></p>
+                            </li>
+                            <li>
+                                <span class="item_label"><font class="muted">*</font>社区地理位置</span>
+                                <div class="same-line small-width">
+                                    <sb-dropdown select="filterOptions.country" options="countries" flexible="true" no-empty></sb-dropdown>
+                                </div>
+                                <div class="same-line center"><span>国</span></div>
+                                
+                                <div class="same-line small-width" ng-if="!filterOptions.country.value">
+                                    <sb-dropdown select="filterOptions.province" options="provinces" flexible="true" no-empty></sb-dropdown>
+                                </div>
+                                <div class="same-line center" ng-if="!filterOptions.country.value"><span>省</span></div>
+                                
+                                <div class="same-line small-width">
+                                    <sb-dropdown select="filterOptions.city" options="cities" flexible="true" no-empty></sb-dropdown>
+                                </div>
+                                <div class="same-line center"><span>市</span></div>
+                                
+                                <div class="same-line small-width">
+                                    <sb-dropdown select="filterOptions.district" options="districts" flexible="true" no-empty></sb-dropdown>
+                                </div>
+                                <div class="same-line center"><span>区</span></div>
+                            </li>
+                            <li>
+                                <span class="item_label"><font class="muted">*</font>社区经度</span>
+                                <div class="lat-lng">
+                                    <div class="out_input">
+                                        <input type="number" class="full_width" ng-model="communityOptions.lng" placeholder="经度">
+                                    </div>
+                                    <span><font class="muted">*</font>纬度</span>
+                                    <div class="out_input">
+                                        <input type="number" class="full_width" ng-model="communityOptions.lat" placeholder="纬度">
+                                    </div>
+                                    <div class="out_link">
+                                        <a ng-href="{{getCoordinatesUrl}}" target="_blank">请点击这里进入坐标拾取器</a>
+                                    </div>
+                                </div>
+                            </li>
+                            <li>
+                                <span class="item_label"><font class="muted">*</font>营业时间</span>
+                                <input type="text" class="default_text" ng-model="communityOptions.business_hour">
+                            </li>
+                            <li>
+                                <span class="item_label">社区配置</span>
+                                <div class="font-size12">请选择你的社区的配置, 社区配置将显示在创合APP的社区详情页面, 直观的向用户展示你的社区将提供哪些服务.</div>
+                                <div class="config-tip">更完善的配置和服务将更吸引更多用户租用你的社区的空间.</div>
+                                <div class="config-box">
+                                    <div class="config-item" ng-repeat="service in serviceList" ng-class="{on: service.selected}" ng-click="service.selected = !service.selected">
+                                        <div class="config-icon">
+                                            <img class="config-pic" ng-src="{{service.icon}}" ng-if="!service.selected">
+                                            <img class="config-pic" ng-src="{{service.selected_icon}}" ng-if="service.selected">
+                                        </div>
+                                        <div class="config-des" ng-bind="service.name"></div>
+                                    </div>
+                                </div>
+                            </li>
+                            <li>
+                                <span class="item_label textarea"><font class="muted">*</font>社区介绍</span>
+                                <input class="hidden" id="tinymceImageUpload" type="file" nv-file-select uploader="contentImageUploader" />
+                                <textarea ui-tinymce="tinymceOptions" ng-model='communityOptions.detail'></textarea>
+                            </li>
+                            <li>
+                                <span class="create-btn" ng-click="backToHistory()">取消编辑</span>
+                                <span class="create-btn red right" ng-click="moveStep(2)">社区设置></span>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+                <div class="step2" ng-if="current.step === 2">
+                    <ul class="room_lsit">
+                        <li>
+                            <span class="item_label"><font class="muted">*</font>社区负责人姓名</span>
+                            <input type="text" class="default_text" ng-model="communityOptions.community_manager_name">
+                        </li>
+                        <li>
+                            <span class="item_label"><font class="muted">*</font>社区负责人手机号</span>
+                            <input type="number" maxlength='14' class="default_text half" ng-model="managerPhones[0].phone_number" placeholder="手机号">
+                        </li>
+                        <li>
+                            <span class="item_label"><font class="muted">*</font>新订单提醒手机号/邮箱</span>
+                            <input type="text" maxlength='14' class="default_text half" ng-model="orderPhones[0].phone" placeholder="手机号">
+                            <input type="text" maxlength='50' class="default_text half" ng-model="orderEmail[0].email" placeholder="邮箱地址">
+                        </li>
+                        <li class="divider-li">
+                            <p></p>
+                        </li>
+                        <li>
+                            <span class="item_label">客服</span>
+                            <div class="font-size12 pTop12">设置社区的客服人员, 未设置时将不在社区或社区商品中显示客服咨询按钮</div>
+                            <div class="customer_group clearfix">
+                                <div class="ad-box" ng-click="seeAddService()">
+                                    <div class="u-avtar">
+                                        <img src="../img/head.png">
+                                    </div>
+                                    <div class="u-acc">
+                                        <span>点击添加客服</span>
+                                    </div>
+                                </div>
+                                <div class="ad-box" ng-repeat="item in selectedAdmins">
+                                    <div class="u-avtar">
+                                        <img ng-src="{{item.user.avatar}}" default-url="../img/head.png">
+                                    </div>
+                                    <div class="u-acc">
+                                        <p class="name">{{item.user.name}}</p>
+                                        <p>{{item.user.phone}}</p>
+                                    </div>
+                                    <span class="close-ic"><a ng-click="deleteAdmin(item, $index)">×</a></span>
+                                </div>
+                            </div>
+                        </li>
+                        <li class="divider-li">
+                            <p></p>
+                        </li>
+                        <li>
+                            <span class="item_label">门禁服务器地址</span>
+                            <input type="text" class="default_text" ng-model="communityOptions.server">
+                        </li>
+                        <li>
+                            <span class="create-btn red" ng-click="moveStep(1)">社区基本信息</span>
+                            <span class="create-btn red right" ng-click="moveStep(3)">社区租赁设置</span>
+                        </li>
+                    </ul>
+                </div>
+                <div class="step2" ng-if="current.step === 3">
+                    <ul class="room_lsit">
+                        <li>
+                            <span class="item_label">休息日设置</span>
+                            <div class="font-size12 pTop12">所选设置将做为空间预订的不可起租日</div>
+                            <div sb-date-selector ng-if="communityOptions" class="c-con" remove-dates="remove_dates" edit="true" clear="clearRemoveDate()"></div>
+                        </li>
+                        <li>
+                            <span class="item_label title">出租方信息</span>
+                        </li>
+                        <li>
+                            <span class="item_label"><font class="muted">*</font>出租方名称</span>
+                            <input type="text" class="default_text" ng-model="communityOptions.lessor_name">
+                        </li>
+                        <li>
+                            <span class="item_label"><font class="muted">*</font>出租方地址</span>
+                            <input type="text" class="default_text" ng-model="communityOptions.lessor_address">
+                        </li>
+                        <li>
+                            <span class="item_label"><font class="muted">*</font>出租方联系人</span>
+                            <input type="text" class="default_text" ng-model="communityOptions.lessor_contact">
+                        </li>
+                        <li>
+                            <span class="item_label"><font class="muted">*</font>出租方电话</span>
+                            <input type="text" class="default_text" ng-model="communityOptions.lessor_phone">
+                        </li>
+                        <li>
+                            <span class="item_label"><font class="muted">*</font>出租方邮箱</span>
+                            <input type="text" class="default_text" ng-model="communityOptions.lessor_email">
+                        </li>
+                        <li>
+                            <span class="item_label"><font class="muted">*</font>出租方收款账户名</span>
+                            <input type="text" class="default_text" ng-model="communityOptions.lessor_bank_account_name">
+                        </li>
+                        <li>
+                            <span class="item_label"><font class="muted">*</font>出租方收款账户</span>
+                            <input type="text" class="default_text" ng-model="communityOptions.lessor_bank_account_number">
+                        </li>
+                        <li>
+                            <span class="item_label"><font class="muted">*</font>出租方收款开户行</span>
+                            <input type="text" class="default_text" ng-model="communityOptions.lessor_bank_name">
+                        </li>
+                        <li>
+                            <span class="item_label"><font class="muted">*</font>长租合同补充条款</span>
+                            <textarea class="default_text txt-a" ng-model="communityOptions.lease_remarks"></textarea>
+                        </li>
+                        <li>
+                            <span class="create-btn red" ng-click="moveStep(2)">社区设置</span>
+                            <span class="create-btn red right" ng-click="updateBuilding()" ng-if="currentAdmin.buildingMap[PERMISSION_UPDATE_COMMUNITY_KEY + selectedCommunity.id] === 2 || currentAdmin.user.is_super_admin">保存</span>
+                        </li>
+                    </ul>
+                </div>
+
+            </div>
+        </div>
+    </div>
+</div>

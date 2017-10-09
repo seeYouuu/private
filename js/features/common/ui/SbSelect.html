@@ -1,0 +1,12 @@
+<div class="input_select period" ng-class="{short: short, normal: normal}">
+    <span class="choose" ng-click="toggleDropdown()">
+        <i class="down_arr"></i>
+    </span>
+    <p ng-if="!selection" ng-click="toggleDropdown()">{{placeholder}}</p>
+    <p ng-if="selection" ng-click="toggleDropdown()">{{selection}}</p>
+    <div class="time_down" ng-class="{show: showDrop, hide:!showDrop}" ng-show="showDrop"  ng-if="hasOptions">
+        <ul>
+            <li ng-repeat="(text, value) in normalizedOptions" ng-click="setSelectItem(text, value)">{{text}}</li>
+        </ul>
+    </div>
+</div>

@@ -1,0 +1,103 @@
+<div class="sandBox_content"">
+    <div class="tra-content">
+        <div class="cus-select clearfix">
+            <div class="cus-sel-left">
+                <div class="c-s-dropdown">
+                    <sb-dropdown select="filterOption.keywordObj" placeholder="placeholder.all" options="keywordList" flexible="true" no-empty></sb-dropdown>
+                </div>
+                <input type="text" class="t-f-input" ng-model="filterOption.keyword_search"><input type="button" value="搜索"  ng-click="searchList()">
+                <span ng-class="{'arrow-up': showFilter, 'arrow-down': !showFilter}" ng-click="showFilter = !showFilter;">更多筛选项</span>
+            </div>
+            <div class="cus-sel-right">
+                <span class="plus"><img src="../img/u16890.png"></span>
+            </div>
+        </div>
+        <div class="t-f-box height0" ng-class="{height158: showFilter}">
+            <div class="t-f-line">
+                <div class="t-f-left">
+                    支付渠道
+                </div>
+                <div class="t-f-right">
+                    <div class="t-f-half t-f-s">
+                        <div class="drop-wra">
+                            <sb-dropdown select="filterOption.channelObj" placeholder="placeholder.all" options="channelLists" flexible="true" no-empty></sb-dropdown>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="t-f-line">
+                <div class="t-f-left">
+                    账单状态
+                </div>
+                <div class="t-f-right">
+                    <div class="t-f-half t-f-s">
+                        <div class="drop-wra">
+                            <sb-dropdown select="filterOption.status" placeholder="placeholder.all" options="filterStatus" flexible="true" no-empty></sb-dropdown>
+                        </div>
+                    </div>
+                    <div class="t-f-half t-f-b">
+                        <span class="t-f-left small">社区</span>
+                        <div class="t-four">
+                            <sb-dropdown select="filterOption.buildingObj" placeholder="placeholder.community" options="buildings" flexible="true" no-empty></sb-dropdown>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="t-f-line">
+                <div class="t-f-left">
+                    推送时间
+                </div>
+                <div class="t-f-right">
+                    <div class="t-f-half t-f-s">
+                        <div class="date_input">
+                            <input type="text" ng-model="filterOption.send_start" data-date-format="yyyy-MM-dd" data-autoclose="1" bs-datepicker>
+                            <span><i class="fa fa-calendar"></i></span>
+                        </div>
+                        <div class="date_input">
+                            <input type="text" ng-model="filterOption.send_end" data-date-format="yyyy-MM-dd" data-autoclose="1" bs-datepicker>
+                            <span><i class="fa fa-calendar"></i></span>
+                        </div>
+                    </div>
+                    <div class="t-f-half t-f-b"">
+                        <span class="t-f-left">付款时间</span>
+                        <div class="date_input">
+                            <input type="text" ng-model="filterOption.pay_start_date" data-date-format="yyyy-MM-dd" data-autoclose="1" bs-datepicker>
+                            <span><i class="fa fa-calendar"></i></span>
+                        </div>
+                        <div class="date_input">
+                            <input type="text" ng-model="filterOption.pay_end_date" data-date-format="yyyy-MM-dd" data-autoclose="1" bs-datepicker>
+                            <span><i class="fa fa-calendar"></i></span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="t-btn-wra">
+                <div class="t-search-btn" ng-click="searchList()">
+                    搜索
+                </div>
+                <div class="t-search-btn" ng-click="resetSearch()">
+                    取消
+                </div>
+                <span class="clear-btn" ng-click="clearSearchFilters()">清空</span>
+            </div>
+        </div>
+        <div class="space-bot cus-bot">
+            <div class="space-b-con cus-b-con">
+                <div class="s-info-page p25">
+                    <div class="line-width info-tit cus-nav">
+                        <div class="b-span line-item cus_drop" data-placement="bottom-left" data-content-template="js/features/bill/partials/popover.html" data-animation="am-fade" data-auto-close="1" bs-popover></div>
+                        <div class="line-item t-left" ng-repeat="header in tableHeaders" ng-bind="header.name"></div>
+                    </div>
+                    <div class="line-width info-tit cus-lists" ng-repeat='item in billsList'>
+                        <div class="line-item t-left"></div>
+                        <div class="line-item t-left" ng-repeat="value in tableHeaders">
+                            <span ng-if="value.column === 'serial_number'" ng-click="showBillDialog(item)" class="color-blue">{{item.customization[value.column]}}</span>
+                            <span ng-if="value.column !== 'serial_number'">{{item.customization[value.column]}}</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <pagination option="pageOptions" on-page="goPage(index)"></pagination>
+    </div>
+</div>   

@@ -1,0 +1,32 @@
+[{
+    "channel": "wx",
+    "name": "微信",
+    "english": "Wechat Pay"
+},{
+    "channel": "alipay",
+    "name": "支付宝",
+    "english": "Alipay"
+},{
+    "channel": "account",
+    "name": "余额付款",
+    "english": "Balance"
+},{
+    "channel": "union",
+    "name": "银联",
+    "english": "Union Pay"
+},{
+    "channel": "offline",
+    "name": "线下汇款",
+    "english": "Offline Pay"
+},{
+    "channel": "wx_pub",
+    "name": " 微信公众号",
+    "english": "Wechat Public Pay"
+}]
+
+type: space (wx, alipay, account, union, offline, wx_pub);
+type: long rent (null);
+type: agreement (null);
+type: shop (wx, alipay, account, union, wx_pub)
+type: event (wx, alipay, account, union, wx_pub)
+type: recharge (wx, alipay, union)

@@ -1,0 +1,85 @@
+<div class="sandBox_content">
+    <div class="sandBox_detail">
+        <div class="mbox">
+            <div class="mtitle">
+                <span ng-if="pageFlag === 'list'">管理员日志</span>
+                <span ng-if="pageFlag === 'history'">相关历史记录</span>
+                <div class="mSearchBar" ng-if="pageFlag === 'list'">
+                    <input
+                        type="text"
+                        placeholder="search..."
+                        ng-model="filterOption.searchKey"
+                        ng-keyup="$event.keyCode === 13 && search()"
+                    >
+                </div>
+            </div>
+
+            <div class="mbd mPadding15">
+                <div class="mfilter mMarginB15 mTop15" ng-if="pageFlag === 'list'">
+                    <sb-dropdown select="filterOption.module" options="modules" name="description" placeholder="placeholder.module" short='true'></sb-dropdown>
+                    <sb-dropdown select="filterOption.status" options="status" placeholder="placeholder.status" short='true'></sb-dropdown>
+                    <span>操作时间</span>
+                    <div class="date_input">
+                        <input type="text" ng-model="filterOption.startDate" data-max-date="{{filterOption.endDate}}" data-date-format="yyyy-MM-dd"  data-autoclose="1" bs-datepicker>
+                        <span><i class="fa fa-calendar"></i></span>
+                    </div>
+                    - 
+                    <div class="date_input">
+                        <input type="text" ng-model="filterOption.endDate" data-min-date="{{filterOption.startDate}}" data-date-format="yyyy-MM-dd"  data-autoclose="1" bs-datepicker>
+                        <span><i class="fa fa-calendar"></i></span>
+                    </div>      
+                </div>
+
+                <table cellpadding="0" cellspacing="0" width="100%" border="0" class="default_table">
+                    <tr>
+                        <th width="15%">模块</th>
+                        <th width="15%">管理员账号</th>
+                        <th width="28%">日志记录</th>
+                        <th width="18%">操作时间</th>
+                        <th width="10%">标记一下</th>
+                        <th width="14%" ng-if="pageFlag === 'list'">操作</th>
+                    </tr>
+                    <tr ng-repeat="item in logList">
+                        <td>
+                            <span ng-bind="logModule[item.log_module]"></span>
+                        </td>
+                        <td>{{userOptions[item.admin_username].name}}</td>
+                        <td>
+                            <span>{{logAction[item.log_action]}} {{logModule[item.log_module]}} 
+                            <a class="italic_a" ng-click="seeDetail(item)" ng-if="item.log_module === 'admin'">{{item.log_object_json.user.name}}</a></span>
+                            <a class="italic_a" ng-click="seeDetail(item)" ng-if="item.log_module === 'building'">{{item.log_object_json.name}}</a></span>
+                            <a class="italic_a" ng-click="seeDetail(item)" ng-if="item.log_module === 'invoice'">{{item.log_object_json.id}}</a>
+                            <a class="italic_a" ng-click="seeDetail(item)" ng-if="item.log_module === 'event'">{{item.log_object_json.name}}</a></span>
+                            <a class="italic_a" ng-click="seeDetail(item)" ng-if="item.log_module === 'price_rule'">{{item.log_object_json.name}}</a></span>
+                            <a class="italic_a" ng-click="seeDetail(item)" ng-if="item.log_module === 'room'">{{item.log_object_json.city.name}}，{{item.log_object_json.building.name}}，{{item.log_object_json.name}}</a></span>
+                            <a class="italic_a" ng-click="seeDetail(item)" ng-if="item.log_module === 'room_order'">{{item.log_object_json.order_number}}</a>
+                            <a class="italic_a" ng-click="seeDetail(item)" ng-if="item.log_module === 'room_order_reserve'">{{item.log_object_json.order_number}}</a>
+                            <a class="italic_a" ng-click="seeDetail(item)" ng-if="item.log_module === 'room_order_preorder'">{{item.log_object_json.order_number}}</a>
+                            <a class="italic_a" ng-click="seeDetail(item)" ng-if="item.log_module === 'user'">{{item.log_object_json.name}}</a></span>
+                            <a class="italic_a" ng-click="seeDetail(item)" ng-if="item.log_module === 'product'">{{item.log_object_json.room.city.name}}，{{item.log_object_json.room.building.name}}，{{item.log_object_json.room.name}}</a></span>
+                            <a class="italic_a" ng-if="item.log_module === 'lease'">{{item.log_object_json.serial_number}}</a></span>
+                            <a class="italic_a" ng-if="item.log_module === 'product_appointment'">{{item.log_object_json.appointment_number}}</a></span>
+                            </span>
+
+                        </td>
+                        <td>{{item.creation_date | date: 'yyyy/MM/dd HH:mm:ss'}}</td>
+                        <td  style="text-align: center;">
+                            <div class="div-relative">
+                                <i class="n-icon ic-remark" ng-click="showRemark(item)" ng-if="!item.mark"></i>
+                                <div class="staLabel">
+                                    <span class="n-icon ic-remark on" ng-click="showRemark(item)"  ng-if="item.mark"></span>
+                                    <div class="stDown logMark">
+                                        <div>{{item.remarks}}</div>
+                                    </div>
+                                </div>
+                            </div>
+                        </td>
+                        <td ng-if="pageFlag === 'list'"><a ng-click="seeHistory(item)">查看相关日志</a></td>
+                    </tr>
+                    
+                </table>
+                <pagination option="pageOptions" on-page="goPage(index)"></pagination>
+            </div>
+        </div>
+    </div>
+</div>

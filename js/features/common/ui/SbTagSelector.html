@@ -1,0 +1,18 @@
+<div class="input_select">
+    <span class="choose" ng-click="toggleDropdown()"><i class="down_arr"></i></span>    
+    <span class="item" ng-repeat="value in select">
+        {{textFor(value)}}
+        <a ng-click="removeSelection(value)">×</a>
+    </span> 
+    <div class="down" ng-class="{show: showDrop, hide:!showDrop}" ng-if="hasOptions()" ng-show="showDrop">
+        <ul>
+            <li ng-repeat="(text, value) in normalizedOptions">
+                <input type="checkbox" 
+                       ng-value="value" 
+                       ng-checked="isSelected(value)"
+                       ng-click="toggleSelection(value, $event)">
+                <span>{{text}}</span>
+            </li>
+        </ul>
+    </div>
+</div>

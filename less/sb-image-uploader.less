@@ -1,0 +1,71 @@
+sb-cover-image-uploader,
+sb-image-uploader {
+    position: relative;
+    display: inline-block;
+  
+    input[type="file"] {
+        .opacity(0);
+        display: block;
+        width: 100%;
+        z-index: 20;
+        position: absolute;
+        top: 0;
+        right: 0;
+        bottom: 0;
+        left: 0;
+        cursor: pointer;
+    }
+    img {
+        display: block;
+        width: 100%;
+        max-height: 160px;
+        border: none !important;
+    }
+    .instruction {
+        padding: 0;
+        margin: 0;
+        line-height: 2.4em;
+        text-align: center;
+        color: white;
+        background-color: hsla(0, 0%, 50%, 70%);
+        position: absolute;
+        bottom: 0;
+        left: 0;
+        right: 0;
+    }
+}
+
+sb-cover-image-uploader {
+    position: static;
+    &.build_thumbnail{
+        > div{
+            width: 100px;
+            height: 100px; 
+        }
+    }
+    &.building{
+        > div{
+            width: 120px;
+            height: 80px;
+            box-shadow: 0 0 3px rgba(0,0,0,.2); 
+        }
+    }
+    &.user_thumbnail{
+        > div{
+            width: 238px;
+            height: 157px; 
+        }
+    }
+    > div {
+        position: relative;
+        width: 501px;
+        height: 363px;
+        overflow: hidden;
+    }
+
+    img {
+        width: 100%;
+        height: 100%;
+        max-height: initial;
+    }
+}

@@ -1,0 +1,191 @@
+<div class="group_detail">
+	<div class="com-detail">
+		<div class="com-d-head">
+			<div class="c-head-wra">
+				<span class="head-des">企业账户管理</span>
+			</div>
+		</div>
+		<div class="com-d-con">
+			<div class="com-item">
+				<div class="com-item-head">
+					<div class="com-h-tit">
+						<span class="tit-des">企业账户信息</span>
+						<a class="tit-r" ng-if="!editFlag.account && !createFlag.account && currentAdmin.permissionMap[PERMISSION_ACCOUNT_KEY] === 2" ng-click="editProfile('account', true)">编辑账户信息</a>
+						<a class="tit-r" ng-if="!editFlag.account && createFlag.account && currentAdmin.permissionMap[PERMISSION_ACCOUNT_KEY] === 2" ng-click="editProfile('account', true)">创建账户信息</a>
+						<a class="tit-r" ng-if="editFlag.account && !createFlag.account && currentAdmin.permissionMap[PERMISSION_ACCOUNT_KEY] === 2" ng-click="editProfile('account', false)">保存</a>
+						<a class="tit-r" ng-if="editFlag.account && createFlag.account && currentAdmin.permissionMap[PERMISSION_ACCOUNT_KEY] === 2" ng-click="editProfile('account', false)">创建</a>
+					</div>
+				</div>
+				<div class="com-info">
+					<div class="info-box">
+						<div class="info-item">
+							<div class="info-l-left">
+								<span>企业名称</span>
+							</div>
+							<div class="info-l-right">
+								<span ng-if="!editFlag.account">{{accountInfo.sales_company_name}}</span>
+								<span ng-if="editFlag.account"><input class="info-input" type="text" ng-model="accountInfo.sales_company_name"></span>
+							</div>
+						</div>
+						<div class="info-item">
+							<div class="info-l-left">
+								<span>经营范围</span>
+							</div>
+							<div class="info-l-right">
+								<span ng-if="!editFlag.account">{{accountInfo.business_scope}}</span>
+								<span ng-if="editFlag.account"><input class="info-input" type="text" ng-model="accountInfo.business_scope"></span>
+							</div>
+						</div>
+						<div class="info-item">
+							<div class="info-l-left">
+								<span>基本开户行名称</span>
+							</div>
+							<div class="info-l-right">
+								<span ng-if="!editFlag.account">{{accountInfo.bank_account_name}}</span>
+								<span ng-if="editFlag.account"><input class="info-input" type="text" ng-model="accountInfo.bank_account_name"></span>
+							</div>
+						</div>
+						<div class="info-item">
+							<div class="info-l-left">
+								<span>基本开户账号</span>
+							</div>
+							<div class="info-l-right">
+								<span ng-if="!editFlag.account">{{accountInfo.bank_account_number}}</span>
+								<span ng-if="editFlag.account"><input class="info-input" ng-model="accountInfo.bank_account_number"></span>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+			<div class="com-item">
+				<div class="com-item-head">
+					<div class="com-h-tit">
+						<span class="tit-des">开票信息</span>
+						<a class="tit-r" ng-if="!editFlag.invoice && !createFlag.invoice && currentAdmin.permissionMap[PERMISSION_ACCOUNT_KEY] === 2" ng-click="editProfile('invoice', true)">编辑开票信息</a>
+						<a class="tit-r" ng-if="!editFlag.invoice && createFlag.invoice && currentAdmin.permissionMap[PERMISSION_ACCOUNT_KEY] === 2" ng-click="editProfile('invoice', true)">创建开票信息</a>
+						<a class="tit-r" ng-if="editFlag.invoice && !createFlag.invoice && currentAdmin.permissionMap[PERMISSION_ACCOUNT_KEY] === 2" ng-click="editProfile('invoice', false)">保存</a>
+						<a class="tit-r" ng-if="editFlag.invoice && createFlag.invoice && currentAdmin.permissionMap[PERMISSION_ACCOUNT_KEY] === 2" ng-click="editProfile('invoice', false)">创建</a>
+					</div>
+				</div>
+				<div class="com-info">
+					<div class="info-box">
+						<div class="info-item">
+							<div class="info-l-left">
+								<span>发票抬头</span>
+							</div>
+							<div class="info-l-right">
+								<span ng-if="!editFlag.invoice">{{invoiceInfo.title}}</span>
+								<span ng-if="editFlag.invoice"><input class="info-input" type="text" ng-model="invoiceInfo.title"></span>
+							</div>
+						</div>
+						<div class="info-item">
+							<div class="info-l-left">
+								<span>发票类型</span>
+							</div>
+							<div class="info-l-right">
+								<span ng-if="!editFlag.invoice">{{invoiceType[invoiceInfo.category]}}</span>
+								<span ng-if="editFlag.invoice"><sb-dropdown select="invoiceInfo.category" options="invTypeList" flexible="true"></sb-dropdown></span>
+							</div>
+						</div>
+						<div class="info-item">
+							<div class="info-l-left">
+								<span>纳税人识别号</span>
+							</div>
+							<div class="info-l-right">
+								<span ng-if="!editFlag.invoice">{{invoiceInfo.taxpayer_id}}</span>
+								<span ng-if="editFlag.invoice"><input class="info-input" ng-model="invoiceInfo.taxpayer_id"></span>
+							</div>
+						</div>
+						<div class="info-item" ng-if="invoiceInfo.category == 'special' || invoiceInfo.category.value == 'special'">
+							<div class="info-l-left">
+								<span>地址</span>
+							</div>
+							<div class="info-l-right">
+								<span ng-if="!editFlag.invoice">{{invoiceInfo.address}}</span>
+								<span ng-if="editFlag.invoice"><input class="info-input" type="text" ng-model="invoiceInfo.address"></span>
+							</div>
+						</div>
+						<div class="info-item" ng-if="invoiceInfo.category == 'special' || invoiceInfo.category.value == 'special'">
+							<div class="info-l-left">
+								<span>电话</span>
+							</div>
+							<div class="info-l-right">
+								<span ng-if="!editFlag.invoice">{{invoiceInfo.phone}}</span>
+								<span ng-if="editFlag.invoice"><input class="info-input" ng-model="invoiceInfo.phone"></span>
+							</div>
+						</div>
+						<div class="info-item" ng-if="invoiceInfo.category == 'special' || invoiceInfo.category.value == 'special'">
+							<div class="info-l-left">
+								<span>开户行</span>
+							</div>
+							<div class="info-l-right">
+								<span ng-if="!editFlag.invoice">{{invoiceInfo.bank_account_name}}</span>
+								<span ng-if="editFlag.invoice"><input class="info-input" type="text" ng-model="invoiceInfo.bank_account_name"></span>
+							</div>
+						</div>
+						<div class="info-item" ng-if="invoiceInfo.category == 'special' || invoiceInfo.category.value == 'special'">
+							<div class="info-l-left">
+								<span>账号</span>
+							</div>
+							<div class="info-l-right">
+								<span ng-if="!editFlag.invoice">{{invoiceInfo.bank_account_number}}</span>
+								<span ng-if="editFlag.invoice"><input class="info-input" ng-model="invoiceInfo.bank_account_number"></span>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+			<div class="com-item">
+				<div class="com-item-head">
+					<div class="com-h-tit">
+						<span class="tit-des">快递信息</span>
+						<a class="tit-r" ng-if="!editFlag.express && !createFlag.express && currentAdmin.permissionMap[PERMISSION_ACCOUNT_KEY] === 2" ng-click="editProfile('express', true)">编辑快递信息</a>
+						<a class="tit-r" ng-if="!editFlag.express && createFlag.express && currentAdmin.permissionMap[PERMISSION_ACCOUNT_KEY] === 2" ng-click="editProfile('express', true)">创建快递信息</a>
+						<a class="tit-r" ng-if="editFlag.express && !createFlag.express && currentAdmin.permissionMap[PERMISSION_ACCOUNT_KEY] === 2" ng-click="editProfile('express', false)">保存</a>
+						<a class="tit-r" ng-if="editFlag.express && createFlag.express && currentAdmin.permissionMap[PERMISSION_ACCOUNT_KEY] === 2" ng-click="editProfile('express', false)">创建</a>
+					</div>
+				</div>
+				<div class="com-info">
+					<div class="info-box">
+						<div class="info-item">
+							<div class="info-l-left">
+								<span>收件人</span>
+							</div>
+							<div class="info-l-right">
+								<span ng-if="!editFlag.express">{{expressInfo.recipient}}</span>
+								<span ng-if="editFlag.express"><input class="info-input" type="text" ng-model="expressInfo.recipient"></span>
+							</div>
+						</div>
+						<div class="info-item">
+							<div class="info-l-left">
+								<span>手机号</span>
+							</div>
+							<div class="info-l-right">
+								<span ng-if="!editFlag.express">{{expressInfo.phone}}</span>
+								<span ng-if="editFlag.express"><input class="info-input" ng-model="expressInfo.phone"></span>
+							</div>
+						</div>
+						<div class="info-item">
+							<div class="info-l-left">
+								<span>快递地址</span>
+							</div>
+							<div class="info-l-right">
+								<span ng-if="!editFlag.express">{{expressInfo.address}}</span>
+								<span ng-if="editFlag.express"><input class="info-input" type="text" ng-model="expressInfo.address"></span>
+							</div>
+						</div>
+						<div class="info-item">
+							<div class="info-l-left">
+								<span>邮编</span>
+							</div>
+							<div class="info-l-right">
+								<span ng-if="!editFlag.express">{{expressInfo.zip_code}}</span>
+								<span ng-if="editFlag.express"><input class="info-input" ng-model="expressInfo.zip_code"></span>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>

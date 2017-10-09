@@ -1,0 +1,117 @@
+<div  class="modal gallery-upload-progress-modal" role="dialog">
+    <div class="modal-dialog log-popup">
+        <div class="modal-content log-radius">
+            <div class="modal-header log-header" ng-show="title">
+                <h4><span ng-bind="title"></span></h4>
+            </div>
+            <div class="modal-body log-body">
+                <div class="log-content">
+                
+				    <div class="mbox">
+                        <div class="mtitle">{{logItem.log_object_json.room.city.name}}，{{logItem.log_object_json.room.building.name}}，{{logItem.log_object_json.room.name}}</div>
+                        
+                        <ul class="room_lsit log-list">
+                            <li>
+                                <span class="item_label">图片：</span>
+                                <div class="add_slide">
+                                    <div>
+                                        <img style="width: 100%;height: 100%;" ng-src="{{logItem.log_object_json.room.attachment[0].attachment_id.content}}" ng-if="!defaultImg">
+                                        <img style="width: 100%;height: 100%;" ng-src="{{defaultImg.attachment_id.content}}" ng-if="defaultImg">
+                                    </div>
+                                    <ul class="addImg">
+                                        <li ng-repeat="item in logItem.log_object_json.room.attachment" ng-class="{check: item.first}" ng-click="setDefault(item)">
+                                            <img ng-src="{{item.attachment_id.content}}">
+                                        </li>
+                                    </ul>
+                                </div>
+                            </li>
+                            <li>
+                                <span class="item_label">城市：</span>
+                                <p class="word" ng-bind="logItem.log_object_json.room.city.name"></p>
+                            </li>
+                            <li>
+                                <span class="item_label">社区：</span>
+                                <p class="word" ng-bind="logItem.log_object_json.room.building.name"></p>
+                            </li>
+                            <li>
+                                <span class="item_label">空间类型：</span>
+                                <p class="word" ng-bind="roomTypeDesc[logItem.log_object_json.room.type]"></p>
+                            </li>
+                            <li>
+                                <span class="item_label">空间名称：</span>
+                                <p class="word">{{logItem.log_object_json.room.name}}</p>
+                            </li>
+                            <li ng-if="logItem.log_object_json.type === 'fixed'">
+                                <span class="item_label">座位号：</span>
+                                <p class="word">{{logItem.log_object_json.seat_number}}</p>
+                            </li>
+                            <li>
+                                <span class="item_label">面积：</span>
+                                <p class="word">{{logItem.log_object_json.room.area}}m<sup>2</sup></p>
+                            </li>
+                            <li>
+                                <span class="item_label">工位数（容纳人数）：</span>
+                                <p class="word">{{logItem.log_object_json.room.allowed_people}}</p>
+                            </li>
+                            <li>
+                                <span class="item_label">描述：</span>
+                                <p class="word" ng-bind="logItem.log_object_json.description"></p>
+                            </li>
+                            <li>
+                                <span class="item_label">开放时间段：</span>
+                                <p class="word">{{logItem.log_object_json.start_date | date: 'yyyy/MM/dd'}} - {{logItem.log_object_json.end_date | date: 'yyyy/MM/dd'}}</p>
+                            </li>
+                            <li>
+                                <span class="item_label">价格：</span>
+                                <p class="price"><span class="yang">￥{{logItem.log_object_json.base_price}}</span><span class="em">/</span>{{unitDesc[logItem.log_object_json.unit_price]}}</p>
+                            </li>
+                            <!-- <li>
+                                <span class="item_label">{{'PRICE_RULE' | translate}}：</span>
+                                <p class="temp word" ng-repeat="item in priceRule.rulesForArea"  ng-bind="item.ruleName" ng-if="!item.checked" title="{{item.ruleName}}"></p>
+                                <p class="temp word" ng-repeat="item in priceRule.rulesForRoom"  ng-bind="item.ruleName" ng-if="item.checked" title="{{item.ruleName}}"></p>
+                            </li> -->
+                            <li>
+                                <span class="item_label">是否续租：</span>
+                                <p class="word" ng-if="logItem.log_object_json.renewable">是</p>
+                                <p class="word" ng-if="!logItem.log_object_json.renewable">否</p>
+                            </li>
+
+                            <li ng-if="!logItem.log_object_json.visible">
+                                <span class="item_label">上下架状态：</span>
+                                <p class="word">已下架</p>
+                            </li>
+                            <li ng-if="logItem.log_object_json.private">
+                                <span class="item_label">私人可见：</span>
+                                <p class="word"><em>{{userOptions[logItem.log_object_json.visible_user_id].name}}</em></p>
+                            </li>
+                            <li>
+                                <span class="item_label">是否创合方发票：</span>
+                                <p class="word" ng-if="!logItem.log_object_json.sales_invoice">是</p>
+                                <p class="word" ng-if="logItem.log_object_json.sales_invoice">否</p>
+                            </li>
+                            <li ng-if="logItem.log_object_json.type === 'office'">
+                                <span class="item_label">是否年租：</span>
+                                <p class="word" ng-if="logItem.log_object_json.is_annual_rent">是</p>
+                                <p class="word" ng-if="!logItem.log_object_json.is_annual_rent">否</p>
+                            </li>
+                            <li ng-if="logItem.log_object_json.is_annual_rent && logItem.log_object_json.room.type === 'office'">
+                                <span class="item_label">年租价格：</span>
+                                <p class="price"><font>￥{{logItem.log_object_json.annual_rent_unit_price}}</font><em>/</em>{{unitDesc[logItem.log_object_json.unit_price]}}</p>
+                            </li>
+                            <li ng-if="logItem.log_object_json.is_annual_rent && logItem.log_object_json.room.type === 'office'">
+                                <span class="item_label">年租描述：</span>
+                                <p class="word" ng-bind="logItem.log_object_json.annual_rent_description"></p>
+                            </li>
+                            <li>
+                                <span class="item_label">商品链接：</span>
+                                <p class="word" ng-bind="logItem.log_object_json.url"></p>
+                            </li>
+                        </ul>
+
+                    </div>
+
+				</div>
+            </div>
+        </div>
+    </div>
+</div>

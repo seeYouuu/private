@@ -1,0 +1,26 @@
+<div class="sandBox_content">
+    <div class="tra-content page-height">
+		<div class="detail-page page-height pt69">
+			<div class="detail-head fixed">
+				<span>合同修改历史</span>
+			</div>
+			<div class="detail-scroller">
+				<div class="contract-list">
+                    <div class="list-item" ng-repeat="item in leasesLogList">
+                        <div class="i-name">{{userOptions[item.admin_username].name}}</div>
+                        <div class="i-con">
+                            <span ng-if="item.log_action === 'create'">生成并保存了 合同 </span>
+                            <span ng-if="item.log_action === 'edit'">编辑了 合同 </span>
+                            <span ng-if="item.log_action === 'performing'">生效了 合同 </span>
+                            <span class="link-txt" ng-click="seeContractDetail(item.lease.id)">{{item.lease.serial_number}}</span>
+                        </div>
+                        <div class="i-date">{{item.creation_date | date: 'yyyy-MM-dd HH:mm:ss'}}</div>
+                    </div>                                
+                </div>
+                <pagination option="pageOptions" on-page="goPage(index)" ng-if="leasesLogList.length > 0"></pagination>
+                <div class="nodata" ng-if="leasesLogList.length <= 0">无合同修改历史</div>
+			</div>
+
+		</div>
+    </div>
+</div>

@@ -1,0 +1,35 @@
+<div class="modal" role="dialog">
+    <div class="modal-dialog modal-center small-normal">
+        <div class="modal-content group-add" >
+            <div class="modal-body clearfix">
+                
+                <div class="com-dialog over-f">
+                    <div class="dialog-head static">
+                        <div class="head-wra">
+                            <span>备注</span>
+                            <span class="close" ng-click="$hide()">✖</span>
+                        </div>
+                    </div>
+                    <div class="dia-box rmk">
+                        <div class="rmk-line" ng-repeat="item in remarkList">
+                            <i class="n-icon ic-rmk"></i>
+                            <div class="text-b">
+                                <div>
+                                    <span class="rmk-tlt"><span class="italic-name">{{::item.username}}</span>更新了备注</span><span class="grey-num f-r">{{::item.creation_date | date : 'yyyy-MM-dd HH:mm'}}</span>
+                                </div>
+                                <div class="rmk-txt">{{::item.remarks}}</div>
+                            </div>
+                        </div>
+                        <div class="nodata" ng-if="remarkList.length <= 0">暂无备注信息</div>
+                    </div>
+                    <div class="dia-bot rmk">
+                        <div class="rmk-input">
+                            <input type="text" placeholder="填写备注或需记录的内容" ng-model="createOptions.remarkText">
+                            <span class="primary-btn green-btn" ng-click="createRemark()">备注</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

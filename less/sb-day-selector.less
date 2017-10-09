@@ -1,0 +1,64 @@
+sb-day-selector {
+  display: block;
+  width: 500px;
+  height: 120px;
+  //border: solid 1px #cccccc;
+  //border-radius: 5px;
+
+  table {
+    width: 100%;
+    height: 100%;
+    table-layout: fixed;
+    border-collapse: collapse;
+    background-color: white;
+    overflow: hidden;
+    td {
+      text-align: center;
+      vertical-align: middle;
+      border: solid 1px #cccccc;
+
+      &.hs-day {
+        border: solid 1px white;
+        background-color: #cccccc;
+        overflow: visible;
+          
+        .bubble {
+              display: none;
+              width: 5em;
+              overflow: visible;
+              .bubble-pointer {
+                  float: left;
+                  margin: 0.5em 0;
+                  width: 0;
+                  height: 0;
+                  border-top: solid 0.5em transparent;
+                  border-bottom: solid 0.5em transparent;
+                  border-left: solid 0.5em transparent;
+                  border-right: solid 0.5em @brand-primary;
+              }
+              .bubble-body {
+                  float: left;
+                  width: 4em;
+                  line-height: 2em;
+                  height: 2em;
+                  border: solid 1px @brand-primary;
+                  border-radius: 5px;
+                  background-color: white;
+              }
+          }
+      }
+
+      &.selected {
+        background-color: orange;
+      }
+        
+      &.set {
+        background-color: blue;   
+      }
+
+      &.hs-title {
+        width: 70px;
+      }
+    }
+  }
+}

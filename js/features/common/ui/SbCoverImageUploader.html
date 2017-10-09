@@ -1,0 +1,16 @@
+<div>
+  <input type="file" ng-disabled="isUploading === true" id="uploadLogo">
+  <sb-image-with-fallback url="{{url}}"
+                          default-url="{{defaultUrl}}"
+                          error-url="{{errorUrl}}">
+  </sb-image-with-fallback>
+  <p ng-if="noInstruction === undefined" class="instruction" ng-transclude></p>
+</div>
+<small
+    ng-if="showRule !== undefined"
+    translate
+    translate-values="{
+        width: imageWidth,
+        height: imageHeight,
+    }"
+>IMAGE_RULE</small>

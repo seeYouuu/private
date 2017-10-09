@@ -1,0 +1,240 @@
+<div class="sandBox_content" ng-if="pageType == 'financeSummary'">
+    <div class="tra-content">
+        <div class="t-f-box">
+            <div class="t-f-line">
+                <div class="t-f-left">
+                    结算年份
+                </div>
+                <div class="t-f-right">
+                    <div class="t-f-half t-f-s">
+                        <div class="drop-wra">
+                            <sb-dropdown select="billFilterOptions.yearObj" placeholder="placeholder.all" options="summaryYearList" flexible="true"></sb-dropdown>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="t-btn-wra">
+                <div class="t-search-btn" ng-click="searchList()">
+                    搜索
+                </div>
+                <span class="clear-btn" ng-click="clearSearchFilters()">清空</span>
+            </div>
+        </div>
+
+        <div class="lists-area hover-effect">
+            <div class="line-width tit-line no-mb">
+                <div class="line-item per15 t-left pl21">
+                    结算时间
+                </div>
+                <div class="line-item per15">
+                    秒租收入
+                </div>
+                <div class="line-item per15">
+                    长租收入
+                </div>
+                <div class="line-item per15">
+                    活动收入
+                </div>
+                <div class="line-item per15">
+                    会员收入
+                </div>
+                <div class="line-item per15">
+                    服务费账单
+                </div>
+                <div class="line-item per10">
+                    操作
+                </div>
+            </div>
+
+            <div class="line-width" ng-repeat="item in summaryList">
+                <div class="line-item per15 t-left pl21">
+                    <div class="item-con">
+                        {{item.summary_date | date: 'yyyy年MM月'}}
+                    </div>
+                </div>
+                <div class="line-item per15">
+                    <div class="item-con">
+                        <div>
+                            {{item.short_rent_balance | number: 2}}
+                        </div>
+                        <div>
+                            {{item.short_rent_count}} 笔
+                        </div>
+                    </div>
+                </div>
+                <div class="line-item per15">
+                    <div class="item-con">
+                        <div>
+                            {{item.long_rent_balance | number: 2}}
+                        </div>
+                        <div>
+                            {{item.long_rent_count}} 笔
+                        </div>
+                    </div>
+                </div>
+                <div class="line-item per15">
+                    <div class="item-con">
+                        <div>
+                            {{item.event_order_balance | number: 2}}
+                        </div>
+                        <div>
+                            {{item.event_order_count}} 笔
+                        </div>
+                    </div>
+                </div>
+                <div class="line-item per15">
+                    <div class="item-con">
+                        <div>
+                            {{item.membership_order_balance | number: 2}}
+                        </div>
+                        <div>
+                            {{item.membership_order_count}} 笔
+                        </div>
+                    </div>
+                </div>
+                <div class="line-item per15">
+                    <div class="item-con">
+                        <div>
+                            {{item.long_rent_bill_balance | number: 2}}
+                        </div>
+                        <div>
+                            {{item.long_rent_bill_count}} 笔
+                        </div>
+                    </div>
+                </div>
+                <div class="line-item per10">
+                    <div class="item-con">
+                        <span class="link-txt" ng-click="downloadMonthBills(item)">下载月账单</span>
+                    </div>
+                </div>
+            </div>
+            <pagination option="pageOptions" on-page="goPage(index)"></pagination>
+        </div>
+
+    </div>
+</div>
+
+<div class="sandBox_content" ng-if="pageType == 'withdrawalRecord'">
+    <div class="tra-content">
+        <div class="t-f-box">
+            <!-- <div class="t-f-line">
+                <div class="t-f-left">
+                    结算年份
+                </div>
+                <div class="t-f-right">
+                    <div class="t-f-half t-f-s">
+                        <div class="drop-wra">
+                            <sb-dropdown select="billFilterOptions.keyword" placeholder="placeholder.all" options="billFilterKeywords" flexible="true"></sb-dropdown>
+                        </div>
+                        <div class="ib-box" ng-if="billFilterOptions.keyword">
+                            <input type="text" class="t-f-input small" ng-model="billFilterOptions.keyword_search">
+                        </div>
+                    </div>
+
+                </div>
+            </div> -->
+
+            <div class="t-f-line">
+                <div class="t-f-left">
+                    提现时间
+                </div>
+                <div class="t-f-right">
+                    <div class="t-f-half t-f-s">
+                        <div class="date_input">
+                            <input type="text" ng-model="billFilterOptions.create_start" data-max-date="{{billFilterOptions.create_end}}" data-date-format="yyyy-MM-dd"  data-autoclose="1" bs-datepicker>
+                            <span><i class="fa fa-calendar"></i></span>
+                        </div>
+                        <span>-</span>
+                        <div class="date_input">
+                            <input type="text" ng-model="billFilterOptions.create_end" data-min-date="{{billFilterOptions.create_start}}" data-date-format="yyyy-MM-dd"  data-autoclose="1" bs-datepicker>
+                            <span><i class="fa fa-calendar"></i></span>
+                        </div>
+                    </div>
+                    <div class="t-f-half t-f-b">
+                        <span class="t-f-left longer">提现成功时间</span>
+                        <div class="date_input">
+                            <input type="text" ng-model="billFilterOptions.success_start" data-max-date="{{billFilterOptions.success_end}}" data-date-format="yyyy-MM-dd"  data-autoclose="1" bs-datepicker>
+                            <span><i class="fa fa-calendar"></i></span>
+                        </div>
+                        <span>-</span>
+                        <div class="date_input">
+                            <input type="text" ng-model="billFilterOptions.success_end" data-min-date="{{billFilterOptions.success_start}}" data-date-format="yyyy-MM-dd"  data-autoclose="1" bs-datepicker>
+                            <span><i class="fa fa-calendar"></i></span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="t-f-line">
+                <div class="t-f-left">
+                    <span class="t-f-left">金额范围</span>
+                </div>
+                <div class="t-f-right">
+                    <div class="t-f-half t-f-s">
+                        <div class="date_input bigger">
+                            <input type="number" ng-model="billFilterOptions.amount_start" ng-keyup="$event.keyCode === 13 && searchList()">
+                        </div>
+                        <span>-</span>
+                        <div class="date_input bigger">
+                            <input type="number" ng-model="billFilterOptions.amount_end" ng-keyup="$event.keyCode === 13 && searchList()">
+                        </div>
+                    </div>
+
+                    <div class="t-f-half t-f-b">
+                        <span class="t-f-left longer">结算状态</span>
+                        <div class="drop-wra">
+                            <sb-dropdown select="billFilterOptions.statusObj" placeholder="placeholder.all" options="filterStatus" flexible="true"></sb-dropdown>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+            
+            <div class="t-btn-wra">
+                <div class="t-search-btn" ng-click="searchList()">
+                    搜索
+                </div>
+                <span class="clear-btn" ng-click="clearSearchFilters()">清空</span>
+            </div>
+        </div>
+
+        <div class="lists-area">
+            <div class="line-width tit-line no-mb">
+                <div class="line-item per15 t-left pl21">
+                    提现金额
+                </div>
+                <div class="line-item per38">
+                    提现时间
+                </div>
+                <div class="line-item per32">
+                    提现成功时间
+                </div>
+                <div class="line-item per15">
+                    状态
+                </div>
+            </div>
+
+            <div class="line-width" ng-repeat="item in withDrawalsList">
+                <div class="line-item per15 t-left pl21">
+                    <div class="item-con">{{item.amount | number: 2}}元</div>
+                </div>
+                <div class="line-item per38">
+                    <div class="item-con">{{item.creation_date | date: 'yyyy-MM-dd HH:mm'}}</div>
+                </div>
+                <div class="line-item per32">
+                    <div class="item-con">{{item.success_time | date: 'yyyy-MM-dd HH:mm'}}</div>
+                    <div class="item-con" ng-if="!item.success_time">- -</div>
+                </div>
+                <div class="line-item per15">
+                    <div class="item-con">
+                        <div class="detail-tag primary" ng-if="item.status === 'pending'">提现中</div>
+                        <div class="detail-tag grey" ng-if="item.status === 'failed'">提现失败</div>
+                        <div class="detail-tag green" ng-if="item.status === 'successful'">提现成功</div>
+                    </div>
+                </div>
+            </div>
+            <pagination option="pageOptions" on-page="goPage(index)"></pagination>
+        </div>
+
+    </div>
+</div>

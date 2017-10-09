@@ -1,0 +1,282 @@
+<div class="sandBox_content" ng-if="pageType === 'invoiceDetail'">
+	<div class="sandBox_detail">
+	    <div class="mbox">
+	        <div>
+	            <div class="mtitle">
+	                开票信息
+	            </div>
+	            <div class="mbd">
+	                <table class="inv_de" ng-if="invoiceItem.invoice_profile.invoice_type === 'common'">
+	                    <tr>
+	                        <td>开票状态：</td><td><span ng-if="invoiceItem.status === 'pending'">待开发票</span><span ng-if="invoiceItem.status === 'completed'">已开发票</span><span ng-if="invoiceItem.status === 'cancelled' || invoiceItem.status === 'cancelled_wait'">已撤销</span></td>
+	                        <td>纳税人识别号或身份证号：</td><td>{{invoiceItem.invoice_profile.tax_registration_number}}</td>
+	                    </tr>
+	                    <tr>
+	                        <td>发票编号：</td><td>
+	                            <span ng-bind="invoiceItem.invoice_number" ng-if="!invoiceItem.invoice_focus"></span>
+	                            <input type="text" ng-model="invoiceItem.invoice_number" focus-on="invoice_number" ng-show="invoiceItem.invoice_focus">
+	                            <a class="edit_position" ng-if="invoiceItem.status === 'completed' && !invoiceItem.invoice_focus && currentAdmin.permissionMap[PERMISSION_INVOICE_KEY] === 2" ng-click="setFocus('invoice_number')">编辑</a>
+	                            <a class="edit_position" ng-if="invoiceItem.status === 'completed' && invoiceItem.invoice_focus && currentAdmin.permissionMap[PERMISSION_INVOICE_KEY] === 2" ng-click="editInvoice('invoice_number')">保存</a>
+	                        </td><td></td><td></td>
+	                    </tr>
+	                    <tr>
+	                        <td>申请开票时间：</td><td>{{invoiceItem.creation_date | date: 'yyyy-MM-dd HH:mm'}}</td><td></td><td></td>
+	                    </tr>
+	                    <tr>
+	                        <td>开票金额：</td><td>￥{{invoiceItem.amount}}</td><td></td><td></td>
+	                    </tr>
+	                    <tr>
+	                        <td>发票类型：</td><td>{{invoiceItem.invoice_profile.invoice_type.toUpperCase() | translate}}</td><td></td><td></td>
+	                    </tr>
+	                    <tr>
+	                        <td>发票科目：</td><td>{{invoiceItem.invoice_category}}</td><td></td><td></td>
+	                    </tr>
+	                    <tr>
+	                        <td>公司抬头：</td><td>{{invoiceItem.invoice_profile.title}}</td><td></td><td></td>
+	                    </tr>
+	                </table>
+	                <table class="inv_de" ng-if="invoiceItem.invoice_profile.invoice_type === 'special'">
+	                    <tr>
+	                        <td>开票状态：</td><td><span ng-if="invoiceItem.status === 'pending'">待开发票</span><span ng-if="invoiceItem.status === 'completed'">已开发票</span></td><td>开具类型：</td><td>公司</td>
+	                    </tr>
+	                    <tr>
+	                        <td>发票编号：</td><td>
+	                            <span ng-bind="invoiceItem.invoice_number" ng-if="!invoiceItem.invoice_focus"></span>
+	                            <input type="text" ng-model="invoiceItem.invoice_number" focus-on="invoice_number" ng-show="invoiceItem.invoice_focus">
+	                            <a class="edit_position" ng-if="invoiceItem.status === 'completed' && !invoiceItem.invoice_focus && currentAdmin.permissionMap[PERMISSION_INVOICE_KEY] === 2" ng-click="setFocus('invoice_number')">编辑</a>
+	                            <a class="edit_position" ng-if="invoiceItem.status === 'completed' && invoiceItem.invoice_focus && currentAdmin.permissionMap[PERMISSION_INVOICE_KEY] === 2" ng-click="editInvoice('invoice_number')">保存</a>
+	                        </td><td>公司抬头：</td><td>{{invoiceItem.invoice_profile.title}}</td>
+	                    </tr>
+	                    <tr>
+	                        <td>申请开票时间：</td><td>{{invoiceItem.creation_date | date: 'yyyy-MM-dd HH:mm'}}</td><td>税务登记证号：</td><td>{{invoiceItem.invoice_profile.tax_registration_number}}</td>
+	                    </tr>
+	                    <tr>
+	                        <td>开票金额：</td><td>￥{{invoiceItem.amount}}</td><td>基本开户银行名称：</td><td>{{invoiceItem.invoice_profile.account_bank_name}}</td>
+	                    </tr>
+	                    <tr>
+	                        <td>发票类型：</td><td>{{invoiceItem.invoice_profile.invoice_type.toUpperCase() | translate}}</td><td>基本开户账号：</td><td>{{invoiceItem.invoice_profile.account_number}}</td>
+	                    </tr>
+	                    <tr>
+	                        <td>发票科目：</td><td>{{invoiceItem.invoice_category}}</td><td>注册场所地址：</td><td>{{invoiceItem.invoice_profile.address}}</td>
+	                    </tr>
+	                    <tr>
+	                        <td></td><td></td><td>固定电话：</td><td>{{invoiceItem.invoice_profile.phone}}</td>
+	                    </tr>
+	                </table>
+	            </div>
+	        </div>
+	        
+	        <div>
+	            <div class="mtitle">
+	                订单信息
+	            </div>
+	            <div class="space-b-con">
+		            <div class="s-info-page p25">
+		                <div class="line-width info-tit">
+		                    <div class="line-item per32 t-left">
+		                        空间
+		                    </div>
+		                    <div class="line-item per19">
+		                        单价/金额
+		                    </div>
+		                    <div class="line-item per15">
+		                        租赁/账单时间
+		                    </div>
+		                    <div class="line-item per11">
+		                        租赁人
+		                    </div>
+		                    <div class="line-item per11">
+		                        下单方式
+		                    </div>
+		                    <div class="line-item per11">
+		                        操作
+		                    </div>
+		                </div>
+		                <div class="space-b-box">
+		                    <div class="b-title tit-top">
+		                        <span class="blake-txt">订单号：{{orderItem.order_number}}</span>
+		                        <span class="grey-txt" ng-if="orderItem.sales_invoice">({{orderItem.product.room.building.company.name || orderItem.lease.product.room.building.company.name}})</span>
+		                        <span class="grey-txt" ng-if="!orderItem.sales_invoice">(创合开票)</span>
+		                        <span class="f-right" ng-bind="orderItem.creation_date | date: 'yyyy-MM-dd'"></span>
+		                    </div>
+		                    <div class="line-width">
+		                        <div class="line-item per32 t-left">
+		                            <div class="item-con">
+		                                <div class="p-w-t">
+		                                    <div class="p-p">
+		                                        <img ng-src="{{orderItem.product_info.room.attachment[0].attachment_id.content || orderItem.product_info.room.attachment}}">
+		                                    </div>
+		                                    <div class="p-t">
+		                                        <div class="p-t-top hover">
+		                                            {{orderItem.product_info.room.building.name}}, {{orderItem.product_info.room.name}}<span ng-if="orderItem.product_info.room.type == 'fixed'">，座位号{{orderItem.product_info.room.seat.seat_number}}</span>
+		                                        </div>
+		                                        <div class="p-t-bot">
+		                                            <span class="detail-tag red" ng-if="orderItem.product_info.room.type !== 'longterm'">秒</span>
+		                                            <span class="detail-tag ora" ng-if="orderItem.product_info.room.type === 'longterm'">长</span>
+		                                            <span>{{roomTypeDesc[orderItem.product.room.type].description}}</span>
+		                                            <div class="for-hover">
+		                                                <div class="detail-tag green" ng-if="orderItem.appointed">
+		                                                    指
+		                                                    <div class="u-box just-show">
+		                                                        <img ng-src="{{userOptions[orderItem.appointed].avatar}}" class="u-ava">
+		                                                        <div class="u-nick">{{userOptions[orderItem.appointed].name}}</div>
+		                                                        <div class="u-info">
+		                                                            <span ng-if="userOptions[orderItem.appointed].phone">{{userOptions[orderItem.appointed].phone}}</span>
+		                                                            <span ng-if="userOptions[orderItem.appointed].email">{{userOptions[orderItem.appointed].email}}</span>
+		                                                        </div>
+		                                                    </div>
+		                                                </div>
+		                                                <span ng-if="orderItem.appointed">指定用户</span>
+		                                            </div>
+		                                            <div class="detail-tag blue" ng-if="orderItem.invited_people.length > 0">邀</div>
+		                                            <span ng-if="orderItem.invited_people.length > 0">邀请用户</span>
+		                                        </div>
+		                                    </div>
+		                                </div>
+		                            </div>
+		                        </div>
+		                        <div class="line-item per19">
+		                            <div class="item-con">
+		                                <div ng-if="orderItem.product_info.room.type != 'fixed'">{{::orderItem.product_info.base_price | currency: '￥':2 }}/{{unitDesc[orderItem.product_info.unit_price]}}</div>
+		                                <div ng-if="orderItem.product_info.room.type == 'fixed'">{{::orderItem.product_info.room.seat.base_price | currency: '￥':2 }}/{{unitDesc[orderItem.product_info.unit_price]}}</div>
+		                            </div>
+		                        </div>
+		                        <div class="line-item per15">
+		                            <div class="item-con">
+		                                <span ng-if="orderItem.product_info.unit_price === 'hour'">{{orderItem.start_date | date: 'yyyy-MM-dd'}}<br/>({{orderItem.start_date | date: 'HH:mm'}} - {{orderItem.end_date | date: 'HH:mm'}})</span>
+		                                <span ng-if="orderItem.product_info.unit_price !== 'hour'">{{orderItem.start_date | date: 'yyyy-MM-dd'}}<br/>{{'TO' | translate}}<br/>{{orderItem.end_date | date: 'yyyy-MM-dd'}}</span>
+		                            </div>
+		                        </div>
+		                        <div class="line-item per11">
+		                            <div class="item-con">
+		                                <div class="link-txt">
+                                            {{::userOptions[invoiceItem.user_id].name}}
+                                            <div class="u-box just-show">
+                                                <img ng-src="{{userOptions[invoiceItem.user_id].avatar}}" class="u-ava">
+                                                <div class="u-nick">{{userOptions[invoiceItem.user_id].name}}</div>
+                                                <div class="u-info">
+                                                    <span ng-if="userOptions[invoiceItem.user_id].phone">{{userOptions[invoiceItem.user_id].phone}}</span>
+                                                    <span ng-if="userOptions[invoiceItem.user_id].email">{{userOptions[invoiceItem.user_id].email}}</span>
+                                                </div>
+                                                <span class="n-icon ic_msg" ng-click="generateChat(invoiceItem.user_id, orderItem.product_info.room.building.id)" ng-if="customerservice[orderItem.product_info.room.building.id]"></span>
+                                            </div>
+                                        </div>
+		                            </div>
+		                        </div>
+		                        <div class="line-item per11">
+		                            <div class="item-con">
+		                                <div ng-if="!orderItem.type">{{'SELF_ORDER' | translate}}</div>
+		                                <div ng-if="orderItem.type">{{orderItem.type | translate}}</div>
+		                                <div ng-if="orderItem.pay_channel"><span class="detail-tag widder t-shadow" ng-class="{'wechat': orderItem.pay_channel == 'wx','account': orderItem.pay_channel == 'account','offline': orderItem.pay_channel == 'offline','alipay': orderItem.pay_channel == 'alipay' || orderItem.pay_channel == 'upacp','we-off': orderItem.pay_channel == 'wx_pub'}">{{orderItem.pay_channel | translate}}</span></div>
+		                            </div>
+		                        </div>
+		                        <div class="line-item per11 last-box">
+		                            <div class="item-con">
+		                                <div class="status">
+		                                    <span class="status-txt" ng-if="orderItem.status != 'cancelled'">{{orderItem.status.toUpperCase() | translate}}</span>
+		                                    <span class="status-txt" ng-if="orderItem.status == 'cancelled' && !orderItem.refunded && !orderItem.need_to_refund">已取消</span>
+		                                    <span class="status-txt" ng-if="orderItem.status == 'cancelled' && orderItem.refunded">已退款</span>
+		                                    <span class="status-txt" ng-if="orderItem.status == 'cancelled' && orderItem.need_to_refund">待退款</span>
+		                                    <div class="status-box">
+		                                        <div class="status-head">
+		                                            订单历史状态记录
+		                                        </div>
+		                                        <div class="status-con">
+		                                            <div class="status-line" ng-if="orderItem.creation_date">
+		                                                <div class="con-left">下单时间:</div>
+		                                                <div class="con-right">{{orderItem.creation_date | date: 'yyyy-MM-dd HH:mm:ss'}}</div>
+		                                            </div>
+		                                            <div class="status-line" ng-if="orderItem.payment_date">
+		                                                <div class="con-left">付款时间:</div>
+		                                                <div class="con-right">{{orderItem.payment_date | date: 'yyyy-MM-dd HH:mm:ss'}}</div>
+		                                            </div>
+		                                            <div class="status-line" ng-if="orderItem.cancelled_date">
+		                                                <div class="con-left">取消时间:</div>
+		                                                <div class="con-right">{{orderItem.cancelled_date | date: 'yyyy-MM-dd HH:mm:ss'}}</div>
+		                                            </div>
+		                                            <div class="status-line" ng-if="orderItem.refund_processed_date">
+		                                                <div class="con-left">退款时间:</div>
+		                                                <div class="con-right">{{orderItem.refund_processed_date | date: 'yyyy-MM-dd HH:mm:ss'}}</div>
+		                                            </div>
+		                                            <div class="status-line" ng-if="orderItem.end_date && orderItem.status === 'completed'">
+		                                                <div class="con-left">订单结束时间:</div>
+		                                                <div class="con-right">{{orderItem.end_date | date: 'yyyy-MM-dd HH:mm:ss'}}</div>
+		                                            </div>
+		                                        </div>
+		                                    </div>
+		                                </div>
+		                                <div ng-if="orderItem.refunded || orderItem.refund_processed || orderItem.status == 'cancelled' && orderItem.transfer.length > 0 || orderItem.status == 'cancelled' && orderItem.pay_channel != 'offline'">({{orderItem.discount_price | currency: '￥':2 }})</div>
+		                                <!-- <div class="link-txt" ng-if="currentAdmin.permissionMap[PERMISSION_SPACE_KEY]" ng-click="seeOrderDetail(orderItem.id)">查看详情</div> -->
+		                            </div>
+		                        </div>
+		                    </div>
+		                    <div class="b-title tit-bot">
+		                        <span class="del-txt f-right" ng-if="orderItem.price != orderItem.discount_price">({{orderItem.price - orderItem.discount_price | currency: '￥':2 }})</span>
+		                        <span class="blake-txt f-right" ng-if="orderItem.status === 'unpaid'">应付款: {{::orderItem.price | currency: '￥':2 }}</span>
+		                        <span class="blake-txt f-right" ng-if="orderItem.status !== 'unpaid'">实付款: {{::orderItem.discount_price | currency: '￥':2 }}</span>
+		                    </div>
+		                </div>
+		            </div>
+	            </div>
+	        </div>
+
+	        <div ng-if="invoiceItem.status === 'completed'">
+	            <div class="mtitle">
+	                快递信息
+	            </div>
+	            <div class="mbd">
+	                <table class="inv_de">
+	                    <tr>
+	                        <td>快递单编号：</td><td>
+	                        <span ng-bind="invoiceItem.express_delivery_number" ng-if="!invoiceItem.delivery_focus"></span>
+	                        <input type="text" ng-model="invoiceItem.express_delivery_number" focus-on="delivery_number" ng-show="invoiceItem.delivery_focus">
+	                        <a class="edit_position" ng-if="!invoiceItem.delivery_focus && currentAdmin.permissionMap[PERMISSION_INVOICE_KEY] === 2" ng-click="setFocus('delivery_number')">编辑</a>
+	                        <a class="edit_position" ng-if="invoiceItem.delivery_focus && currentAdmin.permissionMap[PERMISSION_INVOICE_KEY] === 2" ng-click="editInvoice('delivery_number')">保存</a><!-- <a class="deliv" ng-click="showExpress()">查看物流</a> --></td><td>快递公司：</td><td>{{invoiceItem.express_delivery_company}}</td>
+	                    </tr>
+	                    <tr>
+	                        <td>收件人：</td><td>{{invoiceItem.consignee_name}}</td><td>快递地址：</td><td>{{invoiceItem.consignee_address}}</td>
+	                    </tr>
+	                    <tr>
+	                        <td>手机号：</td><td>{{invoiceItem.consignee_phone}}</td><td>邮编：</td><td>{{invoiceItem.consignee_zip_code}}</td>
+	                    </tr>
+	                </table>
+	            </div>
+	        </div>
+
+	        <div ng-if="invoiceItem.status === 'pending'">
+	            <div class="mtitle">
+	                快递信息
+	            </div>
+	            <div class="mbd">
+	                <table class="inv_de">
+	                    <tr> 
+	                        <td>快递单编号：</td><td>-<!-- <a class="deliv" ng-click="showExpress()">查看物流</a> --></td><td>快递公司：</td><td>-</td>
+	                    </tr>
+	                    <tr>
+	                        <td>收件人：</td><td>{{invoiceItem.address.name}}</td><td>快递地址：</td><td>{{invoiceItem.region}}{{invoiceItem.address.detail_address}}</td>
+	                    </tr>
+	                    <tr>
+	                        <td>手机号：</td><td>{{invoiceItem.address.phone}}</td><td>邮编：</td><td>{{invoiceItem.address.zip_code}}</td>
+	                    </tr>
+	                </table>
+	            </div>
+	        </div>
+
+	        <div>
+	            <div class="mtitle">
+	                用户信息
+	            </div>
+	            <div class="mbd">
+	                <table class="inv_de">
+	                    <tr> 
+	                        <td>用户名：</td><td>{{userOptions[invoiceItem.user_id].name}}</td><td>手机号：</td><td>{{userOptions[invoiceItem.user_id].phone ? userOptions[invoiceItem.user_id].phone : '-'}}</td>
+	                    </tr>
+	                    <tr>
+	                        <td>邮箱：</td><td>{{userOptions[invoiceItem.user_id].email ? userOptions[invoiceItem.user_id].email : '-'}}</td><td></td><td></td>
+	                    </tr>
+	                </table>
+	            </div>
+	        </div>      
+	    </div>
+	</div>
+</div>

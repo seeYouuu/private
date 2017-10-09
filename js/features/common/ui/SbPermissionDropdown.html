@@ -1,0 +1,68 @@
+<div class="input_select" ng-class="{normal: normal}">
+    <span class="choose" ng-click="showDropdown()"><i class="down_arr"></i></span>
+    <span class="item" ng-repeat="item in options" ng-if="item.selected">
+        <span>
+            <img ng-if="item.op_level === 1" src="img/view.png" alt="view"/>
+            <img ng-if="item.op_level === 2" src="img/edit.png" alt="edit"/>
+            <img ng-if="item.op_level === 3" src="img/ban.png" alt="ban"/>
+        </span>{{item[name]}} <a ng-click="item.selected = !item.selected">×</a>
+    </span>
+    <div class="down" ng-class="{show: showDrop, hide:!showDrop}" ng-if="options.length > 0">
+        <ul>
+            <li ng-repeat="item in options">
+                <label ng-if="item.key !== 'sales.platform.dashboard'">
+                    <input type="checkbox" ng-model="item.selected" ng-change="onCheck({item: item})">
+                    <span ng-bind="item[name]"></span>
+                </label>
+                <span ng-if="item.key !== 'sales.platform.dashboard' && radioArray.length !== 0 && item.key !== 'sales.platform.building'" class="radio-container">
+                    <label
+                        ng-repeat="radio in radioArray"
+                        ng-class="{'disabled-label': item.selected !== true}"
+                    >
+                        <input
+                            type="radio"
+                            ng-model="item[radioModel]"
+                            ng-value="radio.value"
+                            ng-disabled="item.selected !== true"
+                        >
+                        {{radio.label}}
+                    </label>
+                    <label
+                        ng-if="item.key === 'platform.user'"
+                        ng-class="{'disabled-label': item.selected !== true}"
+                    >
+                        <input
+                            type="radio"
+                            ng-model="item[radioModel]"
+                            ng-value="3"
+                            ng-disabled="item.selected !== true"
+                        >
+                        {{"BAN_USER" | translate}}
+                    </label>
+                </span>
+                <span ng-if="item.key === 'sales.platform.building'" class="radio-container">
+                    <label ng-class="{'disabled-label': item.selected !== true}">
+                        <input
+                            type="radio"
+                            ng-model="item[radioModel]"
+                            ng-value="2"
+                            ng-disabled="item.selected !== true"
+                        >
+                        新增
+                    </label>
+                </span>
+                <!-- <span ng-if="item.key === 'sales.building.price'" class="radio-container">
+                    <label ng-class="{'disabled-label': item.selected !== true}">
+                        <input
+                            type="radio"
+                            ng-model="item[radioModel]"
+                            ng-value="2"
+                            ng-disabled="item.selected !== true"
+                        >
+                        编辑
+                    </label>
+                </span> -->
+            </li>
+        </ul>
+    </div>
+</div>

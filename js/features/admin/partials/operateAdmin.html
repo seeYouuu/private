@@ -1,0 +1,57 @@
+<div class="modal" role="dialog">
+    <div class="modal-dialog modal-center">
+        <div class="modal-content group-add">
+            <div class="modal-body clearfix">
+            	<div class="job-operate">
+				    <div class="job-header">
+				    	<div ng-if="operateAdminFlag === 'add'">
+				    		添加管理员<span class="x" ng-click="$hide()">x</span>
+				    	</div>
+				    	<div ng-if="operateAdminFlag === 'update'">
+				    		管理员职位编辑<span class="x" ng-click="$hide()">x</span>
+				    	</div>
+				    </div>
+				    <div class="job-content">
+				    	<div class="admin-search">
+				    		<div class="search-ipt" ng-if="!saveFlag">
+				    			<input type="text" placeholder="请输入管理员的手机号" maxlength="11" ng-model="search.phone">
+				    			<span class="not-find" ng-if="!search.flag"><span>!</span><p>未找到该用户</p></span>
+				    		</div>
+				    		<div class="job-info" ng-if="saveFlag">
+				    			<image-with-fallback class="job-avator" url="{{search.admins.avatar}}" default-url="../img/head.png"></image-with-fallback>
+
+				    			<div class="job-des">
+				    				<div class="job-t">
+				    					<div class="job-l" ng-bind="search.admins.name"></div>
+				    					<div class="job-r" ng-if="operateAdminFlag === 'add'"><span ng-click="reSearch()">更改账户</span></div>
+				    				</div>
+				    				<div class="job-b">
+				    					<div class="job-l" ng-bind="search.admins.phone"></div>
+				    					<div class="job-r" ng-bind="search.admins.email"></div>
+				    				</div>
+				    			</div>
+				    		</div>
+				    		<span class="search-btn" ng-click="searchAdminByPhone('single')" ng-class="{'disabled': search.phone.length != 11}" ng-if="!saveFlag">搜索用户</span>
+				    		<span class="search-btn" ng-click="bindPositionForAdmin($hide)" ng-if="saveFlag && operateAdminFlag === 'add'">创建</span>
+				    		<span class="search-btn" ng-click="bindPositionForAdmin($hide)" ng-if="saveFlag && operateAdminFlag === 'update'">保存</span>
+				    	</div>
+				    	<div class="repeat-wrapper">
+			    			<div class="repeat-item " ng-repeat="item in globalPositionList track by $index">
+					            <div class="item-header" ng-if="$index > 0">
+					            	<span class="item-title" ng-bind="item.name"></span>
+					            	<span class="clear-select" ng-click="clearSelectedPosition(item)">清空</span>
+					            </div>
+					            <div class="item-container" ng-if="$index == 0">
+					            	<span ng-repeat="job in item.jobList" ng-bind="job.name" ng-if="job.is_super_admin && currentAdmin.user.is_super_admin" ng-click="setPositionForAdmin(job)" ng-class="{on: job.selected}"></span>
+					            </div>
+					            <div class="item-container" ng-if="$index > 0">
+					            	<span ng-repeat="job in item.jobList" ng-bind="job.name" ng-if="!job.is_super_admin" ng-click="setPositionForAdmin(job)" ng-class="{on: job.selected}"></span>
+					            </div>
+					        </div>
+				    	</div>
+				    </div>
+				</div>
+            </div>
+        </div>
+    </div>
+</div>

@@ -1,0 +1,50 @@
+<div ng-controller="HeaderCtrl" style="width: 100%; height: 100%;">
+    <div class="topBar clearfix">
+        <div class="suspension-tip" ng-if="isTestFlag"><span>注意:此地址为测试服务器</span></div>
+        <div class="admin-head" ng-if="loginFlag === true">
+            <span ng-if="isInspectors" ng-click="backToOfficial()" class="head-btn">返回官方管理平台</span>
+            <span ng-if="isInspectors" ng-click="backToOfficial()" class="company-name">{{companyName}}</span>
+            <span class="h-left" data-placement="bottom-left" data-content-template="js/features/common/ui/CommunityList.html" data-animation="am-fade" data-auto-close="1" bs-popover ng-if="!isInspectors">{{currentPlatform.sales_company_name}}<i class="arr arr-down"></i></span>
+            <span class="crumbs" ng-class="{'no-click': crumbs.first && !crumbs.second}" ng-bind="crumbs.first" ng-click="backToMain(1)"></span>
+            <font ng-if="crumbs.second"> ></font><span class="crumbs" ng-class="{'no-click': crumbs.second && !crumbs.third}" ng-if="crumbs.second" ng-bind="crumbs.second" ng-click="backToMain(2)"></span>
+            <font ng-if="crumbs.third"> ></font><span class="crumbs" ng-class="{'no-click': crumbs.third && !crumbs.fourth}" ng-if="crumbs.third" ng-bind="crumbs.third" ng-click="backToMain(3)"></span>
+            <font ng-if="crumbs.fourth"> ></font><span class="crumbs" ng-class="{'no-click': crumbs.fourth && !crumbs.fifth}" ng-if="crumbs.fourth" ng-bind="crumbs.fourth" ng-click="backToMain(4)"></span>
+            <font ng-if="crumbs.fifth"> ></font><span class="crumbs" ng-class="{'no-click': crumbs.fifth && !crumbs.sixth}" ng-if="crumbs.fifth" ng-bind="crumbs.fifth" ng-click="backToMain(5)"></span>
+        </div>
+        <div class="topAccount" ng-if="loginFlag === true">
+            <span
+                class="name"
+                ng-bind="currentAdmin.user.name"
+                ng-attr-title="{{currentAdmin.user.name}}"
+            ></span>
+            <a class="logout" ng-click="logout()">{{'LOGOUT' | translate}}</a>
+        </div>
+    </div>
+    <div class="sandBox_main" ng-class="{inSide: hide}">
+        <div class="sideBar" bs-navbar ng-if="loginFlag === true">
+            <div class="side-logo">
+                <img src="../img/s-logo.png" class="s-logo"><span>秒租房东端</span>
+            </div>
+            <div class="sidebar-con">
+                <ul>
+                    <li ng-repeat="item in sidebarItems | checkPermission: groups" ng-class="{active: getCurrentPath() === item.route}">
+                        <span class="beta" ng-if="item.url == 'user' || item.url == 'lease'">Beta</span>
+                        <div class="sidebar-first" ng-click="changeNav(item)" ng-if="item.url !== 'user' && item.url !== 'lease'" ng-class="{active: getCurrentPath() === item.route}"><i class="n-icon side-size {{::item.icon}}" ng-class="{active: getCurrentPath() === item.route}"></i>{{item.name }}</div>
+                        <div class="sidebar-first" ng-class="{'plus': !item.selected, 'minus': item.selected, active: isSecondNav(item)}" ng-click="toogleNav(item)" ng-if="item.url === 'user' || item.url === 'lease'"><i class="n-icon side-size {{::item.icon}}" ng-class="{active: isSecondNav(item)}"></i>{{item.name}}</div>
+                        <span class="beta1" ng-if="isSecondNav(item)">Beta</span>
+                        <div class="sidebar-second" ng-if="item.url === 'user' && item.selected">
+                            <div ng-class="{'s-current-select': getCurrentPath() === second.route }" ng-click="changeChildNav(second)" ng-repeat="second in item.children | checkSecondPermission: secondGroups">{{second.name}}</div>
+                        </div>
+                        <div class="sidebar-second" ng-if="item.url === 'lease' && item.selected">
+                            <div ng-class="{'s-current-select': getCurrentPath() === second.route}" ng-click="changeChildNav(second)" ng-repeat="second in item.children  | checkSecondPermission: secondGroups">{{second.name}}</div>
+                        </div>
+                    </li>
+                </ul>
+            </div>
+        </div>
+        <div class="sandBox_bd" ng-view ng-if="loginFlag === true">       
+        </div>
+        <div ng-view ng-if="loginFlag === false"></div>
+        <sb-admin-chat chat-groups="chatGroups"><sb-admin-chat>
+    </div>
+</div>

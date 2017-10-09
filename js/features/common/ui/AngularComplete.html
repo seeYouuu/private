@@ -1,0 +1,9 @@
+<div class="search_input">
+	<input type="text" ng-model="searchParams.key" placeholder="{{placeholder}}" ng-change="iptChange()">
+	<ul ng-if="responseData.length > 0">
+		<li ng-repeat="item in responseData" ng-mouseover="itemOver(item)" ng-click="selectItem(item)">
+			{{item[name]}}
+		</li>
+	</ul>
+</div>
+

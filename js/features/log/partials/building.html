@@ -1,0 +1,125 @@
+<div  class="modal gallery-upload-progress-modal" role="dialog">
+    <div class="modal-dialog log-popup">
+        <div class="modal-content log-radius">
+            <div class="modal-header log-header" ng-show="title">
+                <h4><span ng-bind="title"></span></h4>
+            </div>
+            <div class="modal-body log-body">
+                <div class="log-content">
+                
+				    <div class="mbox">
+				        <div class="mtitle">
+				            {{logItem.log_object_json.name}}
+				        </div>
+
+				        <ul class="room_lsit log-list">
+				            <li>
+				                <span class="item_label">社区名称：</span>
+				                <p class="word">
+				                    <span class="detail-tag" ng-class="{green: logItem.log_object_json.status==='accept',red: logItem.log_object_json.status==='banned', ora: logItem.log_object_json.status==='pending',grey: logItem.log_object_json.status==='invisible'}">{{buildingStatus[logItem.log_object_json.status]}}</span>
+				                    {{::logItem.log_object_json.name}}
+				                </p>
+				            </li>
+				            <li>
+				                <span class="item_label">缩略图：</span>
+				                <div class="add_slide">
+				                    <div class="detail-cover-image" style="width:250px;height:250px;">
+				                        <img class="detail-cover-image" ng-src="{{logItem.log_object_json.avatar}}" alt="logItem.log_object_json image"/>
+				                    </div>
+				                </div>
+				            </li>
+				            <li>
+				                <span class="item_label">社区图片：</span>
+				                <div class="add_slide">
+				                    <div class="detail-cover-image" ng-if="logItem.log_object_json.building_attachments.length > 0">
+				                        <img class="detail-cover-image" ng-src="{{logItem.log_object_json.building_attachments[0].content}}" alt="cover image"/>
+				                    </div>
+				                    <ul class="addImg three">
+				                        <li ng-repeat="attachment in logItem.log_object_json.building_attachments" ng-if="$index !== 0 && $index < 4">
+				                            <img ng-src="{{attachment.content}}" alt=" image"/>
+				                        </li>
+				                    </ul>
+				                </div>
+				            </li>
+				            <li>
+				                <span class="item_label">城市：</span>
+				                <p class="word" ng-bind="::logItem.log_object_json.city.name"></p>
+				            </li>
+				            <li>
+				                <span class="item_label">地址：</span>
+				                <p class="word" ng-bind="::logItem.log_object_json.address"></p>
+				            </li>
+				            <li>
+				                <span class="item_label">经纬度：</span>
+				                <p class="word">
+				                    <span ng-bind="::logItem.log_object_json.lat"></span>
+				                    <span>, </span>
+				                    <span ng-bind="::logItem.log_object_json.lng"></span>
+				                </p>
+				            </li>
+				            <li>
+				                <span class="item_label">楼层：</span>
+				                <p class="num word">
+				                    <span ng-bind="item.floor_number" ng-repeat="item in logItem.log_object_json.floors" style="text-decoration: underline;padding-right: 5px;"></span> 
+				                </p>
+				            </li>
+				            <li>
+				                <span class="item_label">门禁服务器地址：</span>
+				                <p class="word" ng-bind="::logItem.log_object_json.server"></p>
+				            </li>
+				            <li>
+				                <span class="item_label">大楼营业时间：</span>
+				                <p class="word" ng-bind="::logItem.log_object_json.business_hour"></p>
+				            </li>
+				            <li >
+				                <span class="item_label">管理员手机号：</span>
+				                <p class="num word">
+				                    <span ng-bind="item.phone" ng-repeat="item in logItem.log_object_json.phones" style="padding-right: 5px;"></span> 
+				                </p>
+				            </li>
+				            <li>
+				                <span class="item_label">订单发送邮箱：</span>
+				                <p class="word" ng-bind="::logItem.log_object_json.email"></p>
+				            </li>
+				            <li>
+				                <span class="item_label">大楼描述：</span>
+				                <p class="news-content" ng-bind-html="logItem.log_object_json.detail"></p>
+				            </li>
+				        </ul>
+
+				        <div class="mtitle mid" translate>
+				            管理公司
+				        </div>
+
+				        <ul class="room_lsit log-list">
+				            <li>
+				                <span class="item_label">大楼管理公司：</span>
+				                <p class="word" ng-bind="::logItem.log_object_json.building_company.name"></p>
+				            </li>
+				            <li>
+				                <span class="item_label">公司网址：</span>
+				                <p class="word" ng-bind="::logItem.log_object_json.building_company.website"></p>
+				            </li>
+				            <li>
+				                <span class="item_label">公司电话：</span>
+				                <p class="word" ng-bind="::logItem.log_object_json.building_company.phone"></p>
+				            </li>
+				            <li>
+				                <span class="item_label">公司邮箱：</span>
+				                <p class="word" ng-bind="::logItem.log_object_json.building_company.email"></p>
+				            </li>
+				            <li>
+				                <span class="item_label">备注：</span>
+				                <p class="word" ng-bind="::logItem.log_object_json.building_company.remark"></p>
+				            </li>
+				            <li>
+				                <span class="item_label">线下协议签署：</span>
+				                <p class="word">需要大楼相关人员前往当地Sandbox创合社区大楼营业点提交公司营业执照和大楼相在资料或快递邮寄相关资料。</p>
+				            </li>
+				        </ul>
+				    </div>
+				</div>
+            </div>
+        </div>
+    </div>
+</div>

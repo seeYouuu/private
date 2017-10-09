@@ -1,0 +1,71 @@
+<div class="sandBox_content"">
+    <div class="tra-content">     
+        <div class="cus-select clearfix">
+            <div class="cus-sel-left">
+                <div class="c-s-dropdown">
+                    <sb-dropdown select="filterOption.keywordObj" placeholder="placeholder.keywords" options="keywordList" flexible="true" no-empty></sb-dropdown>
+                </div>
+                <input type="text" ng-model="filterOption.query" ng-keyup="$event.keyCode === 13 && searchList()"><input type="button" value="搜索" ng-click="searchList()">
+                <span ng-class="{'arrow-up': showFilter, 'arrow-down': !showFilter}" ng-click="showFilter = !showFilter;">更多筛选项</span>
+            </div>
+            <div class="cus-sel-right">
+                <span class="plus" ng-click="creatCus()" ng-if="currentAdmin.permissionMap[PERMISSION_KEY] === 2"><img src="../img/u16881.png"></span>
+                <span class="checkin" ng-click="showImportCustomers()" ng-if="currentAdmin.permissionMap[PERMISSION_KEY] === 2">批量导入</span>
+                <span class="checkin" ng-if="currentAdmin.permissionMap[PERMISSION_KEY] === 2 && batchJoin" ng-click="batchJoinGroup()">批量加入客户组</span>
+            </div>
+        </div>
+        <div class="t-f-box" ng-if="showFilter">
+            <div class="t-f-line">
+                <div class="t-f-left">
+                    客户组
+                </div>
+                <div class="t-f-right">
+                    <div class="t-f-half t-f-s">
+                        <div class="drop-wra">
+                            <sb-dropdown select="filterOption.groupObj" placeholder="placeholder.all" options="filterGroups" flexible="true" no-empty></sb-dropdown>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="t-btn-wra">
+                <div class="t-search-btn" ng-click="searchList()">
+                    搜索
+                </div>
+                <div class="t-search-btn" ng-click="resetSearch()">
+                    取消
+                </div>
+                <span class="clear-btn" ng-click="clearSearchFilters()">清空</span>
+            </div>
+        </div>
+        <mutiple-tags options="tags" class="tags-area" ng-show="showFilter" async-obj="filterOption.groupObj"></mutiple-tags>
+        <div class="space-bot cus-bot">
+            <div class="space-b-con cus-b-con">
+                <div class="s-info-page p25">
+                    <div class="line-width info-tit cus-nav">
+                        <div class="b-span line-item cus_drop" data-placement="bottom-left" data-content-template="js/features/customer/partials/popover.html" data-animation="am-fade" data-auto-close="1" bs-popover></div>
+                        <div class="line-item t-left" ng-repeat="header in tableHeaders" ng-bind="header.name"></div>
+                    </div>
+                    <div class="line-width info-tit cus-lists" ng-repeat='item in customerLists'>
+                        <div class="line-item">
+                            <u ng-class="{'select': !item.checked, 'select-already': item.checked}" ng-click="selectItem(item)"></u>
+                        </div>
+                        <div class="line-item t-left" ng-repeat="value in tableHeaders">
+                            <span ng-if="value.column === 'avatar'">
+                                <img ng-if="item.customization[value.column]" class="cus-img" ng-src="{{item.customization[value.column]}}">
+                                <img ng-if="!item.customization[value.column]" class="cus-img" src="/img/default.png">
+                                <i ng-if="item.customization.user_id" class="sandBox_icon"></i>
+                            </span>
+                            <span ng-if="value.column === 'name'" ng-click="cusDetail(item.id)" class="color-blue">{{item.customization[value.column]}}</span>
+                            <span ng-if="value.column === 'id_type'">{{item.customization.id_number}}</span>
+                            <p ng-if="(value.column == 'groups') && (item.customization[value.column].length > 0)" class="s-des" trigger='hover' data-placement="bottom-right" data-content-template="js/features/customer/partials/options.html" data-animation="am-fade" data-auto-close="1" bs-popover>所属客户组<span class="grey-num">（{{item.customization[value.column].length}}）</span></p>
+                            <p ng-if="(value.column == 'groups') && (item.customization[value.column].length == 0)">-</p>
+                            <span ng-if="(value.column !== 'name') && (value.column !== 'groups') && (value.column !== 'avatar') && (value.column !== 'id_type')">{{item.customization[value.column]}}</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="nodata" ng-if="customerLists.length <= 0 && loaded">无客户信息</div>
+        </div>
+        <pagination option="pageOptions" on-page="goPage(index)"></pagination>
+    </div>
+</div>   

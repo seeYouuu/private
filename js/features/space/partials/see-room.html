@@ -1,0 +1,616 @@
+<div class="group_detail">
+    <div class="space-detail">
+        <div class="space-head" ng-if="loading">
+            <span class="detail-tag" ng-class="{green: productItem.visible, grey: !productItem.visible}">ID: {{roomDetail.id}}</span>
+            <span class="head-des">{{roomDetail.name}}</span>
+            <div class="head-r">
+                <span ng-click="seePopover('space-option')" data-placement="bottom-right" data-content-template="js/features/space/partials/popover.html" data-animation="am-fade" data-auto-close="1" bs-popover>
+					空间操作
+					<i class="arr blue-arr arr-down"></i>
+				</span>
+            </div>
+        </div>
+        <div class="space-con" ng-if="loading">
+            <div class="space-top">
+                <div class="space-t-left">
+                    <div class="img_slider">
+                        <slick slides-to-show=1 current-index="roomImages.currentIndex" slides-to-scroll=1 arrows=true dots=false init-onload=true data="roomDetail.attachment">
+                            <div ng-repeat="item in roomDetail.attachment"><img ng-src="{{::item.attachment_id.content}}"></div>
+                        </slick>
+                        <div class="slider-num" ng-if="roomDetail.attachment.length > 0">{{roomImages.currentIndex + 1}}/{{roomDetail.attachment.length}}</div>
+                    </div>
+                </div>
+                <div class="space-t-right">
+                    <div class="s-t-tit">
+                        {{roomDetail.name}}
+                    </div>
+                    <div class="s-t-des">{{roomDetail.description}}</div>
+                    <div class="s-t-line m35" ng-if="productItem">
+                        <div ng-if="roomDetail.type_tag != 'dedicated_desk'">
+                            <span ng-if="!productItem.rent_set || !productItem.rent_set.status">
+                                <span class="red-num">{{productItem.leasing_sets[0].base_price}}</span>
+                                <span>元/{{productItem.leasing_sets[0].unit_price.toUpperCase() | translate}}起</span>
+                            </span>
+                            <span ng-if="productItem.rent_set && productItem.rent_set.status">
+                                <span class="red-num">{{productItem.rent_set.base_price}}</span>
+                                <span>元/{{productItem.rent_set.unit_price.toUpperCase() | translate}}起</span>
+                            </span>
+                            <span class="line-t" ng-if="productItem.rent_set">(最早起租日:{{productItem.rent_set.earliest_rent_date | date: 'yyyy-MM-dd'}})</span>
+                        </div>
+                        <div ng-if="roomDetail.type_tag == 'dedicated_desk'">
+                            <span class="red-num">{{roomDetail.base_price}}</span>
+                            <span>元 / {{productItem.leasing_sets[0].unit_price.toUpperCase() | translate}}</span>
+                        </div>
+                        <!-- <div class="s-line-box">
+							<span class="dot"></span>
+							<span>所有商品1折</span>
+						</div> -->
+                    </div>
+                    <div class="s-t-line" ng-if="!productItem">
+                        <div class="no-rent">
+                            <span>无租赁信息 <a class="t-link" ng-if="currentAdmin.productMap[PERMISSION_PRODUCT_KEY + selectedCommunity.id] === 2 || currentAdmin.user.is_super_admin" ng-click="seeProduct(spaceItem, 'create')">点击设置</a></span>
+                        </div>
+                    </div>
+                    <div class="s-t-line" ng-if="productItem">
+                        <div class="reg-line" ng-if="!productItem.rent_set || !productItem.rent_set.status">
+                            <span class="detail-tag red">秒</span>
+                            <span>{{typeTagDesc[roomDetail.type_tag]}}</span>
+                            <span class="pd20"><i class="n-icon ic-favorite"></i> ({{productItem.favorite}})</span>
+                        </div>
+                    </div>
+                    <div class="s-t-line reg-line" ng-if="productItem.rent_set && productItem.rent_set.status">
+                        <span>租赁押金</span>
+                        <span class="s-deposit">{{productItem.rent_set.deposit}}</span>
+                        <span>元</span>
+                        <span class="pd20"><i class="n-icon ic-favorite"></i> ({{productItem.favorite}})</span>
+                    </div>
+                    <div class="s-t-line reg-line" ng-if="productItem.rent_set && productItem.rent_set.status">
+                        <span>月租包含</span>
+                        <span class="s-deposit">{{productItem.leaseRentDesc}}</span>
+                    </div>
+                    <div class="s-t-line" ng-if="productItem.rent_set && productItem.rent_set.status">
+                        <div class="reg-line">
+                            <span class="detail-tag" ng-class="{'grey': !productItem || !productItem.appointment, 'ora': productItem.appointment}">预约</span>
+                            <div class="shift-b" ng-class="{'off': !productItem.appointment}" ng-click="seeStatusPop('appointment')" ng-if="currentAdmin.productMap[PERMISSION_PRODUCT_KEY + selectedCommunity.id] === 2 || currentAdmin.user.is_super_admin"> 
+                                <span class="r-b lf-b"></span>
+                                <div class="mid-t">
+                                    <span class="on-t">开</span>
+                                    <span class="off-t">关</span>
+                                </div>
+                                <span class="r-b rt-b"></span>
+                            </div>
+                            <span ng-if="currentAdmin.productMap[PERMISSION_PRODUCT_KEY + selectedCommunity.id] != 2 && !currentAdmin.user.is_super_admin && !productItem.appointment">预约已关闭</span>
+                            <span ng-if="currentAdmin.productMap[PERMISSION_PRODUCT_KEY + selectedCommunity.id] != 2 && !currentAdmin.user.is_super_admin && productItem.appointment">预约已开启</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="space-holder"></div>
+            <div class="space-bot">
+                <div class="space-b-head">
+                    <div class="b-box" ng-click="switchSpaceDetailTab(0)" ng-class="{on: spaceDetailTab == 0}" ng-if="roomDetail.fixed.length > 0">
+                        <div class="b-name">办公桌价格
+                            <div class="b-line"></div>
+                        </div>
+                    </div>
+                    <div class="b-box" ng-click="switchSpaceDetailTab(1)" ng-class="{on: spaceDetailTab == 1}">
+                        <div class="b-name">空间信息
+                            <div class="b-line"></div>
+                        </div>
+                    </div>
+                    <div class="b-box" ng-click="switchSpaceDetailTab(2)" ng-class="{on: spaceDetailTab == 2}" ng-if="productItem.rent_set && (currentAdmin.user.is_super_admin || currentAdmin.appointmentMap[PERMISSION_APPOINTMENT_KEY + roomDetail.building.id] === 2)">
+                        <div class="b-name">长租申请<div class="b-line"></div></div>
+                    </div>
+                    <div class="b-box" ng-click="switchSpaceDetailTab(3)" ng-class="{on: spaceDetailTab == 3}" ng-if="productItem.rent_set && roomDetail.type == 'office' && (currentAdmin.leasesMap[PERMISSION_LEASES_KEY + roomDetail.building.id] || currentAdmin.user.is_super_admin)">
+						<div class="b-name">相关合同<div class="b-line"></div></div>
+					</div>
+                    <div class="b-box" ng-click="switchSpaceDetailTab(4)" ng-class="{on: spaceDetailTab == 4}">
+                        <div class="b-name">空间使用
+                            <div class="b-line"></div>
+                        </div>
+                    </div>
+                    <div class="b-box" ng-click="switchSpaceDetailTab(5)" ng-class="{on: spaceDetailTab == 5}" ng-if="!productItem.rent_set && (currentAdmin.spaceOrderMap[PERMISSION_SPACE_ORDER_KEY + roomDetail.building.id] || currentAdmin.user.is_super_admin)">
+                        <div class="b-name">空间订单
+                            <div class="b-line"></div>
+                        </div>
+                    </div>
+                </div>
+                <div class="space-b-con">
+                    <div class="s-info-page" ng-if="spaceDetailTab == 0">
+                        <div class="fixed-line" ng-repeat="seat in roomDetail.fixed">
+                            <div class="f-l"><span class="g-bold">{{seat.seat_number}}</span></div>
+                            <div class="f-l" ng-if="seat.base_price"><span class="r-num">{{seat.base_price | currency: '￥':2}}</span> 元/{{productItem.leasing_sets[0].unit_price.toUpperCase() | translate}}</div>
+                            <div class="f-l" ng-if="!seat.base_price">暂无价格</div>
+                            <div class="f-l" ng-if="productItem && (currentAdmin.productMap[PERMISSION_PRODUCT_KEY + selectedCommunity.id] === 2 || currentAdmin.user.is_super_admin)"><span class="blue-f" ng-click="seeProduct(spaceItem, 'edit')">设置</span></div>
+                            <div class="f-l" ng-if="!productItem && (currentAdmin.productMap[PERMISSION_PRODUCT_KEY + selectedCommunity.id] === 2 || currentAdmin.user.is_super_admin)"><span class="blue-f" ng-click="seeProduct(spaceItem, 'create')">设置</span></div>
+                        </div>
+                    </div>
+                    <div class="s-info-page" ng-if="spaceDetailTab == 1">
+                        <div class="info-con">
+                            <ul class="room_lsit">
+                                <li>
+                                    <span class="item_label">租赁设置</span>
+                                    <div class="rule-box" ng-repeat = "item in productItem.leasing_sets">
+                                        <h5>{{rentDesc[item.unit_price]}}</h5> 
+                                        <div class="p-line"><span class="r-num">{{item.base_price | currency: ''}}</span>元 </div>
+                                        <span class="g-num">{{item.amount}}{{item.unit_price.toUpperCase() | translate}}起租</span>
+                                    </div>
+                                </li>
+                                <li>
+                                    <span class="item_label">空间信息</span>
+                                    <div class="commun-l">
+                                        <div class="info-line">
+                                            <img class="r-cat" ng-src="{{roomTypeObject[roomDetail.type].icon}}">
+                                            <span ng-bind="roomTypeObject[roomDetail.type].description"></span>
+                                        </div>
+                                        <div class="info-line">
+                                            <span class="n-icon ic-ip"></span>
+                                            <span ng-if="roomDetail.door_control.length > 0">{{roomDetail.door_show}}</span>
+                                            <span ng-if="roomDetail.door_control.length <= 0">无</span>
+                                        </div>
+                                        <div class="info-line">
+                                            <span class="n-icon ic-cap"></span>
+                                            <span>面积 {{roomDetail.area}}m²</span>
+                                        </div>
+                                        <div class="info-line">
+                                            <span class="n-icon ic-people"></span>
+                                            <span>工位 {{roomDetail.allowed_people}} 人</span>
+                                        </div>
+                                        <div class="info-line" ng-if="roomDetail.meeting.length > 0">
+                                            <span class="n-icon ic-clo"></span>
+                                            <span>每日允许租用时间段 {{roomDetail.meeting[0].start_hour | date: 'HH:mm'}} - {{roomDetail.meeting[0].end_hour | date: 'HH:mm'}}</span>
+                                        </div>
+                                        <div class="info-line">
+                                            <span class="n-icon ic-dep"></span>
+                                            <span ng-if="roomDetail.office_supplies.length > 0">{{roomDetail.supplies}}</span>
+                                            <span ng-if="roomDetail.office_supplies.length <= 0">无</span>
+                                        </div>
+                                    </div>
+                                </li>
+                                <li>
+                                    <span class="item_label">上架时间</span>
+                                    <span>{{productItem.start_date | date: 'yyyy-MM-dd'}}</span>
+                                </li>
+                                <li>
+                                    <span class="item_label">商品链接</span>
+                                    <span ng-bind="productItem.url"></span>
+                                </li>
+                                <li>
+                                    <span class="item_label">私人可见</span>
+                                    <div class="ad-box b-c" ng-if="productItem.visible_user_id && productItem.visible_user_id != 0">
+                                        <div class="u-avtar">
+                                            <img ng-src="{{userOptions[productItem.visible_user_id].avatar}}" default-url="../img/head.png">
+                                        </div>
+                                        <div class="u-acc">
+                                            <p class="name">{{userOptions[productItem.visible_user_id].name}}</p>
+                                            <p>{{userOptions[productItem.visible_user_id].phone}}</p>
+                                        </div>
+                                    </div>
+                                </li>
+                                <li ng-if="productItem.rent_set">
+                                    <span class="item_label">租赁须知</span>
+                                    <span ng-bind="productItem.rent_set.rental_info"></span>
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+                    <div class="s-info-page p25" ng-if="spaceDetailTab == 2">
+                        
+                        <div class="line-width info-tit">
+                            <div class="line-item per32 t-left">空间</div>
+                            <div class="line-item per19 t-left">承租方</div>
+                            <div class="line-item per19">起租日</div>
+                            <div class="line-item per9_5">月数</div>
+                            <div class="line-item per9_5">租金</div>
+                            <div class="line-item per11">操作</div>
+                        </div>
+                        <div class="space-b-box" ng-repeat="item in appointmentList">
+                            <div class="b-title tit-top">
+                                <span class="blake-txt">预约号：{{item.appointment_number}}</span>
+                                <span class="f-right">{{item.creation_date | date: 'yyyy-MM-dd'}}</span>
+                            </div>
+                            <div class="line-width">
+                                <div class="line-item per32 t-left">
+                                    <div class="item-con">
+                                        <div class="p-w-t">
+                                            <div class="p-p">
+                                                <img ng-src="{{item.product.room.attachment[0].attachment_id.content}}">
+                                            </div>
+                                            <div class="p-t">
+                                                <div class="p-t-top">
+                                                    {{item.product.room.building.name}}, {{item.product.room.name}}
+                                                </div>
+                                                <div class="p-t-bot">
+                                                    <span class="detail-tag red" ng-if="item.product.room.type !== 'longterm'">秒</span>
+                                                    <span class="detail-tag ora" ng-if="item.product.room.type === 'longterm'">长</span>
+                                                    <span>{{roomTypeDesc[item.product.room.type].description}}</span>
+                                                    <span class="detail-tag green" ng-if="item.appointed">指</span>
+                                                    <span ng-if="item.appointed" ng-bind="userOptions[item.appointed].name"></span>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="line-item per19 t-left">
+                                    <div class="item-con">
+                                        <div ng-bind="item.applicant_company"></div>
+                                        <div class="link-txt" ng-bind="item.applicant_email"></div>
+                                        <div class="link-txt" ng-bind="item.applicant_phone"></div>
+                                    </div>
+                                </div>
+                                <div class="line-item per19">
+                                    <div class="item-con">
+                                        <div>{{item.start_rent_date | date: 'yyyy-MM-dd'}}</div>
+                                    </div>
+                                </div>
+                                <div class="line-item per9_5">
+                                    <div class="item-con">
+                                        <div ng-bind="item.rent_time_length"></div>
+                                    </div>
+                                </div>
+                                <div class="line-item per9_5">
+                                    <div class="item-con">
+                                        <div>{{::item.product.base_price}}/{{unitDesc[item.product.unit_price]}}元起</div>
+                                    </div>
+                                </div>
+                                <div class="line-item per11 last-box">
+                                    <div class="item-con">
+                                        <div class="status">
+                                            <span class="status-txt" ng-bind="appointmentOrderStatus[item.status]"></span>
+                                            <div class="status-box">
+                                                <div class="status-head">
+                                                    预约申请历史状态记录
+                                                </div>
+                                                <div class="status-con">
+                                                    <div class="status-line">
+                                                        <div class="con-left">申请时间:</div>
+                                                        <div class="con-right">{{item.creation_date | date: 'yyyy-MM-dd HH:mm:ss'}}</div>
+                                                    </div>
+                                                    <div class="status-line" ng-if="item.status !== 'pending'">
+                                                        <div class="con-left" ng-if="item.status === 'accepted'">同意时间:</div>
+                                                        <div class="con-left" ng-if="item.status === 'rejected'">拒绝时间:</div>
+                                                        <div class="con-left" ng-if="item.status === 'withdrawn'">撤销时间:</div>
+                                                        <div class="con-right">{{item.modification_date | date: 'yyyy-MM-dd HH:mm:ss'}}</div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <!-- <div class="link-txt" ng-click="generateAgreement(item)" ng-if="!item.lease_id && item.status === 'pending' && (currentAdmin.user.is_super_admin || (currentAdmin.leasesMap[PERMISSION_LEASES_KEY + item.product.room.building.id] === 2 && currentAdmin.appointmentMap[PERMISSION_APPOINTMENT_KEY + item.product.room.building.id] === 2))">生成合同</div> -->
+
+                                        <!-- <div class="link-txt" ng-click="seeUpdateDraft(item.lease_id)" ng-if="item.lease_id && item.status === 'pending' && (currentAdmin.user.is_super_admin || currentAdmin.leasesMap[PERMISSION_LEASES_KEY + item.product.room.building.id] === 2) ">继续编辑合同</div> -->
+
+                                        <!-- <div class="link-txt" ng-click="seeContractDetail(item.lease_id)" ng-if="item.lease_id && item.status === 'accepted' && (currentAdmin.user.is_super_admin || currentAdmin.leasesMap[PERMISSION_LEASES_KEY + item.product.room.building.id]) ">查看合同</div> -->
+
+                                        <div class="link-txt" ng-click="showRejectedConfirm(item)" ng-if="item.status === 'pending' && (currentAdmin.user.is_super_admin || currentAdmin.appointmentMap[PERMISSION_APPOINTMENT_KEY + item.product.room.building.id] === 2)">拒绝</div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="b-title tit-bot">
+                                <span class="blake-txt">预约人:</span>
+                                <div class="blake-txt link-txt">
+                                    {{userOptions[item.user_id].name}}
+                                    <div class="u-box just-show">
+                                        <img ng-src="{{userOptions[item.user_id].avatar}}" class="u-ava">
+                                        <div class="u-nick">{{userOptions[item.user_id].name}}</div>
+                                        <div class="u-info">
+                                            <span ng-if="userOptions[item.user_id].phone">{{userOptions[item.user_id].phone}}</span>
+                                            <span ng-if="userOptions[item.user_id].email">{{userOptions[item.user_id].email}}</span>
+                                        </div>
+                                        <span class="n-icon ic_msg" ng-if="customerservice[item.product.room.building.id]" ng-click="generateChat(item.user_id, item.product.room.building.id)"></span>
+                                    </div>
+                                </div>
+                                <span class="blake-txt f-right">预约总租金: {{::item.product.base_price * item.rent_time_length}} 元起</span>
+                            </div>
+                        </div>
+
+                        <pagination option="pageOptions" on-page="goPage(index)"></pagination>
+                    </div>
+                    <div class="s-info-page p25" ng-if="spaceDetailTab == 3">
+                        <div class="line-width info-tit" ng-if="leasesList.length > 0">
+                            <div class="line-item per32 t-left">
+                                空间
+                            </div>
+                            <div class="line-item per19 t-left">
+                                承租方
+                            </div>
+                            <div class="line-item per19">
+                                租用时间段
+                            </div>
+                            <div class="line-item per9_5">
+                                合同账单
+                            </div>
+                            <div class="line-item per9_5">
+                                其他账单
+                            </div>
+                            <div class="line-item per11">
+                                操作
+                            </div>
+                        </div>
+                        <div class="space-b-box" ng-repeat="item in leasesList">
+                            <div class="b-title tit-top">
+                                <span class="blake-txt">合同号：{{item.serial_number}}</span>
+                                <span class="f-right">{{item.confirming_date | date: 'yyyy-MM-dd'}}</span>
+                            </div>
+                            <div class="line-width">
+                                <div class="line-item per32 t-left">
+                                    <div class="item-con">
+                                        <div class="p-w-t">
+                                            <div class="p-p">
+                                                <img ng-src="{{item.product.room.attachment}}">
+                                            </div>
+                                            <div class="p-t">
+                                                <div class="p-t-top hover">
+                                                    {{item.product.room.city}}, {{item.product.room.building.name}}, {{item.product.room.name}}
+                                                </div>
+                                                <div class="p-t-bot">
+                                                    <span class="detail-tag red" ng-if="item.product.room.type !== 'longterm'">秒</span>
+                                                    <span class="detail-tag ora" ng-if="item.product.room.type === 'longterm'">长</span>
+                                                    <span>{{roomTypeObject[item.product.room.type].description}}</span>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="line-item per19 t-left">
+                                    <div class="item-con">
+                                        <div ng-bind="item.lessee_name"></div>
+                                        <div class="link-txt" ng-bind="item.lessee_email"></div>
+                                        <div class="link-txt" ng-bind="item.lessee_phone"></div>
+                                    </div>
+                                </div>
+                                <div class="line-item per19">
+                                    <div class="item-con">
+                                        <div>{{item.start_date | date: 'yyyy-MM-dd'}}</div>
+                                        <div>-</div>
+                                        <div>{{item.end_date | date: 'yyyy-MM-dd'}}</div>
+                                    </div>
+                                </div>
+                                <div class="line-item per9_5">
+                                    <div class="item-con">
+                                        <div><span class="link-txt">{{item.pushed_lease_bills_amount}}</span> / <span class="link-txt">{{item.total_lease_bills_amount}}</span></div>
+                                    </div>
+                                </div>
+                                <div class="line-item per9_5">
+                                    <div class="item-con">
+                                        <div><span class="link-txt">{{item.other_bills_amount}}</span></div>
+                                    </div>
+                                </div>
+                                <div class="line-item per11 last-box">
+                                    <div class="item-con">
+                                        <div class="status">
+                                            <span class="status-txt">{{agreementStatus[item.status]}}</span>
+                                            <div class="status-box">
+                                                <div class="status-head">
+                                                    合同历史状态记录
+                                                </div>
+                                                <div class="status-con">
+                                                    <div class="status-line" ng-if="item.change_logs.apply_date">
+                                                        <div class="con-left">预约时间:</div>
+                                                        <div class="con-right">{{item.change_logs.apply_date | date: 'yyyy-MM-dd HH:mm:ss'}}</div>
+                                                    </div>
+                                                    <div class="status-line" ng-if="item.change_logs.lease_conforming_date">
+                                                        <div class="con-left">合同生成时间:</div>
+                                                        <div class="con-right">{{item.change_logs.lease_conforming_date | date: 'yyyy-MM-dd HH:mm:ss'}}</div>
+                                                    </div>
+                                                    <div class="status-line" ng-if="item.change_logs.lease_conformed_date">
+                                                        <div class="con-left">确认时间:</div>
+                                                        <div class="con-right">{{item.change_logs.lease_conformed_date | date: 'yyyy-MM-dd HH:mm:ss'}}</div>
+                                                    </div>
+                                                    <div class="status-line" ng-if="item.change_logs.lease_performing_date">
+                                                        <div class="con-left">生效时间:</div>
+                                                        <div class="con-right">{{item.change_logs.lease_performing_date | date: 'yyyy-MM-dd HH:mm:ss'}}</div>
+                                                    </div>
+                                                    <div class="status-line" ng-if="item.change_logs.lease_close_date && item.status == 'closed'">
+                                                        <div class="con-left">关闭时间:</div>
+                                                        <div class="con-right">{{item.change_logs.lease_close_date | date: 'yyyy-MM-dd HH:mm:ss'}}</div>
+                                                    </div>
+                                                    <div class="status-line" ng-if="item.change_logs.lease_close_date && item.status == 'terminated'">
+                                                        <div class="con-left">终止时间:</div>
+                                                        <div class="con-right">{{item.change_logs.lease_close_date | date: 'yyyy-MM-dd HH:mm:ss'}}</div>
+                                                    </div>
+                                                    <div class="status-line" ng-if="item.status === 'matured'">
+                                                        <div class="con-left">到期时间:</div>
+                                                        <div class="con-right">{{item.end_date | date: 'yyyy-MM-dd HH:mm:ss'}}</div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="link-txt" ng-click="seeContractDetail(item.id)">查看详情</div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="b-title tit-bot">
+                                <span class="blake-txt">合同负责人:</span>
+                                <div class="blake-txt link-txt">
+                                    {{userOptions[item.supervisor].name}}
+                                    <div class="u-box just-show">
+                                        <img ng-src="{{userOptions[item.supervisor].avatar}}" class="u-ava">
+                                        <div class="u-nick">{{userOptions[item.supervisor].name}}</div>
+                                        <div class="u-info">
+                                            <span ng-if="userOptions[item.supervisor].phone">{{userOptions[item.supervisor].phone}}</span>
+                                            <span ng-if="userOptions[item.supervisor].email">{{userOptions[item.supervisor].email}}</span>
+                                        </div>
+                                        <span class="n-icon ic_msg" ng-if="customerservice[item.product.room.building.id]" ng-click="generateChat(item.supervisor, item.product.room.building.id)"></span>
+                                    </div>
+                                </div>
+                                <span class="blake-txt f-right">已出账单总金额: {{item.pushed_lease_bills_fees}} 元</span>
+                            </div>
+                        </div>
+                        <pagination option="pageOptions" on-page="goPage(index)"></pagination>
+                        <div class="nodata" ng-if="leasesList.length <= 0 && loaded">无长租合同</div>
+                    </div>
+                    <div class="s-info-page p25" ng-if="spaceDetailTab == 4">
+                        <div class="fixed-s" ng-if="roomDetail.type ==='fixed'">
+                            <div class="fixed-i" ng-class="{'on': item.selected}" ng-click="selectSeat(item, 'usage')" ng-repeat="item in roomDetail.fixed">{{item.seat_number}}</div>
+                        </div>
+                        <div class="mcalendar">
+                            <div sb_date ng-if="productItem.unit_price === 'hour'" date="calendarOptions.date" book-dates="bookDatas.meeting"></div>
+                            <div sb_month ng-if="roomDetail.type ==='fixed' && productItem.unit_price === 'day'" type="roomDetail.type" start="calendarOptions.start" end="calendarOptions.end" book-dates="bookDatas.fixed"></div>
+			                <div sb_month ng-if="roomDetail.type ==='flexible' && productItem.unit_price === 'day'" type="roomDetail.type" start="calendarOptions.start" end="calendarOptions.end" book-dates="bookDatas.flexible" allow="roomDetail.allowed_people"></div>
+                            <div sb_Year ng-if="roomDetail.type ==='office' && productItem.unit_price === 'month' || roomDetail.type ==='longterm'" date="calendarOptions.year" book-dates="bookDatas.office"></div>
+                            <div sb_Year ng-if="roomDetail.type ==='fixed' && productItem.unit_price === 'month'" date="calendarOptions.year" book-dates="bookDatas.fixed"></div>
+                        </div>
+                    </div>
+                    <div class="s-info-page p25" ng-if="spaceDetailTab == 5">
+                        <div class="line-width info-tit" ng-if="spaceList.length > 0">
+                            <div class="line-item per32 t-left">
+                                空间
+                            </div>
+                            <div class="line-item per19">
+                                单价
+                            </div>
+                            <div class="line-item per15">
+                                租赁/账单时间
+                            </div>
+                            <div class="line-item per11">
+                                付款人
+                            </div>
+                            <div class="line-item per11">
+                                下单方式
+                            </div>
+                            <div class="line-item per11">
+                                操作
+                            </div>
+                        </div>
+                        <div class="space-b-box" ng-repeat="item in spaceList">
+                            <div class="b-title tit-top">
+                                <span class="blake-txt">订单号：{{item.order_number}}</span>
+                                <span class="grey-txt" ng-if="item.product.sales_invoice && item.pay_channel != 'account'">({{item.product.room.building.company.name}})</span>
+                                <span class="grey-txt" ng-if="!item.product.sales_invoice && item.pay_channel != 'account'">(创合开票)</span>
+                                <span class="f-right" ng-bind="item.creation_date | date: 'yyyy-MM-dd'"></span>
+                            </div>
+                            <div class="line-width">
+                                <div class="line-item per32 t-left">
+                                    <div class="item-con">
+                                        <div class="p-w-t">
+                                            <div class="p-p">
+                                                <img ng-src="{{item.product_info.room.attachment[0].attachment_id.content}}">
+                                            </div>
+                                            <div class="p-t">
+                                                <div class="p-t-top hover" ng-click="seeRoomDetail(item.product_info)">
+                                                    {{item.product_info.room.city.name}}, {{item.product_info.room.building.name}}, {{item.product_info.room.name}}<span ng-if="item.product_info.room.type == 'fixed'">，座位号{{item.product_info.room.seat.seat_number}}</span>
+                                                </div>
+                                                <div class="p-t-bot">
+                                                    <span class="detail-tag red" ng-if="item.product.room.type !== 'longterm'">秒</span>
+                                                    <span class="detail-tag ora" ng-if="item.product.room.type === 'longterm'">长</span>
+                                                    <span>{{roomTypeDesc[item.product.room.type].description}}</span>
+                                                    <div class="for-hover">
+                                                        <div class="detail-tag green" ng-if="item.appointed">
+                                                            指
+                                                            <div class="u-box just-show">
+                                                                <img ng-src="{{userOptions[item.appointed].avatar}}" class="u-ava">
+                                                                <div class="u-nick">{{userOptions[item.appointed].name}}</div>
+                                                                <div class="u-info">
+                                                                    <span ng-if="userOptions[item.appointed].phone">{{userOptions[item.appointed].phone}}</span>
+                                                                    <span ng-if="userOptions[item.appointed].email">{{userOptions[item.appointed].email}}</span>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                        <span ng-if="item.appointed">指定用户</span>
+                                                    </div>
+                                                    <div class="detail-tag blue" ng-if="item.invited_people.length > 0">邀</div>
+                                                    <span ng-if="item.invited_people.length > 0">邀请用户</span>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="line-item per19">
+                                    <div class="item-con">
+                                        <div ng-if="item.product_info.room.type != 'fixed' && item.product_info.base_price">{{::item.product_info.base_price | currency: '￥':2 }}/{{unitDesc[item.product_info.unit_price]}}</div>
+                                        <div ng-if="item.product_info.room.type == 'fixed' && item.product_info.base_price">{{::item.product_info.room.seat.base_price | currency: '￥':2 }}/{{unitDesc[item.product_info.unit_price]}}</div>
+
+                                        <div ng-if="item.product_info.room.type_tag != 'dedicated_desk' && !item.product_info.base_price">{{::item.product_info.order.base_price | currency: '￥':2 }}/{{unitDesc[item.product_info.order.unit_price]}}</div>
+                                        <div ng-if="item.product_info.room.type_tag == 'dedicated_desk' && !item.product_info.base_price">{{::item.product_info.room.seat.base_price | currency: '￥':2 }}/{{unitDesc[item.product_info.order.unit_price]}}</div>
+                                    </div>
+                                </div>
+                                <div class="line-item per15">
+                                    <div class="item-con">
+                                        <span ng-if="item.product_info.unit_price === 'hour'">{{item.start_date | date: 'yyyy-MM-dd'}}<br/>({{item.start_date | date: 'HH:mm'}} - {{item.end_date | date: 'HH:mm'}})</span>
+                                        <span ng-if="item.product_info.unit_price !== 'hour'">{{item.start_date | date: 'yyyy-MM-dd'}}<br/>{{'TO' | translate}}<br/>{{item.end_date | date: 'yyyy-MM-dd'}}</span>
+                                    </div>
+                                </div>
+                                <div class="line-item per11">
+                                    <div class="item-con">
+                                        <div class="link-txt">
+                                            <span class="detail-tag d-ora" ng-if="item.payment_user_id && item.payment_user_id != item.user_id">代</span>
+                                            <span ng-if="item.pay_channel != 'offline'">{{::userOptions[item.payment_user_id].name}}</span>
+                                            <span ng-if="item.pay_channel == 'offline'">{{::userOptions[item.user_id].name}}</span>
+                                            <div class="u-box just-show">
+                                                <img ng-src="{{userOptions[item.payment_user_id].avatar}}" class="u-ava">
+                                                <div class="u-nick">{{userOptions[item.payment_user_id].name}}</div>
+                                                <div class="u-info">
+                                                    <span ng-if="userOptions[item.payment_user_id].phone">{{userOptions[item.payment_user_id].phone}}</span>
+                                                    <span ng-if="userOptions[item.payment_user_id].email">{{userOptions[item.payment_user_id].email}}</span>
+                                                </div>
+                                                <span class="n-icon ic_msg" ng-if="customerservice[item.product.room.building.id]" ng-click="generateChat(item.payment_user_id, item.product.room.building.id)"></span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="line-item per11">
+                                    <div class="item-con">
+                                        <div ng-if="!item.type">{{'SELF_ORDER' | translate}}</div>
+                                        <div ng-if="item.type">{{item.type | translate}}</div>
+                                        <div ng-if="item.pay_channel"><span class="detail-tag widder t-shadow" ng-class="{'wechat': item.pay_channel == 'wx','account': item.pay_channel == 'account','offline': item.pay_channel == 'offline','alipay': item.pay_channel == 'alipay' || item.pay_channel == 'upacp','we-off': item.pay_channel == 'wx_pub'}">{{item.pay_channel | translate}}</span></div>
+                                    </div>
+                                </div>
+                                <div class="line-item per11 last-box">
+                                    <div class="item-con">
+                                        <div class="status">
+                                            <span class="status-txt" ng-if="item.status != 'cancelled'">{{item.status.toUpperCase() | translate}}</span>
+                                            <span class="status-txt" ng-if="item.status == 'cancelled' && !item.refunded && !item.need_to_refund">已取消</span>
+                                            <span class="status-txt" ng-if="item.status == 'cancelled' && item.refunded">已退款</span>
+                                            <span class="status-txt" ng-if="item.status == 'cancelled' && item.need_to_refund">待退款</span>
+                                            <div class="status-box">
+                                                <div class="status-head">
+                                                    订单历史状态记录
+                                                </div>
+                                                <div class="status-con">
+                                                    <div class="status-line" ng-if="item.creation_date">
+                                                        <div class="con-left">下单时间:</div>
+                                                        <div class="con-right">{{item.creation_date | date: 'yyyy-MM-dd HH:mm:ss'}}</div>
+                                                    </div>
+                                                    <div class="status-line" ng-if="item.payment_date">
+                                                        <div class="con-left">付款时间:</div>
+                                                        <div class="con-right">{{item.payment_date | date: 'yyyy-MM-dd HH:mm:ss'}}</div>
+                                                    </div>
+                                                    <div class="status-line" ng-if="item.cancelled_date">
+                                                        <div class="con-left">取消时间:</div>
+                                                        <div class="con-right">{{item.cancelled_date | date: 'yyyy-MM-dd HH:mm:ss'}}</div>
+                                                    </div>
+                                                    <div class="status-line" ng-if="item.refund_processed_date">
+                                                        <div class="con-left">退款时间:</div>
+                                                        <div class="con-right">{{item.refund_processed_date | date: 'yyyy-MM-dd HH:mm:ss'}}</div>
+                                                    </div>
+                                                    <div class="status-line" ng-if="item.end_date && item.status === 'completed'">
+                                                        <div class="con-left">订单结束时间:</div>
+                                                        <div class="con-right">{{item.end_date | date: 'yyyy-MM-dd HH:mm:ss'}}</div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div ng-if="item.refunded || item.refund_processed || item.status == 'cancelled' && item.transfer.length > 0 || item.status == 'cancelled' && item.pay_channel != 'offline'">({{item.discount_price | currency: '￥':2 }})</div>
+                                        <div class="link-txt" ng-click="seeOrderDetail(item.id)">查看详情</div>
+                                        <div class="link-txt" 
+                                           ng-if="((item.type === 'reserve' && item.status !== 'cancelled' && item.cancellable) || (item.type === 'preorder' && item.status !== 'cancelled' && item.status !== 'paid' && item.cancellable)) && (currentAdmin.user.is_super_admin || currentAdmin.spaceOrderMap[PERMISSION_SPACE_ORDER_KEY + item.product.room.building.id] === 2)" 
+                                           ng-click="cancelOrder(item.id)">{{'CANCEL_ORDER' | translate}}</div>
+                                        <div class="link-txt" ng-if="item.product_info.room.type === 'office' && (item.status === 'completed' || item.status === 'paid') && item.rejected && (currentAdmin.user.is_super_admin ||  currentAdmin.spaceOrderMap[PERMISSION_SPACE_ORDER_KEY + item.product.room.building.id] === 2)" ng-click="setStatus(item.id, false)">同意</div>
+                                        <div class="link-txt" ng-if="item.product_info.room.type === 'office' && (item.status === 'completed' || item.status === 'paid') && item.rejected && (currentAdmin.user.is_super_admin || spaceOrderMap[PERMISSION_SPACE_ORDER_KEY + item.product.room.building.id] === 2)" ng-click="setStatus(item.id, true)">拒绝</div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="b-title tit-bot">
+                                <!-- <span class="link-txt f-right" ng-if="item.status === 'unpaid' && (currentAdmin.permissionMap[PERMISSION_SPACE_ORDER_KEY + item.product.room.building.id] === 2 || currentAdmin.user.is_super_admin)" ng-click="seePopup('orderAmount')">更改</span> -->
+                                <span class="del-txt f-right" ng-if="item.price != item.discount_price">({{item.price - item.discount_price | currency: '￥':2 }})</span>
+                                <span class="blake-txt f-right" ng-if="item.status === 'unpaid'">应付款: {{::item.price | currency: '￥':2 }}</span>
+                                <span class="blake-txt f-right" ng-if="item.status !== 'unpaid'">实付款: {{::item.discount_price | currency: '￥':2 }}</span>
+                            </div>
+                        </div>
+                        <div class="nodata" ng-if="spaceList.length <= 0 && loaded">无空间订单</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

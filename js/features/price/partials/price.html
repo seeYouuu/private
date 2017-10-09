@@ -1,0 +1,91 @@
+<div class="sandBox_crumbs" ng-if="pageFlag === 'list'">
+  <a ><i class="icon ic_db"></i></a><em>/</em><span>Price Rule</span>
+</div>
+<div class="sandBox_crumbs" ng-if="pageFlag === 'new'">
+  <a ><i class="icon ic_db"></i></a><em>/</em><a ng-click="back()">Price Rule</a><em>/</em><span>new</span>
+</div>
+<div class="sandBox_crumbs" ng-if="pageFlag === 'edit'">
+  <a ><i class="icon ic_db"></i></a><em>/</em><a ng-click="back()">Price Rule</a><em>/</em><span>edit</span>
+</div>
+<div class="sandBox_content">
+
+    <div ng-include="'/js/features/price/partials/new.html'"></div>
+
+    <div class="sandBox_detail" ng-if="pageFlag === 'list'">
+        <div class="mbox">
+            <div class="mtitle">
+                价格模板
+                <div class="mSearchBar">
+                    <input type="text" placeholder="可根据规则名称搜索" 
+                            ng-model="filterOption.searchKey"
+                            ng-keyup="$event.keyCode === 13 && search()">
+                </div>
+            </div>
+            <div class="mbd mPadding15">
+                <!-- <a class="primary_btn" ng-click="showNew()" ng-if="canModify()">Add Price Rule</a> -->
+                <a class="primary_btn" ng-click="showNew()">Add Price Rule</a>
+
+                <div class="mfilter mMarginB15 mTop15">
+                    <sb-dropdown select="filterOption.rule" options="ruleStatuses" placeholder="placeholder.rule" short='true'></sb-dropdown>
+                </div>
+
+                <table cellpadding="0" cellspacing="0" border="0" width="100%" class="default_table" style="position: relative;">
+                    <tr>
+                        <th width="5%">#</th>
+                        <th width="5%">规则名称</th>
+                        <th width="8%">规则定义</th>
+                        <th width="8%">规则类型</th>
+                        <th width="10%">使用用户类型</th>
+                        <th width="16%">适用范围</th>
+                        <th width="22%">规则描述</th>
+                        <th width="8%">开始时间</th>
+                        <th width="8%">结束时间</th>
+                        <th width="10%">操作</th>
+                    </tr>
+                    <tr ng-repeat="rule in priceRules track by $index">
+                        <td>{{rule.id}}</td>
+                        <td>{{rule.rule_name}}</td>
+                        <td>{{ruleDefinitions[rule.rule_define]}}</td>
+                        <td>{{ruleTypes[rule.rule_type]}}</td>
+                        <td>{{userType[rule.suitable_user]}}</td>
+                        <td class="area-cell">
+                            <p>城市：{{rule.suitable_area.city}}</p>
+                            <p>大楼：{{rule.suitable_area.building.join('，')}}</p>
+                            <p>类型：{{rule.typeDesc || '所有类型'}}</p>
+                            <p>房间：<a href="" 
+                                       data-placement="{{$index > 5 ? 'top' : 'bottom'}}" 
+                                       data-animation="am-flip-x"
+                                       data-title="{{rule.suitable_area.city}}"
+                                       data-template="roomPopoverTpl"
+                                       data-auto-close="true"
+                                       bs-popover
+                                       ng-if="rule.suitable_area.rooms.length > 0">查看详情</a><span ng-if="rule.suitable_area.rooms.length === 0">所有房间</span>   
+                            </p>
+                        </td>
+                        <td>
+                            <p class="ellipsis_desc" title="{{rule.rule_description}}">{{rule.rule_description}}</p>
+                        </td>
+                        <td>{{rule.start_time | date:'yyyy/MM/dd HH:mm:ss':'+0800'}}</td>
+                        <td>{{rule.end_time | date:'yyyy/MM/dd HH:mm:ss':'+0800'}}</td>
+                        <td>
+                            <a class="action-icon" ng-click="showEdit(rule)" ng-if="canModify()">
+                              <i class="fa fa-edit fa-lg"></i>
+                            </a>
+                            <a class="action-icon" ng-click="popToggleRule(rule, 0)" ng-if="canModify() && rule.status === 1">
+                              <i class="fa fa-play fa-lg"></i>
+                            </a>
+                            <a class="action-icon" ng-click="popToggleRule(rule, 1)" ng-if="canModify() && rule.status === 0">
+                              <i class="fa fa-pause fa-lg"></i>
+                            </a>
+                            <a class="action-icon" ng-click="popDeleteRule(rule)" ng-if="canModify()">
+                              <i class="fa fa-trash-o fa-lg"></i>
+                            </a>
+                        </td>
+                    </tr>
+                </table>
+                <pagination option="pageOptions" on-page="goPage(index)"></pagination>
+            </div>
+        </div>
+    </div>
+</div>
+</div>

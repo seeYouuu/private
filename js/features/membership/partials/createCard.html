@@ -1,0 +1,65 @@
+<div class="group_detail add-room">
+	<div class="space-detail">
+		<div class="space-head">
+			<span ng-if="pageType == 'createCard' || pageType == 'copyCard'" class="head-des">创建会员卡</span>
+            <span ng-if="pageType == 'editCard'" class="head-des">编辑会员卡</span>
+		</div>
+		<div class="space-con">
+            <div class="card-box">
+                <div class="card-mu"  style="background-image: url({{backgroundImg.download_link}})">
+                    <div class="card-mask" ng-if="!backgroundImg.download_link"></div>
+                    <div class="card-txt tp"><h5>会员组名</h5><span>-社区</span></div>
+                    <div class="card-txt bm"><span>有效期 xx天/年</span></div>
+                </div>
+                <div class="bm-txt"><span>展示效果</span></div>
+            </div>
+			<ul class="room_lsit p-right">
+                <li>
+                    <span class="item_label top-label"><font class="muted">*</font>会籍名称</span>
+                    <input type="text" class="default_text" ng-model="createOption.name">
+                </li>
+                <li>
+                    <span class="item_label top-label"><font class="muted">*</font>会员卡背景图</span>
+                    <div class="a-pic-box bg-box">
+                            <label class="a-p-top add-icon btnLink upload" ng-if="!backgroundImg.download_link">
+                                <input type="file" nv-file-select uploader="draftImageUploader"/>
+                            </label>
+                            <img class="a-pic" ng-src="{{backgroundImg.download_link}}" ng-click="seeDialog(backgroundImg)" ng-if="backgroundImg.download_link">
+                    </div>
+                    <label class="change-bt" for="uploadLogo" ng-if="backgroundImg.download_link"><input type="file" nv-file-select uploader="draftImageUploader"/>更改</label>
+                    <div class="bt-tip"><small translate translate-values="{width: gallery.width, height: gallery.height}">IMAGE_RULE</small></div>
+                </li>
+                <li>
+                    <span class="item_label top-label">应用社区</span>
+                    <div><span class="grey-num l-pading">注: 会员卡将在勾选的社区售卖。如不勾选, 则在所有社区售卖</span></div>
+
+                    <div class="rent-cat r-c" ng-repeat="item in buildings">
+                        <div class="rent-item l-pading" ng-class="{on: item.selected}">
+                            <div class="check" ng-click="selectBuilding(item)"></div>
+                            <span>{{item.name}}</span><span class="grey-num"> - 应用门禁</span>
+                        </div>
+                        <sb-muti-dropdown ng-if="item.selected" select="item.doors" options="item.doorLists"></sb-muti-dropdown>
+                    </div>
+
+                </li>
+                
+                <li>
+                    <span class="item_label top-label"><font class="muted">*</font>会员卡说明</span>
+                    <textarea ng-model='createOption.description'></textarea>
+                </li>
+                <li>
+                    <span class="item_label top-label"><font class="muted">*</font>使用须知</span>
+                    <textarea ng-model='createOption.instructions'></textarea>
+                </li>
+                <li>
+                    <span class="item_label top-label"><font class="muted">*</font>客服电话</span>
+                    <input type="text" class="default_text" ng-model="createOption.phone">
+                </li>
+                <li>
+                	<div class="add-btn" ng-if="pageType == 'createCard' || pageType == 'copyCard'" ng-click="createMembership('submit')">创建会员卡</div>
+                    <div class="add-btn" ng-if="pageType == 'editCard'" ng-click="editMembership('submit')">保存设置</div>
+                </li>
+            </ul>
+		</div>
+	</div>
+</div>

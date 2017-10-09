@@ -1,0 +1,37 @@
+<div class="sandBox_content"">
+    <div class="tra-content">     
+        <div class="cus-select clearfix">
+            <div class="cus-sel-left">
+                <div class="c-s-dropdown">
+                    <sb-dropdown select="" placeholder="placeholder.keywords" options="" flexible="true" no-empty></sb-dropdown>
+                </div>
+                <input type="text"><input type="button" value="搜索">
+                <span ng-class="{'arrow-up': showFilter, 'arrow-down': !showFilter}" ng-click="showFilter = !showFilter;">更多筛选项</span>
+            </div>
+            <div class="cus-sel-right">
+                <span class="plus" ng-click="creatCompany()" ng-if="currentAdmin.permissionMap[PERMISSION_KEY] === 2"><img src="../img/u16881.png"></span>
+                <span class="plus"><img src="../img/u16890.png"></span>
+            </div>
+        </div>
+        <div class="space-bot cus-bot">
+            <div class="space-b-con cus-b-con">
+                <div class="s-info-page p25">
+                    <div class="line-width info-tit cus-nav">
+                        <div class="b-span line-item cus_drop" data-placement="bottom-left" data-content-template="js/features/customer/partials/popover.html" data-animation="am-fade" data-auto-close="1" bs-popover></div>
+                        <div class="line-item t-left" ng-repeat="header in tableHeaders" ng-bind="header.name"></div>
+                    </div>
+                    <div class="line-width info-tit cus-lists" ng-repeat='item in companyLists'>
+                        <div class="line-item"><input type="checkbox" name=""></div>
+                        <div class="line-item t-left" ng-repeat="value in tableHeaders">
+                            <span ng-if="value.column === 'name'" ng-click="editCompany(item)" class="color-blue">{{item.customization[value.column]}}</span>
+                            <span ng-if="value.column == 'contacts'" class="color-blue" ng-click="linkman(item)">{{item.customization[value.column].length}}人</span>
+                            <span ng-if="(value.column !== 'name') && (value.column !== 'contacts')">{{item.customization[value.column]}}</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="nodata" ng-if="companyLists.length <= 0 && loaded">无用户信息</div>
+        </div>
+        <pagination option="pageOptions" on-page="goPage(index)"></pagination>
+    </div>
+</div>   

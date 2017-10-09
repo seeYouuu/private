@@ -1,0 +1,26 @@
+<div class="mcalendar sm_calendar">
+    <div class="calendar_head sm_calendar_head">
+        <div class="direction sm_direction">
+            <a class="prev" ng-click="prev()"><i class="icon ic_prev"></i></a>
+            <a class="next" ng-click="next()"><i class="icon ic_next"></i></a>
+        </div>
+        <a class="today sm_today" ng-click="today()">今天</a>
+        <a class="now sm_now">
+            {{date | date: 'MMM dd, yyyy'}}
+        </a>
+    </div> 
+
+    <table cellpadding="0" cellspacing="0" border="0" style="max-width: 390px;overflow-x: scroll;display: block;">
+        <tr>
+            <th ng-if="item.show" ng-repeat="item in hours" colspan="2" ng-class="{'disabled':item.selected}">{{item.hour}}{{item.mindesc}}</th>
+        </tr>
+        <tr>
+            <td ng-repeat="item in hours" ng-class="{'selected':item.selected}">   
+                <div class="detail_prog begin end" style="background:#E8E7E7;margin: 0px" ng-if="item.selected">
+                </div>
+                <div style="margin: 0px" ng-if="!item.selected">
+                </div>
+            </td>
+        </tr>
+    </table>
+</div>

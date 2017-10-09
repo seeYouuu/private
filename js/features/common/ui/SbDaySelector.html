@@ -1,0 +1,27 @@
+<table ng-mouseup="selectDone()">
+    <tr>
+        <td>星期</td>
+        <td>星期一</td>
+        <td>星期二</td>
+        <td>星期三</td>
+        <td>星期四</td>
+        <td>星期五</td>
+        <td>星期六</td>
+        <td>星期日</td>
+    </tr>
+    <tr>
+        <td>折扣</td>
+        <td ng-repeat="item in data track by $index"
+            ng-class="{'hs-day': true, selected: item < 0, set: item > 0}"
+            ng-mousedown="onMouseDown($event)"
+            ng-mouseover="onMouseOver($event)"
+            ng-mouseout="onMouseOut($event)"
+            data-weekday="{{$index}}">
+            <div class="bubble">
+                <div class="bubble-pointer"></div>
+                <div class="bubble-body">{{popupTextFormatter(item)}}</div>
+            </div>
+        </td>
+    </tr>
+
+</table>

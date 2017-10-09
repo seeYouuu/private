@@ -1,0 +1,32 @@
+<div class="modal" role="dialog">
+    <div class="modal-dialog modal-center modal-reate add_to_group">
+        <div class="modal-content group-add">
+            <div class="modal-body clearfix">
+                <div class="reate_clues">
+                    <div class="reate_header clearfix">
+                        <p class="clearfix">
+                            <span>配置客户组</span>
+                            <span ng-click="$hide()"></span>
+                        </p>
+                    </div>
+                    <div class="set_groups">
+                        <p>已选中{{batchToGroup.length}}位客户，你可以为他们配置</p>
+                        <u ng-class="{'select': !batchJoinOld, 'select-already': batchJoinOld}" ng-click="switchBatch()"></u>&nbsp;已有客户组 <br><br>
+                        <div class="u-g-box">
+                            <div class="g-line" ng-repeat="item in createdGroups" ng-click="item.selected = !item.selected;">
+                                <span class="cri-o" ng-class="{'on': item.selected && batchJoinOld}"><span class="cri-i"></span></span>
+                                <span>{{item.name}}</span>
+                            </div>
+                        </div><br>
+                        <u ng-class="{'select': batchJoinOld, 'select-already': !batchJoinOld}" ng-click="switchBatch()"></u>&nbsp;新建客户组 <br><br>
+                        <input type="text" ng-model="editOption.g_name" ng-class="{'disabled': batchJoinOld}">
+                    </div>
+                    <div class="reate_btn clearfix">
+                         <span class="r-save-btn fl" ng-click="addCreateGroup($hide)">确定</span>
+                         <span class="r-btn fl" ng-click="$hide()">取消</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

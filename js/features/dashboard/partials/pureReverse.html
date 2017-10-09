@@ -1,0 +1,227 @@
+<div class="modal gallery-upload-progress-modal" role="dialog">
+    <!-- <div class="modal-dialog" style="overflow-y:visible;" ng-class="{'modal-lg': dialogType == 'preorder' || dialogType == 'reserve', 'modal-small': dialogType == 'confTips'}" > -->
+    <div class="modal-dialog" ng-class="{'auto-width': dialogType == 'preorder' || dialogType == 'reserve', 'modal-small': dialogType == 'confTips'}" >
+        <div class="modal-content" style="border-right: none;padding:0 15px;" ng-if="">
+            <div class="modal-header">
+                <h4 class="modal-title lf_title" ng-if="dialogType === 'preorder'">空间推送空间订单</h4>
+                <h4 class="modal-title lf_title" ng-if="dialogType === 'reserve'">确认设置内部占用信息</h4>
+            </div>
+            <div class="modal-body">
+                <ul class="room_lsit conf_sty" ng-if="dialogType === 'preorder'">
+                    <li class="li_height">
+                        <span class="item_label">使用者：</span>
+                        <angular-complete class="mid_long" selectdata="users.select" searchparams="users.query" responsedata="users.list" change="searchUser()"></angular-complete>
+                    </li>
+                </ul>
+                <div class="seat-div" ng-if="productItem.room.type == 'fixed'">
+                    <span class="seat-item" ng-class="{'on': item.selected}" ng-repeat="item in productItem.room.fixed" ng-click="selectSeat(item, 'dialog')">座位{{item.seat_number}}</span>
+                </div>
+                <ul class="room_lsit conf_sty">
+                    <li ng-if="productItem.unit_price === 'month'" class="li_height">
+                        <span class="item_label">选择时间：</span>
+                        <div class="out_input min_short">
+                            <input type="text" ng-model="orderParam.start_date" ng-keydown="blockInput($event)" ng-click="getDate(productItem,'start')" data-placement="bottom" data-content-template="js/features/space/partials/popover.html" data-auto-close="1" bs-popover><span><i class="fa fa-calendar"></i></span>
+                        </div> -
+                        <div class="out_input min_short">
+                            <input type="text" onkeyup="if(this.value.length==1){this.value=this.value.replace(/[^1-9]/g,'')}else{this.value=this.value.replace(/\D/g,'')}" ng-model="orderParam.rent_period" placeholder="0">个月
+                        </div>
+                    </li>
+                    <li ng-if="productItem.unit_price === 'hour'" class="li_height" style="padding-top:10px;">
+                        <span class="item_label">选择时间：</span>
+                        <div class="out_input min_short conf_margin">
+                            <input type="text" ng-model="orderParam.start_date" ng-keydown="blockInput($event)" ng-click="getDate(productItem,'start')" data-placement="bottom" data-content-template="js/features/space/partials/popover.html" data-auto-close="1" bs-popover><span><i class="fa fa-calendar"></i></span>
+                        </div>
+                        <div class="conf_padding img_show">
+                            <sb-dropdown select="orderParam.times.start" options="clock" placeholder="placeholder.startTime" short='true' no-empty></sb-dropdown>
+                            <sb-dropdown select="orderParam.times.end" options="clock" placeholder="placeholder.endTime" short='true' no-empty></sb-dropdown>
+                        </div>
+                    </li>
+                    <li ng-if="productItem.unit_price === 'day'" class="li_height">
+                        <span class="item_label">选择时间：</span>
+                        <div class="out_input min_short">
+                            <input type="text" ng-model="orderParam.start_date" ng-keydown="blockInput($event)" ng-click="getDate(productItem,'start')" data-placement="bottom" data-content-template="js/features/space/partials/popover.html" data-auto-close="1" bs-popover><span><i class="fa fa-calendar"></i></span>
+                        </div> -
+                        <div class="out_input min_short">
+                            <input type="text" ng-model="orderParam.end_date" ng-keydown="blockInput($event)" ng-click="getDate(productItem,'end')" data-placement="top" data-content-template="js/features/space/partials/popover.html" data-auto-close="1" bs-popover><span><i class="fa fa-calendar"></i></span>
+                        </div>
+                    </li>
+                    <li class="li_height" ng-if="dialogType === 'preorder'">
+                        <span class="item_label">订单总价：</span>
+                        <div class="conf_padding">
+                            <p class="price word_line_height">
+                                <font ng-if="menuState.origin_price">￥{{orderParam.discount_price}}</font>
+                                <font ng-if="!menuState.origin_price && orderParam.rent_period">￥{{orderParam.rent_period * productItem.base_price}}</font>
+                                <font ng-if="!menuState.origin_price && !orderParam.rent_period">￥0</font>
+                            </p>
+                            <input style="width:50px;border-radius: 3px" type="text" ng-model="orderParam.discount_price" ng-if="menuState.input_visb">
+                            <span class="price_sty" ng-if="menuState.origin_price">￥{{orderParam.rent_period * productItem.base_price}}</span>
+                            <a ng-click="changePrice()" class="mdf_price">修改价格</a>
+                        </div>
+                    </li>
+                </ul>
+                <div class="reserve_bottom">
+                  <a ng-click="spacePreorder($hide)" ng-if="dialogType === 'preorder'" class="primary_btn">确认推送空间订单</a>
+                  <a ng-click="spaceReserve($hide)" ng-if="dialogType === 'reserve'" class="primary_btn">确认设置内部占用</a>
+                  <a ng-click="$hide()" class="primary_btn cancel_btn mPaddingLR5">取消</a>
+                </div>
+            </div>
+        </div>
+
+        <div class="modal-content" style="border-right: none;" ng-if="dialogType == 'preorder' || dialogType == 'reserve'">
+            <div class="job-operate no-maxHeight">
+                <div class="job-header">
+                    <div>
+                        <span ng-if="dialogType == 'preorder'">空间预订</span><span ng-if="dialogType == 'reserve'">空间预留</span><span class="x" ng-click="$hide()">x</span>
+                    </div>
+                </div>
+                <div class="job-content pd95 no-maxHeight">
+                    <div class="dia-tip" ng-if="dialogType == 'preorder'">您可以为您的用户手动推送一张订单或者合同。您只需要在下面搜索您的目标用户，选择一种租赁方式，并确认好时间推送订单，用户就会收到您推送的订单，同时您可以修改订单原价。</div>
+                    <div class="dia-tip" ng-if="dialogType == 'reserve'">如果您不希望用户在某一时间段使用该空间，你可以把这段时间预留出来。空间预留成功后，其他用户将无法再您预留的时间段内下单，您随时可以空间订单里取消先前的空间预留。</div>
+                    <div class="admin-search noBb" ng-if="dialogType == 'preorder'">
+                        <div class="search-ipt" ng-if="!users.select">
+                            <input type="text" placeholder="可以根据邮箱/手机号搜索" maxlength="11" ng-model="users.query.key">
+                        </div>
+                        <div class="job-info width100" ng-if="users.select">
+                            <image-with-fallback class="job-avator" url="{{users.select.avatar}}" default-url="../img/head.png"></image-with-fallback>
+
+                            <div class="job-des">
+                                <div class="job-t">
+                                    <div class="job-l width44" ng-bind="users.select.name"></div>
+                                    <div class="job-r width44"><span ng-click="reSearch()">更改账户</span></div>
+                                </div>
+                                <div class="job-b">
+                                    <div class="job-l width44" ng-bind="users.select.phone"></div>
+                                    <div class="job-r width44" ng-bind="users.select.email"></div>
+                                </div>
+                            </div>
+                        </div>
+                        <span class="search-btn" ng-click="searchUser()" ng-if="!users.select">搜索用户</span>
+                        <!-- <angular-complete class="mid_long" selectdata="users.select" searchparams="users.query" responsedata="users.list" change="searchUser()"></angular-complete> -->
+                    </div>
+                    <div class="box-line">
+                        <div class="box-item" ng-class="{'single-item': productItem.leasing_sets.length === 1 && !productItem.rent_set.status}" ng-repeat="set in productItem.leasing_sets">
+                            <div class="box-top">
+                                <div class="box-t-tit"><span ng-if="set.unit_price === 'hour'">时租</span><span ng-if="set.unit_price === 'day'">天租</span><span ng-if="set.unit_price === 'week'">周租</span><span ng-if="set.unit_price === 'month'">月租</span></div>
+                                <div class="box-t-price">￥ {{set.base_price}}/<span ng-if="set.unit_price === 'hour'">小时</span><span ng-if="set.unit_price === 'day'">天</span><span ng-if="set.unit_price === 'week'">周</span><span ng-if="set.unit_price === 'month'">月</span></div>
+                                <div class="out_input min_short conf_margin" ng-if="set.unit_price === 'hour'">
+                                    <input type="text" placeholder="选择日期" ng-model="hourOrderParam.start_date" ng-keydown="blockInput($event)" ng-click="getDate(productItem,'start', 'hour')" data-placement="top" data-content-template="js/features/space/partials/popover.html" data-auto-close="1" bs-popover><span class="cal-ico"><i class="fa fa-calendar"></i></span>
+                                </div>
+                                <div class="out_input min_short conf_margin" ng-if="set.unit_price === 'day'">
+                                    <input type="text" placeholder="选择日期" ng-model="dayOrderParam.start_date" ng-keydown="blockInput($event)" ng-click="getDate(productItem,'start', 'day')" data-placement="top" data-content-template="js/features/space/partials/popover.html" data-auto-close="1" bs-popover><span class="cal-ico"><i class="fa fa-calendar"></i></span>
+                                </div>
+                                <div class="out_input min_short conf_margin" ng-if="set.unit_price === 'week'">
+                                    <input type="text" placeholder="选择日期" ng-model="weekOrderParam.start_date" ng-keydown="blockInput($event)" ng-click="getDate(productItem,'start', 'week')" data-placement="top" data-content-template="js/features/space/partials/popover.html" data-auto-close="1" bs-popover><span class="cal-ico"><i class="fa fa-calendar"></i></span>
+                                </div>
+                                <div class="out_input min_short conf_margin" ng-if="set.unit_price === 'month'">
+                                    <input type="text" placeholder="选择日期" ng-model="monthOrderParam.start_date" ng-keydown="blockInput($event)" ng-click="getDate(productItem,'start', 'month')" data-placement="top" data-content-template="js/features/space/partials/popover.html" data-auto-close="1" bs-popover><span class="cal-ico"><i class="fa fa-calendar"></i></span>
+                                </div>
+                                <div class="out_input min_short conf_margin" ng-if="set.unit_price === 'week'">
+                                    <input type="text" ng-model="weekOrderParam.rent_period">
+                                    <span class="cal-ico">周</span>
+                                </div>
+                                <div class="out_input min_short conf_margin" ng-if="set.unit_price === 'day'">
+                                    <input type="text" placeholder="结束日期" ng-model="dayOrderParam.end_date" ng-keydown="blockInput($event)" ng-click="getDate(productItem,'end', 'day')" data-placement="top" data-content-template="js/features/space/partials/popover.html" data-auto-close="1" bs-popover><span class="cal-ico"><i class="fa fa-calendar"></i></span>
+                                </div>
+                                <div class="out_input min_short conf_margin" ng-if="set.unit_price === 'month'">
+                                    <input type="text" ng-model="monthOrderParam.rent_period">
+                                    <span class="cal-ico">月</span>
+                                </div>
+                                <div class="out_input" ng-if="set.unit_price === 'hour'">
+                                    <sb-dropdown select="hourOrderParam.times.start" options="clock" placeholder="placeholder.time || '起始时间'" flexible='true' no-empty></sb-dropdown>
+                                </div>
+                                <div class="out_input" ng-if="set.unit_price === 'hour'">
+                                    <sb-dropdown select="hourOrderParam.times.end" options="clock" placeholder="placeholder.time || '结束时间'" flexible='true' no-empty></sb-dropdown>
+                                </div>
+                            </div>
+                            <div class="box-div"></div>
+                            <div class="box-bottom" ng-if="dialogType == 'preorder'">
+                                <div class="bot-t" ng-if="set.unit_price === 'hour'">
+                                    <p class="price word_line_height">
+                                        <font ng-if="hourOrderParam.origin_price">￥{{hourOrderParam.discount_price}}</font>
+                                        <font ng-if="!hourOrderParam.origin_price && hourOrderParam.rent_period">￥{{hourOrderParam.rent_period * set.base_price}}</font>
+                                    </p>
+                                    <input style="width:50px;border-radius: 3px" type="text" ng-model="hourOrderParam.discount_price" ng-if="set.input_visb">
+                                    <span class="price_sty" ng-if="hourOrderParam.origin_price">￥{{hourOrderParam.rent_period * set.base_price}}</span>
+                                    <a ng-click="changePrice(set)" class="mdf_price static" ng-if="set.rent_period">修改价格</a>
+                                </div>
+                                <div class="bot-t" ng-if="set.unit_price === 'day'">
+                                    <p class="price word_line_height">
+                                        <font ng-if="dayOrderParam.origin_price">￥{{dayOrderParam.discount_price}}</font>
+                                        <font ng-if="!dayOrderParam.origin_price && dayOrderParam.rent_period">￥{{dayOrderParam.rent_period * set.base_price}}</font>
+                                    </p>
+                                    <input style="width:50px;border-radius: 3px" type="text" ng-model="dayOrderParam.discount_price" ng-if="set.input_visb">
+                                    <span class="price_sty" ng-if="dayOrderParam.origin_price">￥{{dayOrderParam.rent_period * set.base_price}}</span>
+                                    <a ng-click="changePrice(set)" class="mdf_price static" ng-if="set.rent_period">修改价格</a>
+                                </div>
+                                <div class="bot-t" ng-if="set.unit_price === 'week'">
+                                    <p class="price word_line_height">
+                                        <font ng-if="weekOrderParam.origin_price">￥{{weekOrderParam.discount_price}}</font>
+                                        <font ng-if="!weekOrderParam.origin_price && weekOrderParam.rent_period">￥{{weekOrderParam.rent_period * set.base_price}}</font>
+                                    </p>
+                                    <input style="width:50px;border-radius: 3px" type="text" ng-model="weekOrderParam.discount_price" ng-if="set.input_visb">
+                                    <span class="price_sty" ng-if="weekOrderParam.origin_price">￥{{weekOrderParam.rent_period * set.base_price}}</span>
+                                    <a ng-click="changePrice(set)" class="mdf_price static" ng-if="set.rent_period">修改价格</a>
+                                </div>
+                                <div class="bot-t" ng-if="set.unit_price === 'month'">
+                                    <p class="price word_line_height">
+                                        <font ng-if="monthOrderParam.origin_price">￥{{monthOrderParam.discount_price}}</font>
+                                        <font ng-if="!monthOrderParam.origin_price && monthOrderParam.rent_period">￥{{monthOrderParam.rent_period * set.base_price}}</font>
+                                    </p>
+                                    <input style="width:50px;border-radius: 3px" type="text" ng-model="monthOrderParam.discount_price" ng-if="set.input_visb">
+                                    <span class="price_sty" ng-if="monthOrderParam.origin_price">￥{{monthOrderParam.rent_period * set.base_price}}</span>
+                                    <a ng-click="changePrice(set)" class="mdf_price static" ng-if="set.rent_period">修改价格</a>
+                                </div>
+                                <div class="bot-btn">
+                                    <div class="primary-btn" ng-click="spacePreorder(set, $hide)">推送订单</div>
+                                </div>
+                            </div>
+                            <div class="box-bottom" ng-if="dialogType == 'reserve'">
+                                <div class="bot-btn mt40">
+                                    <div class="primary-btn" ng-click="spaceReserve(set, $hide)">确认预留</div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="box-item" ng-if="productItem.rent_set.status">
+                            <div class="box-top">
+                                <div class="box-t-tit">
+                                    月租（长租）
+                                </div>
+                                <div class="box-t-price">￥ {{productItem.rent_set.base_price}}/<span>月</span></div>
+                            </div>
+                            <div class="box-bottom">
+                                <div class="bot-btn">
+                                    <div class="tip">点击下方“推送合同”直接进入合同生成页面</div>
+                                    <div class="primary-btn" ng-click="generateLeases(productItem.id, $hide)">推送合同</div>
+                                </div>
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="modal-content" ng-if="dialogType == 'confTips'">
+            <div class="modal-header bg-color">
+                <h4 class="lf_title">
+                    <span style="vertical-align: middle;" ng-if="dialogType === 'preorder'">推送空间订单成功</span>
+                    <span style="vertical-align: middle;" ng-if="dialogType === 'reserve'">设置内部占用成功</span>
+                </h4>
+            </div>
+            <form class="form-horizontal">
+                <div class="modal-body">
+                    <div class="ic_style"><img src="/img/reserve_ic.png"></div>
+                    <div class="content_sm">
+                    <p ng-if="popoverType === 'preorder'">"<a class="a_name" ng-click="seeOrderDetail($hide)">{{productItem.room.name}}</a>" 已推送空间订单成功，请用户至APP付款</p>
+                    <p ng-if="popoverType === 'reserve'">"<a class="a_name" ng-click="seeOrderDetail($hide)">{{productItem.room.name}}</a>"
+                     设置内部占用成功，超过设置内部占用时间订单将自动取消</p>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <a type="button" class="primary_btn cancel_btn" ng-click="$hide()">OK</a>
+                </div>
+            </form>
+        </div>
+
+    </div>
+</div>

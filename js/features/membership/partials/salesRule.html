@@ -1,0 +1,86 @@
+<div class="group_detail add-room">
+    <div class="space-detail" ng-class="{'no-pt': cardFlag == 'new'}">
+        <div class="space-head">
+            <span class="head-des">
+                <span>售卖设置</span>
+                <span class="blue-f">"{{membershipItem.name}}"</span>
+            </span>
+        </div>
+        <div class="create-com space-con">
+            <div class="create-header" ng-if="cardFlag == 'new'">
+                <div class="step-suc">
+                    <div class="s-des">
+                        <img src="../img/reserve_ic.png" class="suc-icon">
+                        <span>会员卡已创建成功, 你可以继续完善以下 售卖设置   或  </span>
+                        <span class="reverse-btn" ng-click="backToList()">跳过售卖设置</span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="edit-s-box">
+                <div class="com-room-line">
+                    <div class="com-f per32">
+                        <div class="p-wrap" ng-class="{'green': membershipItem.visible && membershipItem.specification.length > 0, 'red': !membershipItem.visible && membershipItem.specification.length > 0, 'grey': membershipItem.specification.length == 0}">
+                            <img class="p-pic" ng-src="{{membershipItem.background}}">
+                        </div>
+                        <div class="room-tit">
+                            <span>{{membershipItem.name}}</span>
+                        </div>
+                    </div>
+                    <div class="com-t per28">
+                        <div class="t-wrap">
+                            <p>{{membershipItem.door_desc[0].building_name}}</p>
+                            <span class="grey-num" ng-if="membershipItem.door_desc.length > 1">...({{membershipItem.door_desc.length}})</span>
+                        </div>
+                    </div>
+                    <div class="com-t per15">
+                        <div class="t-wrap">
+                            <p>{{membershipItem.door_c_list[0].name}}</p>
+                            <span class="grey-num" ng-if="membershipItem.door_c_list.length > 1">...({{membershipItem.door_c_list.length}})</span>
+                            
+                        </div>
+                    </div>
+                    <div class="com-s per25">
+                        <div class="s-wrap">
+                            <div>
+                                <div>
+                                    <div ng-if="membershipItem.priceDesc"><span class="red-num">{{membershipItem.priceDesc}}</span>元<i class="arr grey-arr arr-down"></i></div>
+                                    <div ng-if="membershipItem.periodDesc"><span class="grey-num">有效期{{membershipItem.periodDesc}}</span></div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <ul class="room_lsit long-li">
+                	<li>
+                		<p>售卖规格设置</p>
+                		<div class="grey-num">该会员卡可以设置最多4种规格，保存时需要至少完整填写一个规格的内容。</div>
+                		<div class="grey-num">建议您按照1个月，3个月，6个月和12个月来制定规格。</div>
+                	</li>
+                    <li>
+                    	<div class="rule-b" ng-repeat="item in cardRules track by $index">
+                    		<div class="rule-line">
+                    			<div class="rule-item per50">
+                    				<span class="n-name">规格{{$index + 1}}</span><input type="text" ng-model="item.specification" placeholder="请填写规则名称">
+                    			</div>
+                    			<div class="rule-item per25">
+                    				<span class="n-name">价格</span><div class="in-b"><input type="text" ng-model="item.price"><span class="r-unit">元</span></div>
+                    			</div>
+                    			<div class="rule-item per25">
+                    				<span class="n-name">有效期</span><div class="in-b"><input type="text" ng-model="item.valid_period"><span class="r-unit">个月</span></div>
+                    			</div>
+                    		</div>
+                    		<a class="del-bt" ng-click="delRule(item, $index)">清除</a>
+                    	</div>
+                    </li>
+                </ul>
+                
+            </div>
+            <div class="edit-s-btn">
+                <div class="e-btn" ng-if="cardFlag == 'new'" ng-click="setSpecification()">设置并上架</div>
+                <div class="e-btn" ng-if="cardFlag != 'new'" ng-click="setSpecification()">保存设置</div>
+            </div>
+        </div>
+    </div>
+</div>

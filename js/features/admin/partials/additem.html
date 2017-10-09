@@ -1,0 +1,175 @@
+<div class="modal" role="dialog">
+    <div class="modal-dialog modal-center" ng-class="{'b-body': addType !== 'move','s-body': addType === 'move'}">
+        <div class="modal-content group-add">
+            <div class="modal-body clearfix">
+                
+				<!-- <div ng-if="addType === 'job' || operationType == 'edit-job'">
+					<div class="add-header">
+						<span ng-if="operationType != 'edit-job'">创建职位</span>
+						<span ng-if="operationType == 'edit-job'">编辑职位</span>
+						<span class="close" ng-click="$hide()">×</span>
+					</div>
+					<div class="add-down clearfix">
+						<div class="add-left">
+							<p class="add-cat">职位信息配置</p>
+							<p class="add-tip">(职位信息将应用于你的管理员职位设置)</p>
+							<input class="j-name" ng-model="createPosition.name" type="text" placeholder="请输入职位名称">
+							<div class="point">
+								<sb-new-dropdown select="createPosition.leader" options="positions" placeholder="placeholder.reportTo" normal=true></sb-new-dropdown>
+							</div>
+
+							<p class="add-cat">职位Icon</p>
+							<p class="add-tip">(职位Icon将应用于你的管理员职位设置)</p>
+							<div class="icon-box">
+								<div class="icon-item" ng-repeat="icon in positionIcons" ng-click="selectIcon(icon)" ng-class="{'on' : icon.selected}">
+									<img ng-src="{{icon.url}}" ng-if="!icon.selected">
+									<img ng-src="{{icon.selected_url}}" ng-if="icon.selected">
+								</div>
+							</div>
+
+						</div>
+						<div class="add-right">
+							<p class="add-cat">通用权限配置</p>
+							<p class="add-tip">(通用权限为“全局职位”管理权限，通用权限和社区权限不可同时设置)</p>
+							<div class="per-box">
+								<div class="per-line" ng-repeat="per in createPosition.perArr | filter:'global'" ng-class="{'disable' : menuSelected == 'specify' || positionItem.permission_mappings[0].permission.level == 'specify'}">
+									<div class="per-name" ng-bind="per.name"></div>
+									<div class="per-des" ng-class="{'disable' : !per.levelItem1}" ng-click="setPermission(per, 1)">
+										<span class="cir" ng-class="{'on' : per.op_level == 1}"><i></i></span>
+										查看
+									</div>
+									<div class="per-des" ng-class="{'disable' : !per.levelItem2}" ng-click="setPermission(per, 2)">
+										<span class="cir" ng-class="{'on' : per.op_level == 2}"><i></i></span>
+										编辑
+									</div>
+									<div class="per-des" ng-class="{'disable' : !per.levelItem3}" ng-click="setPermission(per, 3)">
+										<span class="cir" ng-class="{'on' : per.op_level == 3}"><i></i></span>
+										冻结
+									</div>
+								</div>
+							</div>
+
+							<p class="add-cat">社区权限配置</p>
+							<p class="add-tip">(社区权限职位需配置到大楼，通用权限和社区权限不可同时设置)</p>
+							<div class="per-box">
+								<div class="per-line" ng-repeat="per in createPosition.perArr | filter:'specify'" ng-class="{'disable' : menuSelected == 'global' || positionItem.permission_mappings[0].permission.level == 'global'}">
+									<div class="per-name" ng-bind="per.name"></div>
+									<div class="per-des" ng-class="{'disable' : !per.levelItem1}" ng-click="setPermission(per, 1)">
+										<span class="cir" ng-class="{'on' : per.op_level == 1}"><i></i></span>
+										查看
+									</div>
+									<div class="per-des" ng-class="{'disable' : !per.levelItem2}" ng-click="setPermission(per, 2)">
+										<span class="cir" ng-class="{'on' : per.op_level == 2}"><i></i></span>
+										编辑
+									</div>
+									<div class="per-des" ng-class="{'disable' : !per.levelItem3}" ng-click="setPermission(per, 3)">
+										<span class="cir" ng-class="{'on' : per.op_level == 3}"><i></i></span>
+										冻结
+									</div>
+								</div>
+							</div>
+						</div>
+					</div>
+
+					<div class="add-foot">
+						<div class="add-save" ng-class="{'disabled': loading}" ng-if="operationType != 'edit-job'" ng-click="addPosition($hide)">创建</div>
+						<div class="add-save" ng-class="{'disabled': loading}" ng-if="operationType == 'edit-job'" ng-click="editPosition($hide)">保存</div>
+					</div>
+				</div> -->
+
+				<!-- <div ng-if="addType === 'power'">
+					<div class="add-header">
+						<span>选择添加到新的职位</span>
+						<span class="close" ng-click="$hide()">×</span>
+					</div>
+				</div> -->
+
+				<div ng-if="addType === 'admin'">
+					<div class="add-header">
+						<span>添加管理员</span><span ng-if="selectedMenu.key != 'all'"><i>-</i>{{selectedMenu.name}}</span><span ng-if="selectedPosition.selected"><i>/</i>{{selectedPosition.name}}</span>	
+						<span class="close" ng-click="$hide()">×</span>
+					</div>
+					<div class="add-down">
+						<div class="add-left">
+							<p class="add-cat">选择已有管理员</p>
+							<div class="left-box">
+								<div class="search-box">
+									<input type="text" ng-model="search.name">
+								</div>
+								<div class="info-box">
+									<div class="a-info" ng-repeat="item in addAdminList | filter: search.name" ng-class="{checked: item.selectedAdd}">
+										<image-with-fallback url="{{item.avatar}}" default-url="../img/head.png"></image-with-fallback>
+										<span class="a-name">
+											<p ng-bind="item.name"></p>
+											<p ng-bind="item.phone"></p>
+										</span>
+										<span class="add-i" ng-click="selectAddAdmin(item)" ng-if="!item.selectedAdd">添加</span>
+										<span class="add-i cancel" ng-click="cancelSelectAdmin(item)" ng-if="item.selectedAdd">取消</span>
+									</div>
+								</div>
+							</div>
+						</div>
+						<div class="add-right">
+							<p class="add-cat">添加新管理员</p>
+							<div class="right-box">
+								<input type="text" class="phone-input" ng-model="search.phone" placeholder="请输入管理员的手机号">
+								<span class="not-find"><span ng-if="!search.flag">!</span><p ng-if="!search.flag">未找到该用户</p></span>
+								<div class="add-a" ng-click="searchAdminByPhone()" ng-class="{'disabled': search.phone.length != 11}">添加</div>
+							</div>
+							<p class="add-cat">已选择预添加的管理员</p>
+							<div class="right-box res-box">
+								<div class="res-item" ng-repeat="admin in search.admins">
+									<div class="res-info">
+										<image-with-fallback url="{{admin.avatar}}" default-url="../img/head.png"></image-with-fallback>
+										<div class="info-box">
+											<p class="i-name" ng-bind="admin.name"></p>
+											<p ng-bind="admin.phone" class="grey-num"></p>
+										</div>
+									</div>
+									<div class="res-select grey-num">
+										<sb-new-muti-dropdown select="admin.position" ng-if="!selectedPosition || selectedPosition && !selectedPosition.selected" options="admin.positionList" on-options="admin.exsitPositions" placeholder="placeholder.selectPosition" normal=true></sb-new-muti-dropdown>
+										<p ng-if="selectedPosition && selectedPosition.selected">选择职位: <span ng-bind="selectedPosition.name"></span></p>
+									</div>
+									<div class="res-del" ng-click="cancelSelectAdmin(admin)">
+										×
+									</div>
+								</div>
+							</div>
+						</div>
+					</div>
+					<div class="add-foot">
+						<div class="add-save" ng-click="addPositionForAdmin($hide)" ng-class="{'disabled': loading}">确认添加</div>
+					</div>
+				</div>
+
+				<div class="group-options" ng-if="addType == 'move'">
+				    <p class="b-tottom">添加到其他社区<span class="x" ng-click="$hide()">×</span></p>
+				    <div class="m-admin">
+				    	<div class="a-info">
+				    	<image-with-fallback url="{{adminItem.avatar}}" default-url="../img/head.png"></image-with-fallback>
+				    		<div class="m-info">
+				    			<p>{{::adminItem.user.name}}</p>
+				    			<p class="m-num">{{::adminItem.user.phone}}</p>
+				    		</div>
+				    	</div>
+				    	<div class="a-job">
+				    		选择职位：{{::adminItem.position_desc}}
+				    	</div>
+				    </div>
+				    <div class="com-box">
+				    	<div class="com-s" ng-repeat="item in buildingMenu" ng-click="selectBuildings(item)" ng-class="{disabled: item.disabled}">
+				    		<div class="squ" ng-class="{on: item.selected}">
+				    			<img src="../img/right.png">
+				    		</div>
+				    		{{::item.name}}
+				    	</div>
+				    </div>
+				    <div class="f-bottom">
+				        <span class="add-save" ng-click="bindingPosition($hide)">确定</span>
+				    </div>
+				</div>
+
+            </div>
+        </div>
+    </div>
+</div>

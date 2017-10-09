@@ -1,0 +1,22 @@
+<!-- <div ng-if="optionType == 'group'">
+	<div class="g-item" ng-repeat="data in item.groups">
+	<span class="n-icon" ng-class="{'ic-vip': data.type == 'card', 'ic-group': data.type == 'created'||'add'}"></span>
+	<span class="g-item-words">{{data.name}}</span>
+</div>
+</div> -->
+
+<div ng-if="optionType == 'buildings'">
+	<ul class="job-list" ng-repeat="data in item.building">
+		<li>
+			<span>{{data.name}}</span>
+		</li>
+	</ul>
+</div>
+
+<div class="group-options" ng-if="optionType == 'editUserGroup'">
+    <div class="mid-div" ng-class="{'no-borderb': item.type == 'card'}">
+        <div ng-if="currentAdmin.permissionMap[PERMISSION_KEY] == 2" ng-click="customers(item.id, item.type)">查看客户</div>
+        <div ng-if="item.type !== 'card' && currentAdmin.permissionMap[PERMISSION_KEY] == 2" ng-click="creatGroup(item.id)">编辑客户组</div>
+    </div>
+    <p ng-if="item.type !== 'card' && currentAdmin.permissionMap[PERMISSION_KEY] == 2" class="del-item" ng-click="delConfirm($hide, item.id)">删除客户组</p>
+</div>

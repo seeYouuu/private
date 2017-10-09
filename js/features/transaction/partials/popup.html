@@ -1,0 +1,290 @@
+<div class="modal" role="dialog">
+    <div class="modal-dialog modal-center" ng-class="{'small-s': popupType != 'history' && popupType != 'singlePush' && popupType !== 'pushOther' && popupType !== 'bathPush', 'small-normal': popupType === 'pushOther'}">
+        <div class="modal-content group-add" ng-if="popupType !== 'end' && popupType !== 'terminated' && popupType !== 'remark'">
+            <div class="modal-body clearfix">
+                
+                <div class="com-dialog" ng-if="popupType == 'billAmount' || popupType === 'changePushOrderAmount' || popupType === 'orderAmount'">
+                	<div class="dialog-head static">
+                		<div class="head-wra">
+                			<span>更改订单金额</span>
+	                		<span class="close" ng-click="$hide()">✖</span>
+                		</div>
+                	</div>
+                    <div class="dia-box">
+                        <div class="dia-line">
+                            <div class="dia-op"><span class="r-star">*</span><span>订单金额</span></div>
+                            <div class="dia-t">
+                                <input class="s-input" type="number" ng-model="changeAmountOptions.revised_amount">
+                                <span>元</span>
+                            </div>
+                        </div>
+                        <div class="dia-line">
+                            <div class="dia-op"><span class="r-star">*</span><span>更改备注</span></div>
+                            <div class="dia-t">
+                                <textarea class="s-txt" cols="30" rows="10" ng-model="changeAmountOptions.revision_note"></textarea>
+                            </div>
+                        </div>
+                        <div class="dia-bot">
+                            <div class="dia-btns">
+                                <div class="long-btn" ng-click="changeBillAmount($hide, popupType)">确定修改</div>
+                                <div class="long-btn reverse" ng-click="$hide()">取消</div>
+                            </div>   
+                        </div>
+                    </div>
+                </div>
+
+                <div class="com-dialog" ng-if="popupType == 'changeDrawee' || popupType == 'changeSupervisor'">
+                    <div class="dialog-head static">
+                        <div class="head-wra">
+                            <span ng-if="popupType == 'changeSupervisor'">更换合同负责人</span>
+                            <span ng-if="popupType == 'changeDrawee'">更换付款人</span>
+                            <span class="close" ng-click="$hide()">✖</span>
+                        </div>
+                    </div>
+                    <div class="dia-box">
+                        <div class="dia-add-user">
+                            <input type="text" class="add-u-input" placeholder="请输入已注册创合用户的手机号" ng-model="userPhone">
+                            <div class="add-u-btn" ng-click="searchUserByPhone(userPhone, 'changeUserOption')">搜索用户</div>
+                        </div>
+                        <div class="ad-box">
+                            <sb-image-with-fallback class="u-avtar" url="{{searchResult.changeUserOption.avatar}}" default-url="../img/head.png"></sb-image-with-fallback>
+                            <div class="u-acc" ng-if="searchResult.changeUserOption.name">
+                                <p>{{searchResult.changeUserOption.name}}</p>
+                                <p>{{searchResult.changeUserOption.phone || searchResult.changeUserOption.email}}</p>
+                            </div>
+                            <div class="u-acc" ng-if="!searchResult.changeUserOption.name">
+                                <span>未添加</span>
+                            </div>
+                        </div>
+                        <div class="dia-info">更换联系人后, 修改后需要用户在app端同意后方可生效</div>
+                    </div>
+                    <div class="dia-btn-wra">
+                        <div class="long-btn" ng-click="updateLeaseSupervisorOrDrawee('supervisor', $hide)" ng-if="popupType == 'changeSupervisor'">提交修改</div>
+                        <div class="long-btn" ng-click="updateLeaseSupervisorOrDrawee('drawee', $hide)" ng-if="popupType == 'changeDrawee'">提交修改</div>
+                        <div class="long-btn reverse" ng-click="$hide()">取消</div>
+                    </div>
+                </div>
+
+                <div class="com-dialog" ng-if="popupType == 'deposit'">
+                    <div class="dialog-head static">
+                        <div class="head-wra">
+                            <span>收取押金</span>
+                            <span class="close" ng-click="$hide()">✖</span>
+                        </div>
+                    </div>
+                    <div class="dia-box">
+                        <div class="dia-line">
+                            <div class="dia-op"><span class="r-star">*</span><span>备注</span></div>
+                            <div class="dia-t">
+                                <textarea class="s-txt" cols="30" rows="10" ng-model="deposit.note"></textarea>
+                            </div>
+                        </div>
+                        <div class="dia-bot">
+                            <div class="dia-btns">
+                                <div class="long-btn" ng-click="setDepositNote($hide)">确定已收取</div>
+                                <div class="long-btn reverse" ng-click="$hide()">取消</div>
+                            </div>   
+                        </div>
+                    </div>
+                </div>
+                <div class="com-dialog" ng-if="popupType == 'singlePush' || popupType == 'bathPush'">
+                    <div class="dialog-head static">
+                        <div class="head-wra">
+                            <span>合同账单</span>
+                            <span class="close" ng-click="$hide()">✖</span>
+                        </div>
+                    </div>
+                    <div class="dia-box grey-th" ng-repeat="bill in mutiSelectedBills">
+                        <div class="space-b-box">
+                            <div class="b-title tit-top">
+                                <div class="line-width info-tit">
+                                    <div class="line-item per55 t-left">
+                                        账单
+                                    </div>
+                                    <div class="line-item per32 t-left">
+                                        描述
+                                    </div>
+                                    <div class="line-item per13">
+                                        金额
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="line-width" >
+                                <div class="line-item per55 t-left">
+                                    <div class="item-con">
+                                        <div ng-bind="bill.name"></div>
+                                        <div>{{bill.start_date | date: 'yyyy/MM/dd'}}-{{bill.end_date | date: 'yyyy/MM/dd'}}</div>
+                                    </div>
+                                </div>
+                                <div class="line-item per32 t-left">
+                                    <div class="item-con">
+                                        <div>{{bill.description}}</div>
+                                    </div>
+                                </div>
+                                <div class="line-item per13">
+                                    <div class="item-con">
+                                        <div>{{bill.amount}}元</div>
+                                        <div ng-if="!bill.expand"><span class="link-txt" ng-click="switchModifyFlag(bill)">更改</span></div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="dia-line" ng-if="bill.expand">
+                            <div class="dia-op"><span class="r-star">*</span><span>租金</span></div>
+                            <div class="dia-t">
+                                <input class="s-input" type="number" ng-model="bill.revised_amount">
+                                <span>元</span>
+                            </div>
+                        </div>
+                        <div class="dia-line" ng-if="bill.expand">
+                            <div class="dia-op"><span class="r-star">*</span><span>更改备注</span></div>
+                            <div class="dia-t">
+                                <textarea class="s-txt" cols="30" rows="10" ng-model="bill.revision_note"></textarea>
+                            </div>
+                        </div>
+                        <div class="dia-line" ng-if="bill.expand">
+                            <span class="link-txt" ng-click="switchModifyFlag(bill)">取消</span>
+                        </div>
+                    </div>
+                    <div class="dia-btn-wra">
+                        <div class="long-btn" ng-click="bathPushLeaseBills($hide)">推送合同账单</div>
+                    </div>
+                </div>
+
+                <div class="com-dialog" ng-if="popupType == 'pushSuccess'">
+                    <div class="dialog-head static">
+                        <div class="head-wra">
+                            <span>合同账单</span>
+                            <span class="close" ng-click="$hide()">✖</span>
+                        </div>
+                    </div>
+                    <div class="dia-suc">
+                        <img src="../img/reserve_ic.png" class="suc-ico">
+                        <div class="suc-des">已成功推送 1 笔账单!</div>
+                    </div>
+                    <div class="dia-btn-wra p-success">
+                        <div class="long-btn" ng-click="$hide()">好的</div>
+                    </div>
+                </div>
+
+                <div class="com-dialog" ng-if="popupType == 'pushOther'">
+                    <div class="dialog-head static">
+                        <div class="head-wra">
+                            <span>推送账单</span>
+                            <span class="close" ng-click="$hide()">✖</span>
+                        </div>
+                    </div>
+                    <div class="dia-box">
+                        <div class="dia-line">
+                            <div class="dia-op"><span><font class="muted">*</font>账单名称</span></div>
+                            <div class="dia-t">
+                                <input class="b-input" type="text" ng-model="otherBill.name">
+                            </div>
+                        </div>
+                        <div class="dia-line">
+                            <div class="dia-op"><span><font class="muted">*</font>账单时间</span></div>
+                            <div class="dia-t">
+                                <input class="s-input" type="text" ng-model="otherBill.start_date" data-date-format="yyyy-MM-dd" data-autoclose="1" bs-datepicker>
+                                <i class="fa fa-calendar"></i>
+                            </div>
+                            <div class="dia-t">
+                                <span class="time-divide">-</span>
+                                <input class="s-input" type="text" ng-model="otherBill.end_date" data-date-format="yyyy-MM-dd" data-autoclose="1" bs-datepicker>
+                                <i class="fa fa-calendar"></i>
+                            </div>
+                        </div>
+                        <div class="dia-line">
+                            <div class="dia-op"><span><font class="muted">*</font>账单描述</span></div>
+                            <div class="dia-t">
+                                <textarea class="s-txt" cols="30" rows="10" ng-model="otherBill.description"></textarea>
+                            </div>
+                        </div>
+                        <div class="dia-line">
+                            <div class="dia-op"><span><font class="muted">*</font>账单金额</span></div>
+                            <div class="dia-t">
+                                <input class="s-input" type="number" ng-model="otherBill.amount">
+                                <span>元</span>
+                            </div>
+                        </div>
+                        <br>
+                        <div class="dia-bot">
+                            <div class="dia-btns">
+                                <div class="long-btn" ng-class="{disabled: !otherBill.name || !otherBill.start_date || !otherBill.end_date || !otherBill.description || !otherBill.amount || otherBill.amount < 0}" ng-click="pushOtherBill($hide)">确定推送</div>
+                            </div>   
+                        </div>
+                        <br>
+                    </div>
+                </div>
+
+                
+                
+            </div>
+        </div>
+
+        <div class="modal-content" ng-if="popupType == 'terminated'">
+            <div class="com-dialog">
+                <div class="modal-header">
+                    <h4 class="modal-title lf_title color-primary"><span>系统提示</span><span class="close" ng-click="$hide()">×</span></h4>
+                </div>
+                <div class="modal-body">
+                    <div>终止合同后，您将无法再推送账单，且用户还未付款的账单将失效。</div>
+                    <ol class="point-ol">
+                        <li class="point-li" ng-if="agreementData.total_lease_bills_amount - agreementData.pushed_lease_bills_amount > 0">检测到您还有 {{agreementData.total_lease_bills_amount - agreementData.pushed_lease_bills_amount}} 笔账单未推送</li>
+                        <li class="point-li" ng-if="billData.unpaid_bills && billData.unpaid_bills > 0">检测到还有 {{billData.unpaid_bills}} 笔账单用户未付款</li>
+                    </ol>
+                    <div>是否确认终止合同</div>
+                </div>
+                <div class="modal-footer"> 
+                <div class="confirm-btn" ng-click="setLeasesStatus('terminated', $hide)">终止</div>
+                </div>
+            </div>
+        </div>
+
+        <div class="modal-content" ng-if="popupType == 'end'">
+            <div class="com-dialog">
+                <div class="modal-header">
+                    <h4 class="modal-title lf_title color-primary"><span>系统提示</span><span class="close" ng-click="$hide()">×</span></h4>
+                </div>
+                <div class="modal-body">
+                    <div>结束合同后，您将无法再推送账单，且用户还未付款的账单将失效。</div>
+                    <ol class="point-ol">
+                        <li class="point-li" ng-if="agreementData.total_lease_bills_amount - agreementData.pushed_lease_bills_amount > 0">检测到您还有 {{agreementData.total_lease_bills_amount - agreementData.pushed_lease_bills_amount}} 笔账单未推送</li>
+                        <li class="point-li" ng-if="billData.unpaid_bills && billData.unpaid_bills > 0">检测到还有 {{billData.unpaid_bills}} 笔账单用户未付款</li>
+                    </ol>
+                    <div>是否确认结束合同</div>
+                </div>
+                <div class="modal-footer"> 
+                <div class="confirm-btn" ng-click="setLeasesStatus('end', $hide)">结束</div>
+                </div>
+            </div>
+        </div>
+
+        <div class="com-dialog" ng-if="popupType == 'remark'">
+            <div class="dialog-head static">
+                <div class="head-wra">
+                    <span>确认已收款</span>
+                    <span class="close" ng-click="$hide()">✖</span>
+                </div>
+            </div>
+            <div class="dia-box">
+                <div class="remark-tag">
+                    收款备注<span>*</span>
+                </div>
+                <div class="dia-line">
+                    <textarea class="b-txt" cols="30" rows="10" ng-model="salesOffline.note" placeholder="请输入收款备注, 必填项"></textarea>
+                </div>
+                <div class="remark-tip">
+                    请核对用户付款信息, 确认信息无误后点击"确认收款", 如付款信息有疑问可联系付款人进行信息查询和核实。<br/>
+                    账单确认收款后将无法更改状态。
+                </div>
+                <div class="dia-bot has-bt">
+                    <div class="dia-btns">
+                        <div class="long-btn" ng-click="collectionSalesOffline($hide)">确定收款</div>
+                        <div class="long-btn reverse" ng-click="$hide()">取消</div>
+                    </div>   
+                </div>
+            </div>
+        </div>
+
+    </div>
+</div>

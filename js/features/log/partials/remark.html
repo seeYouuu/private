@@ -1,0 +1,18 @@
+<div  class="modal log-remark" role="dialog">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header" ng-show="title">
+                <h4><span ng-bind="title"></span></h4>
+            </div>
+            <div class="modal-body">
+            	<div class="remark-content">
+            		<textarea rows="5" placeholder="请输入备注" ng-model="markOptions.remarks"></textarea>
+            	</div>
+            	<div class="m_bottom">
+            		<a class="primary_btn" ng-click="addRemark($hide)">{{'OK' | translate}}</a>
+					<a class="op_btn" ng-click="closeRemark($hide)">{{'CANCEL' | translate}}</a>
+            	</div>
+            </div>
+        </div>
+    </div>
+</div>
